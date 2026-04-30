@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeMind AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00ffc8;
+    --blue: #0088ff;
+    --bg: #07070f;
+    --bg2: #0b0b18;
+    --bg3: #0e0e1c;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.06);
+    --border-cyan: rgba(0,255,200,0.15);
+    --text: #dde1ff;
+    --text-dim: rgba(255,255,255,0.35);
+    --font-ui: 'Outfit', sans-serif;
+    --font-code: 'Fira Code', 'Courier New', monospace;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+  }
+
+  ::-webkit-scrollbar { width: 3px; height: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,255,200,0.18); border-radius: 2px; }
+
+  /* ── Layout ── */
+  #app { display: flex; flex-direction: column; height: 100vh; }
+
+  #header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 16px; flex-shrink: 0;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border-cyan);
+    backdrop-filter: blur(20px);
+  }
+
+  #header .logo { display: flex; align-items: center; gap: 10px; }
+  #header .logo-icon {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #000;
+  }
+  #header .logo-name { font-size: 16px; font-weight: 700; color: #fff; }
+  #header .badge {
+    font-size: 9px; background: rgba(0,255,200,0.1);
+    color: var(--cyan); padding: 2px 8px; border-radius: 20px;
+    border: 1px solid rgba(0,255,200,0.25); font-weight: 600; letter-spacing: 0.5px;
+  }
+  #header .status { display: flex; align-items: center; gap: 6px; }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--cyan);
+    animation: glow-pulse 2s infinite;
+  }
+  #header .status span { font-size: 10px; color: var(--text-dim); }
+
+  #main { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── Editor Panel ── */
+  #editor-panel {
+    display: flex; flex-direction: column;
+    width: 50%; border-right: 1px solid var(--border-cyan);
+  }
+
+  .panel-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 12px; flex-shrink: 0;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .traffic-lights { display: flex; align-items: center; gap: 5px; }
+  .tl { width: 9px; height: 9px; border-radius: 50%; }
+  .tl-r { background: #ff5f57; }
+  .tl-y { background: #febc2e; }
+  .tl-g { background: #28c840; }
+  .file-name { font-size: 10px; color: rgba(255,255,255,0.22); margin-left: 8px; font-family: var(--font-code); }
+
+  .btn-group { display: flex; gap: 5px; }
+
+  .btn {
+    font-size: 10px; padding: 3px 10px; border-radius: 5px;
+    cursor: pointer; border: none; font-family: var(--font-ui);
+    transition: all 0.15s;
+  }
+  .btn-cyan {
+    background: rgba(0,255,200,0.08);
+    border: 1px solid rgba(0,255,200,0.2) !important;
+    color: var(--cyan);
+  }
+  .btn-cyan:hover { background: rgba(0,255,200,0.18); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: #777;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); color: #aaa; }
+  .btn-red {
+    background: rgba(255,80,80,0.08);
+    border: 1px solid rgba(255,80,80,0.2) !important;
+    color: #ff8888;
+  }
+  .btn-red:hover { background: rgba(255,80,80,0.18); }
+
+  /* Warning banner */
+  #file-warning {
+    display: none; align-items: center; justify-content: space-between;
+    padding: 6px 12px; flex-shrink: 0;
+    background: rgba(255,180,0,0.07);
+    border-bottom: 1px solid rgba(255,180,0,0.2);
+    font-size: 10px; color: #ffcc44;
+  }
+  #file-warning.show { display: flex; }
+  #file-warning button { background: none; border: none; color: #ffcc44; cursor: pointer; font-size: 14px; }
+
+  /* Focus mode bar */
+  #focus-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 4px 12px; flex-shrink: 0;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  #focus-bar.active { background: rgba(0,255,200,0.04); }
+  #focus-bar .focus-inputs { display: none; align-items: center; gap: 6px; }
+  #focus-bar.active .focus-inputs { display: flex; }
+
+  .focus-input {
+    width: 50px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,255,200,0.2); border-radius: 4px;
+    color: var(--cyan); font-size: 10px; padding: 2px 6px;
+    font-family: var(--font-code); outline: none;
+  }
+  .focus-hint { font-size: 9px; color: rgba(0,255,200,0.45); }
+
+  /* Editor area */
+  #editor-area { display: flex; flex: 1; overflow: hidden; }
+
+  #line-numbers {
+    padding: 12px 8px 12px 6px;
+    background: rgba(0,0,0,0.25);
+    color: rgba(255,255,255,0.16);
+    font-size: 12px; line-height: 1.65;
+    font-family: var(--font-code);
+    user-select: none; min-width: 38px;
+    text-align: right; overflow: hidden;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  #line-numbers div { height: 19.8px; }
+
+  #code-editor {
+    flex: 1; background: var(--bg2);
+    color: #abb2bf; border: none; outline: none;
+    resize: none; padding: 12px 14px;
+    font-size: 12px; line-height: 1.65;
+    font-family: var(--font-code);
+    overflow-y: auto; tab-size: 2;
+    white-space: pre;
+  }
+
+  #editor-footer {
+    display: flex; justify-content: space-between;
+    padding: 4px 12px; flex-shrink: 0;
+    background: rgba(0,0,0,0.4);
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: rgba(255,255,255,0.2);
+    font-family: var(--font-code);
+  }
+
+  /* ── Chat Panel ── */
+  #chat-panel { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+  #messages {
+    flex: 1; overflow-y: auto;
+    padding: 12px 12px 4px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .msg {
+    border-radius: 10px; padding: 10px 12px;
+    animation: slide-in 0.2s ease-out;
+  }
+  .msg.user {
+    align-self: flex-end; max-width: 90%;
+    background: rgba(0,136,255,0.09);
+    border: 1px solid rgba(0,136,255,0.2);
+  }
+  .msg.ai {
+    align-self: flex-start; max-width: 100%;
+    background: rgba(0,255,200,0.03);
+    border: 1px solid rgba(0,255,200,0.1);
+  }
+  .msg-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .msg.user .msg-label { color: rgba(0,136,255,0.7); }
+  .msg.ai .msg-label { color: rgba(0,255,200,0.6); }
+
+  .msg-text {
+    font-size: 12.5px; line-height: 1.65;
+    color: rgba(255,255,255,0.82);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .msg-text strong { color: var(--cyan); }
+  .msg-text em { color: rgba(255,255,255,0.55); font-style: italic; }
+
+  /* Code blocks in chat */
+  .code-block {
+    margin-top: 8px; border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .code-block-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 5px 12px; background: #141428;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .code-lang {
+    font-size: 9px; color: var(--cyan);
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+  }
+  .code-actions { display: flex; gap: 4px; }
+  .code-actions button {
+    font-size: 9px; padding: 2px 8px; border-radius: 4px;
+    cursor: pointer; font-family: var(--font-ui); border: none;
+    transition: all 0.15s;
+  }
+  .btn-to-editor {
+    background: rgba(0,136,255,0.1);
+    border: 1px solid rgba(0,136,255,0.2) !important;
+    color: #5599ff;
+  }
+  .btn-to-editor:hover { background: rgba(0,136,255,0.2); }
+  .btn-copy-code {
+    background: rgba(0,255,200,0.08);
+    border: 1px solid rgba(0,255,200,0.2) !important;
+    color: #7af0d8;
+  }
+  .btn-copy-code:hover { background: rgba(0,255,200,0.18); }
+  .btn-copy-code.copied { color: var(--cyan); }
+
+  .code-block pre {
+    margin: 0; padding: 12px 14px;
+    background: #0e0e1c; overflow-x: auto;
+  }
+  .code-block pre code {
+    font-family: var(--font-code); font-size: 11.5px; line-height: 1.65;
+    background: transparent !important;
+  }
+
+  /* Typing dots */
+  #typing {
+    display: none; gap: 5px; padding: 10px 14px;
+    background: rgba(0,255,200,0.03);
+    border: 1px solid rgba(0,255,200,0.1);
+    border-radius: 10px; width: fit-content;
+  }
+  #typing.show { display: flex; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+  }
+  .dot:nth-child(1) { animation: bounce 1.2s infinite 0s; }
+  .dot:nth-child(2) { animation: bounce 1.2s infinite 0.2s; }
+  .dot:nth-child(3) { animation: bounce 1.2s infinite 0.4s; }
+
+  /* Chat input */
+  #chat-input-area {
+    display: flex; gap: 8px; padding: 10px 12px;
+    border-top: 1px solid var(--border-cyan);
+    background: rgba(0,0,0,0.25); flex-shrink: 0;
+  }
+  #chat-input {
+    flex: 1; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,255,200,0.18); border-radius: 10px;
+    color: var(--text); padding: 9px 12px;
+    font-size: 12px; resize: none; height: 58px;
+    line-height: 1.5; font-family: var(--font-ui); outline: none;
+  }
+  #chat-input::placeholder { color: rgba(255,255,255,0.2); }
+  #send-btn {
+    width: 44px; height: 58px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    border: none; border-radius: 10px;
+    color: #000; font-size: 18px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  #send-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+  #send-btn:disabled {
+    background: rgba(0,255,200,0.2); color: var(--cyan);
+    cursor: not-allowed; transform: none;
+  }
+
+  /* Upload label */
+  label.upload-label {
+    font-size: 10px; padding: 3px 10px;
+    background: rgba(0,255,200,0.08);
+    border: 1px solid rgba(0,255,200,0.2);
+    border-radius: 5px; color: var(--cyan);
+    cursor: pointer; transition: all 0.15s;
+    font-family: var(--font-ui);
+  }
+  label.upload-label:hover { background: rgba(0,255,200,0.18); }
+
+  /* Animations */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 6px var(--cyan); }
+    50% { box-shadow: 0 0 14px var(--cyan), 0 0 28px rgba(0,255,200,0.3); }
+  }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Header -->
+  <div id="header">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-name">CodeMind</span>
+      <span class="badge">AI · Web Dev</span>
+    </div>
+    <div class="status">
+      <div class="status-dot"></div>
+      <span>Claude API</span>
+    </div>
+  </div>
+
+  <!-- Main Split -->
+  <div id="main">
+
+    <!-- Editor Panel -->
+    <div id="editor-panel">
+
+      <!-- Toolbar -->
+      <div class="panel-toolbar">
+        <div style="display:flex;align-items:center;gap:5px">
+          <div class="traffic-lights">
+            <div class="tl tl-r"></div>
+            <div class="tl tl-y"></div>
+            <div class="tl tl-g"></div>
+          </div>
+          <span class="file-name" id="file-name-label">index.html</span>
+        </div>
+        <div class="btn-group">
+          <label class="upload-label">
+            📁 Upload
+            <input type="file" id="file-upload" accept=".html,.css,.js,.txt" style="display:none">
+          </label>
+          <button class="btn btn-ghost" id="copy-all-btn">Copy All</button>
+          <button class="btn btn-cyan" id="download-btn">⬇ Download</button>
+        </div>
+      </div>
+
+      <!-- File warning -->
+      <div id="file-warning">
+        <span id="warning-text"></span>
+        <button onclick="document.getElementById('file-warning').classList.remove('show')">×</button>
+      </div>
+
+      <!-- Focus Mode bar -->
+      <div id="focus-bar">
+        <button class="btn btn-ghost" id="focus-toggle" style="font-size:9px;padding:2px 9px;">🎯 Focus Mode</button>
+        <div class="focus-inputs">
+          <span style="font-size:9px;color:#555">Lines</span>
+          <input class="focus-input" id="focus-start" placeholder="From" type="number" min="1">
+          <span style="font-size:9px;color:#555">to</span>
+          <input class="focus-input" id="focus-end" placeholder="To" type="number" min="1">
+          <span class="focus-hint">Only these lines sent to AI</span>
+        </div>
+      </div>
+
+      <!-- Editor area -->
+      <div id="editor-area">
+        <div id="line-numbers"></div>
+        <textarea id="code-editor" spellcheck="false"><!-- 👋 Welcome to CodeMind AI!
+
+  Tell me what you want to build:
+  • "Build me a landing page for a fitness app"
+  • "Create a dark to-do list"
+  • "Make a glassmorphic calculator"
+  • "Build a countdown timer"
+
+  Or upload your HTML/CSS/JS file and ask me to debug it.
+  Your generated code will appear here automatically!
+--></textarea>
+      </div>
+
+      <!-- Editor footer -->
+      <div id="editor-footer">
+        <span id="footer-lang">HTML · CSS · JS</span>
+        <span id="footer-stats">0 lines</span>
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div id="chat-panel">
+
+      <!-- Chat Toolbar -->
+      <div class="panel-toolbar">
+        <span style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1px;text-transform:uppercase" id="msg-count">AI Chat</span>
+        <button class="btn btn-red" id="clear-btn">Clear Chat</button>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages">
+        <!-- Welcome message injected by JS -->
+      </div>
+
+      <!-- Typing indicator -->
+      <div id="typing" style="margin:0 12px 6px">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <!-- Input area -->
+      <div id="chat-input-area">
+        <textarea id="chat-input" placeholder='Ask anything... "Fix this bug", "Add dark mode", "Build me a login page"'></textarea>
+        <button id="send-btn">↑</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are CodeMind, an expert web developer AI assistant specializing in HTML, CSS, and JavaScript.
+
+You have TWO modes:
+
+## BUILD MODE (user describes something to build)
+When the user says things like "build me", "create", "make", "I want", "generate" — you BUILD it.
+- Generate a COMPLETE, self-contained HTML file (HTML + CSS + JS all in one file)
+- Make it visually polished and modern — dark themes, gradients, clean typography
+- Use Google Fonts via @import in the CSS
+- The code must work immediately when opened in a browser
+- Wrap the entire file in a single \`\`\`html code block
+- After the code, give a 1-2 sentence summary and suggest what the user can ask next
+
+## REVIEW / FIX / DEBUG MODE
+When the user shares code or asks about it:
+- Analyze carefully and identify bugs or improvements
+- Provide targeted, clean fixes
+- Wrap fixes in proper \`\`\`html / \`\`\`css / \`\`\`javascript blocks
+
+## RULES
+- Modern ES6+ JavaScript always
+- CSS custom properties for theming
+- Semantic HTML5
+- Concise, developer-friendly explanations
+- Never leave placeholder/lorem content — always write real implementations`;
+
+const BUILD_REGEX = /\b(build|create|make|generate|design|give me|i want)\b/i;
+const API_URL = "https://api.anthropic.com/v1/messages";
+
+// ── State ────────────────────────────────────────────────────────────────
+let messages = [];        // chat history for API
+let isLoading = false;
+let lastSentCode = "";
+let codeSentOnce = false;
+let focusModeOn = false;
+let msgCount = 0;
+
+// ── DOM refs ─────────────────────────────────────────────────────────────
+const editor       = document.getElementById('code-editor');
+const lineNums     = document.getElementById('line-numbers');
+const chatMessages = document.getElementById('messages');
+const typingEl     = document.getElementById('typing');
+const chatInput    = document.getElementById('chat-input');
+const sendBtn      = document.getElementById('send-btn');
+const footerStats  = document.getElementById('footer-stats');
+const focusBar     = document.getElementById('focus-bar');
+const focusToggle  = document.getElementById('focus-toggle');
+const focusStart   = document.getElementById('focus-start');
+const focusEnd     = document.getElementById('focus-end');
+const fileWarning  = document.getElementById('file-warning');
+const warningText  = document.getElementById('warning-text');
+const msgCountEl   = document.getElementById('msg-count');
+const fileUpload   = document.getElementById('file-upload');
+const copyAllBtn   = document.getElementById('copy-all-btn');
+const clearBtn     = document.getElementById('clear-btn');
+const fileLabel    = document.getElementById('file-name-label');
+
+// ── Init ─────────────────────────────────────────────────────────────────
+updateLineNumbers();
+updateFooter();
+addWelcomeMessage();
+
+// ── Line numbers ─────────────────────────────────────────────────────────
+function updateLineNumbers() {
+  const lines = editor.value.split('\n').length;
+  lineNums.innerHTML = Array.from({length: lines}, (_, i) =>
+    `<div>${i + 1}</div>`
+  ).join('');
+}
+
+function updateFooter() {
+  const lines = editor.value.split('\n').length;
+  const chars = editor.value.length;
+  footerStats.textContent = `${lines.toLocaleString()} lines · ${(chars/1000).toFixed(1)}k chars`;
+  const focusActive = focusModeOn ? ' · 🎯 Focus ON' : '';
+  document.getElementById('footer-lang').textContent = 'HTML · CSS · JS' + focusActive;
+}
+
+editor.addEventListener('input', () => {
+  updateLineNumbers();
+  updateFooter();
+  // Mark code as changed so it'll be resent
+  if (editor.value !== lastSentCode) codeSentOnce = false;
+});
+
+editor.addEventListener('scroll', () => {
+  lineNums.scrollTop = editor.scrollTop;
+});
+
+// Tab support
+editor.addEventListener('keydown', e => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = editor.selectionStart;
+    const end = editor.selectionEnd;
+    editor.value = editor.value.substring(0, s) + '  ' + editor.value.substring(end);
+    editor.selectionStart = editor.selectionEnd = s + 2;
+    updateLineNumbers();
+  }
+});
+
+// ── File Upload ───────────────────────────────────────────────────────────
+fileUpload.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  fileLabel.textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    editor.value = ev.target.result;
+    updateLineNumbers();
+    updateFooter();
+    codeSentOnce = false;
+    lastSentCode = '';
+    const lines = ev.target.result.split('\n').length;
+    if (lines > 500) {
+      warningText.textContent = `⚡ ${lines.toLocaleString()} lines loaded. Use Focus Mode to target specific lines for faster, precise debugging.`;
+      fileWarning.classList.add('show');
+      setTimeout(() => fileWarning.classList.remove('show'), 7000);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// ── Universal Copy (works in Eruda + all browsers) ───────────────────────
+function copyToClipboard(text) {
+  // Try modern API first
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  }
+  fallbackCopy(text);
+  return Promise.resolve();
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── Copy All ──────────────────────────────────────────────────────────────
+copyAllBtn.addEventListener('click', () => {
+  copyToClipboard(editor.value).then(() => {
+    copyAllBtn.textContent = '✓ Copied';
+    copyAllBtn.style.color = 'var(--cyan)';
+    setTimeout(() => { copyAllBtn.textContent = 'Copy All'; copyAllBtn.style.color = ''; }, 1500);
+  });
+});
+
+// ── Download ──────────────────────────────────────────────────────────────
+document.getElementById('download-btn').addEventListener('click', () => {
+  const code = editor.value;
+  const fname = fileLabel.textContent || 'codemind-output.html';
+  const blob = new Blob([code], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const btn = document.getElementById('download-btn');
+  btn.textContent = '✓ Saved';
+  setTimeout(() => { btn.textContent = '⬇ Download'; }, 2000);
+});
+
+// ── Focus Mode ────────────────────────────────────────────────────────────
+focusToggle.addEventListener('click', () => {
+  focusModeOn = !focusModeOn;
+  focusBar.classList.toggle('active', focusModeOn);
+  focusToggle.style.color = focusModeOn ? 'var(--cyan)' : '';
+  focusToggle.style.borderColor = focusModeOn ? 'rgba(0,255,200,0.4)' : '';
+  focusToggle.style.background = focusModeOn ? 'rgba(0,255,200,0.12)' : '';
+  updateFooter();
+});
+
+// ── Clear Chat ────────────────────────────────────────────────────────────
+clearBtn.addEventListener('click', () => {
+  messages = [];
+  chatMessages.innerHTML = '';
+  msgCount = 0;
+  codeSentOnce = false;
+  updateMsgCount();
+  addAIMessage('Chat cleared! Ready to help. What would you like to build or debug? 🚀');
+});
+
+// ── Send on Enter ─────────────────────────────────────────────────────────
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+sendBtn.addEventListener('click', sendMessage);
+
+// ── Welcome message ───────────────────────────────────────────────────────
+function addWelcomeMessage() {
+  addAIMessage("Hey! I'm **CodeMind**, your web dev AI. 🚀\n\nTell me what to build and the code will appear in the editor automatically. Or upload an existing file and ask me to debug it.\n\nTry: *\"Build me a dark landing page for a habit tracker\"*");
+}
+
+function updateMsgCount() {
+  msgCountEl.textContent = `AI Chat · ${msgCount} messages`;
+}
+
+// ── Send Message ──────────────────────────────────────────────────────────
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (isLoading) return;
+
+  const isBuild = BUILD_REGEX.test(text) && !focusModeOn;
+  const codeChanged = editor.value !== lastSentCode;
+  const shouldSendCode = !isBuild && (codeChanged || !codeSentOnce);
+
+  // Build context for API
+  let codeContext = editor.value;
+  if (focusModeOn && focusStart.value && focusEnd.value) {
+    const lines = editor.value.split('\n');
+    const s = Math.max(0, parseInt(focusStart.value) - 1);
+    const en = Math.min(lines.length, parseInt(focusEnd.value));
+    codeContext = lines.slice(s, en).join('\n');
+  }
+
+  let apiContent;
+  if (isBuild) {
+    apiContent = text;
+  } else if (shouldSendCode) {
+    const focusNote = (focusModeOn && focusStart.value && focusEnd.value)
+      ? `\n(Showing lines ${focusStart.value}–${focusEnd.value} of ${editor.value.split('\n').length} total)`
+      : '';
+    apiContent = text
+      ? `${text}${focusNote}\n\nCode:\n\`\`\`html\n${codeContext}\n\`\`\``
+      : `Review this code${focusNote}:\n\`\`\`html\n${codeContext}\n\`\`\``;
+    lastSentCode = editor.value;
+    codeSentOnce = true;
+  } else {
+    apiContent = text || 'Continue helping with the current code.';
+  }
+
+  const focusLabel = (focusModeOn && focusStart.value && focusEnd.value)
+    ? ` [Lines ${focusStart.value}–${focusEnd.value}]` : '';
+  const displayText = (text || 'Review my code') + focusLabel;
+
+  // Show user message
+  addUserMessage(displayText);
+  messages.push({ role: 'user', content: apiContent });
+  chatInput.value = '';
+  setLoading(true);
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: SYSTEM_PROMPT,
+        messages: messages
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, something went wrong.';
+
+    // Auto-populate editor if full HTML was generated
+    const htmlMatch = reply.match(/```html\n?([\s\S]*?)```/);
+    if (htmlMatch && htmlMatch[1].trim().toLowerCase().startsWith('<!doctype')) {
+      editor.value = htmlMatch[1].trim();
+      updateLineNumbers();
+      updateFooter();
+      lastSentCode = editor.value;
+      codeSentOnce = true;
+    }
+
+    messages.push({ role: 'assistant', content: reply });
+    addAIMessage(reply);
+  } catch (err) {
+    addAIMessage('⚠️ Connection error. Please check your internet and try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ── Loading state ─────────────────────────────────────────────────────────
+function setLoading(on) {
+  isLoading = on;
+  sendBtn.disabled = on;
+  sendBtn.textContent = on ? '·' : '↑';
+  typingEl.classList.toggle('show', on);
+  if (!on) scrollToBottom();
+}
+
+// ── Render messages ───────────────────────────────────────────────────────
+function addUserMessage(text) {
+  msgCount++;
+  updateMsgCount();
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `<div class="msg-label">👤 You</div><div class="msg-text">${escHtml(text)}</div>`;
+  chatMessages.appendChild(div);
+  scrollToBottom();
+}
+
+function addAIMessage(text) {
+  msgCount++;
+  updateMsgCount();
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  const labelDiv = document.createElement('div');
+  labelDiv.className = 'msg-label';
+  labelDiv.textContent = '⚡ CodeMind';
+  div.appendChild(labelDiv);
+  div.appendChild(renderAIContent(text));
+  chatMessages.appendChild(div);
+  // Highlight any code blocks
+  div.querySelectorAll('pre code').forEach(el => {
+    if (window.hljs) window.hljs.highlightElement(el);
+  });
+  scrollToBottom();
+}
+
+function renderAIContent(text) {
+  const container = document.createElement('div');
+  const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
+  let last = 0, match;
+
+  while ((match = codeBlockRegex.exec(text)) !== null) {
+    // Text before code block
+    if (match.index > last) {
+      const p = document.createElement('div');
+      p.className = 'msg-text';
+      p.innerHTML = formatText(text.slice(last, match.index));
+      container.appendChild(p);
+    }
+    // Code block
+    const lang = match[1] || 'html';
+    const code = match[2].trim();
+    const blockId = 'cb-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    const block = document.createElement('div');
+    block.className = 'code-block';
+    block.innerHTML = `
+      <div class="code-block-header">
+        <span class="code-lang">${escHtml(lang)}</span>
+        <div class="code-actions">
+          <button class="btn-to-editor" onclick="pushToEditor('${blockId}')">→ Editor</button>
+          <button class="btn-copy-code" id="copy-${blockId}" onclick="copyCode('${blockId}')">Copy</button>
+        </div>
+      </div>
+      <pre><code id="${blockId}" class="language-${escHtml(lang)}">${escHtml(code)}</code></pre>`;
+    container.appendChild(block);
+    last = match.index + match[0].length;
+  }
+
+  // Remaining text
+  if (last < text.length) {
+    const p = document.createElement('div');
+    p.className = 'msg-text';
+    p.innerHTML = formatText(text.slice(last));
+    container.appendChild(p);
+  }
+
+  return container;
+}
+
+// Push code block content to editor
+function pushToEditor(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  editor.value = el.textContent;
+  updateLineNumbers();
+  updateFooter();
+  codeSentOnce = false;
+}
+
+// Copy a specific code block
+function copyCode(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  copyToClipboard(el.textContent).then(() => {
+    const btn = document.getElementById('copy-' + id);
+    if (btn) {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    }
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function formatText(text) {
+  return escHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(0,255,200,0.08);padding:1px 5px;border-radius:3px;font-family:var(--font-code);font-size:11px;color:var(--cyan)">$1</code>');
+}
+
+function scrollToBottom() {
+  setTimeout(() => {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }, 50);
+}
+</script>
+</body>
+</html>
