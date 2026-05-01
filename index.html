@@ -601,10 +601,15 @@ async function send(){
   cinput.value=''; setLoad(true); switchTab('chat');
 
   try {
+    // Build messages with system prompt included for OpenRouter
+    const fullMessages = [
+      {role:'system', content:SYSPROMPT},
+      ...hist
+    ];
     const res=await fetch('https://holy-meadow-3d03.fancytreaz.workers.dev',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:SYSPROMPT,messages:hist})
+      body:JSON.stringify({messages:fullMessages})
     });
     const data=await res.json();
     // Show detailed error if API returns one
