@@ -2,864 +2,670 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>CodeMind AI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --cyan: #00ffc8;
-    --blue: #0088ff;
-    --bg: #07070f;
-    --bg2: #0b0b18;
-    --bg3: #0e0e1c;
-    --surface: rgba(255,255,255,0.03);
-    --border: rgba(255,255,255,0.06);
-    --border-cyan: rgba(0,255,200,0.15);
-    --text: #dde1ff;
-    --text-dim: rgba(255,255,255,0.35);
-    --font-ui: 'Outfit', sans-serif;
-    --font-code: 'Fira Code', 'Courier New', monospace;
-  }
+:root {
+  --cyan: #00ffc8; --blue: #0088ff;
+  --bg: #07070f; --bg2: #0b0b18; --bg3: #0e0e1c;
+  --toolbar: rgba(0,0,0,0.35);
+  --border: rgba(255,255,255,0.06); --border-c: rgba(0,255,200,0.15);
+  --text: #dde1ff; --text-dim: rgba(255,255,255,0.3); --text-code: #abb2bf;
+  --msg-user-bg: rgba(0,136,255,0.09); --msg-user-b: rgba(0,136,255,0.2);
+  --msg-ai-bg: rgba(0,255,200,0.03); --msg-ai-b: rgba(0,255,200,0.1);
+  --input-bg: rgba(255,255,255,0.04); --input-b: rgba(0,255,200,0.2);
+  --tab-active: rgba(0,255,200,0.1); --tab-text: var(--cyan);
+  --code-hdr: #141428; --code-bg: #0e0e1c;
+  --font-ui: 'Outfit',sans-serif; --font-code: 'Fira Code','Courier New',monospace;
+  --fs: 12px;
+}
+[data-theme="light"] {
+  --bg:#f0f2f8;--bg2:#fff;--bg3:#e8eaf2;--toolbar:rgba(255,255,255,0.85);
+  --border:rgba(0,0,0,0.08);--border-c:rgba(0,140,110,0.25);
+  --text:#1a1b2e;--text-dim:rgba(0,0,0,0.4);--text-code:#24292e;
+  --msg-user-bg:rgba(0,100,220,0.07);--msg-user-b:rgba(0,100,220,0.2);
+  --msg-ai-bg:rgba(0,180,140,0.05);--msg-ai-b:rgba(0,180,140,0.2);
+  --input-bg:rgba(0,0,0,0.04);--input-b:rgba(0,180,140,0.3);
+  --tab-active:rgba(0,180,140,0.1);--tab-text:#007755;
+  --code-hdr:#e0e4f0;--code-bg:#f6f8ff;--cyan:#007755;--blue:#0055cc;
+}
+[data-theme="hacker"] {
+  --bg:#000500;--bg2:#001000;--bg3:#001800;--toolbar:rgba(0,20,0,0.9);
+  --border:rgba(0,255,0,0.1);--border-c:rgba(0,255,0,0.2);
+  --text:#00ff41;--text-dim:rgba(0,255,0,0.35);--text-code:#00cc33;
+  --msg-user-bg:rgba(0,100,0,0.2);--msg-user-b:rgba(0,255,0,0.2);
+  --msg-ai-bg:rgba(0,50,0,0.3);--msg-ai-b:rgba(0,255,0,0.15);
+  --input-bg:rgba(0,50,0,0.3);--input-b:rgba(0,255,0,0.3);
+  --tab-active:rgba(0,255,0,0.1);--tab-text:#00ff41;
+  --code-hdr:#001a00;--code-bg:#000d00;--cyan:#00ff41;--blue:#00cc33;
+}
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-ui);
-  }
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-ui);transition:background 0.3s,color 0.3s;}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:rgba(0,255,200,0.2);border-radius:2px}
 
-  ::-webkit-scrollbar { width: 3px; height: 3px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(0,255,200,0.18); border-radius: 2px; }
+#app{display:flex;flex-direction:column;height:100vh;}
 
-  /* ── Layout ── */
-  #app { display: flex; flex-direction: column; height: 100vh; }
+/* Header */
+#header{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border-c);gap:8px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;}
+.logo-name{font-size:15px;font-weight:700;color:var(--text);}
+.badge{font-size:8px;background:rgba(0,255,200,0.1);color:var(--cyan);padding:2px 6px;border-radius:20px;border:1px solid var(--border-c);font-weight:600;}
+.hcontrols{display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end;}
+.ctrl-btn{font-size:9px;padding:3px 7px;border-radius:5px;cursor:pointer;background:var(--input-bg);border:1px solid var(--border);color:var(--text-dim);font-family:var(--font-ui);transition:all 0.15s;white-space:nowrap;}
+.ctrl-btn:hover,.ctrl-btn.on{color:var(--cyan);border-color:var(--border-c);background:var(--tab-active);}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:gpulse 2s infinite;flex-shrink:0;}
 
-  #header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 9px 16px; flex-shrink: 0;
-    background: rgba(255,255,255,0.02);
-    border-bottom: 1px solid var(--border-cyan);
-    backdrop-filter: blur(20px);
-  }
+/* Tab bar */
+#tab-bar{display:flex;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);}
+.tab{flex:1;padding:8px 4px;border:none;cursor:pointer;background:transparent;color:var(--text-dim);font-size:11px;font-family:var(--font-ui);font-weight:600;border-bottom:2px solid transparent;transition:all 0.15s;}
+.tab.on{color:var(--tab-text);border-bottom-color:var(--cyan);background:var(--tab-active);}
+.tab:hover:not(.on){color:var(--text);background:var(--input-bg);}
 
-  #header .logo { display: flex; align-items: center; gap: 10px; }
-  #header .logo-icon {
-    width: 30px; height: 30px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--cyan), var(--blue));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 700; color: #000;
-  }
-  #header .logo-name { font-size: 16px; font-weight: 700; color: #fff; }
-  #header .badge {
-    font-size: 9px; background: rgba(0,255,200,0.1);
-    color: var(--cyan); padding: 2px 8px; border-radius: 20px;
-    border: 1px solid rgba(0,255,200,0.25); font-weight: 600; letter-spacing: 0.5px;
-  }
-  #header .status { display: flex; align-items: center; gap: 6px; }
-  .status-dot {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--cyan);
-    animation: glow-pulse 2s infinite;
-  }
-  #header .status span { font-size: 10px; color: var(--text-dim); }
+/* Main */
+#main{flex:1;overflow:hidden;position:relative;}
+.panel{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
+.panel.on{display:flex;}
 
-  #main { display: flex; flex: 1; overflow: hidden; }
+/* Toolbars */
+.ptb{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);gap:6px;}
+.tls{display:flex;gap:4px;align-items:center;}
+.tl{width:8px;height:8px;border-radius:50%;}
+.tr{background:#ff5f57}.ty{background:#febc2e}.tg{background:#28c840}
+.fname{font-size:9px;color:var(--text-dim);font-family:var(--font-code);margin-left:6px;}
+.brow{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
 
-  /* ── Editor Panel ── */
-  #editor-panel {
-    display: flex; flex-direction: column;
-    width: 50%; border-right: 1px solid var(--border-cyan);
-  }
+/* Buttons */
+.btn{font-size:9px;padding:3px 9px;border-radius:5px;cursor:pointer;font-family:var(--font-ui);transition:all 0.15s;border:1px solid transparent;}
+.bc{background:rgba(0,255,200,0.08);border-color:var(--border-c)!important;color:var(--cyan);}
+.bc:hover{background:rgba(0,255,200,0.18);}
+.bg{background:var(--input-bg);border-color:var(--border)!important;color:var(--text-dim);}
+.bg:hover{color:var(--text);background:rgba(255,255,255,0.08);}
+.br{background:rgba(255,70,70,0.08);border-color:rgba(255,70,70,0.2)!important;color:#ff8888;}
+.br:hover{background:rgba(255,70,70,0.18);}
+label.bc{cursor:pointer;}
 
-  .panel-toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 12px; flex-shrink: 0;
-    background: rgba(0,0,0,0.3);
-    border-bottom: 1px solid var(--border);
-  }
+/* Banners */
+.banner{display:none;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;font-size:10px;gap:8px;}
+.banner.on{display:flex;}
+.banner button{background:none;border:none;cursor:pointer;font-size:14px;flex-shrink:0;}
+#fwarn{background:rgba(255,170,0,0.07);border-bottom:1px solid rgba(255,170,0,0.2);color:#ffcc44;}
+#fwarn button{color:#ffcc44;}
+#ebanner{background:rgba(255,60,60,0.07);border-bottom:1px solid rgba(255,60,60,0.2);color:#ff9999;}
+#ebanner button{color:#ff9999;}
 
-  .traffic-lights { display: flex; align-items: center; gap: 5px; }
-  .tl { width: 9px; height: 9px; border-radius: 50%; }
-  .tl-r { background: #ff5f57; }
-  .tl-y { background: #febc2e; }
-  .tl-g { background: #28c840; }
-  .file-name { font-size: 10px; color: rgba(255,255,255,0.22); margin-left: 8px; font-family: var(--font-code); }
+/* Focus bar */
+#focusbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 10px;flex-shrink:0;background:rgba(0,0,0,0.15);border-bottom:1px solid var(--border);}
+#focusbar.on{background:rgba(0,255,200,0.04);}
+.finputs{display:none;align-items:center;gap:5px;}
+#focusbar.on .finputs{display:flex;}
+.fi{width:46px;background:var(--input-bg);border:1px solid var(--border-c);border-radius:4px;color:var(--cyan);font-size:9px;padding:2px 5px;font-family:var(--font-code);outline:none;}
+.fhint{font-size:9px;color:rgba(0,255,200,0.4);}
 
-  .btn-group { display: flex; gap: 5px; }
+/* Editor */
+#ewrap{display:flex;flex:1;overflow:hidden;}
+#lnums{padding:11px 7px 11px 5px;background:rgba(0,0,0,0.2);color:var(--text-dim);font-size:var(--fs);line-height:1.65;font-family:var(--font-code);user-select:none;min-width:34px;text-align:right;overflow:hidden;border-right:1px solid var(--border);flex-shrink:0;}
+#lnums div{height:calc(var(--fs) * 1.65);}
+#ced{flex:1;background:var(--bg2);color:var(--text-code);border:none;outline:none;resize:none;padding:11px 12px;font-size:var(--fs);line-height:1.65;font-family:var(--font-code);overflow-y:auto;tab-size:2;white-space:pre;}
+#efoot{display:flex;justify-content:space-between;align-items:center;padding:3px 10px;flex-shrink:0;background:rgba(0,0,0,0.35);border-top:1px solid var(--border);font-size:9px;color:var(--text-dim);font-family:var(--font-code);gap:8px;}
+.fszc{display:flex;align-items:center;gap:4px;}
+.fsbtn{width:18px;height:18px;border-radius:3px;cursor:pointer;background:var(--input-bg);border:1px solid var(--border);color:var(--text-dim);font-size:11px;display:flex;align-items:center;justify-content:center;font-family:var(--font-ui);}
+.fsbtn:hover{color:var(--cyan);border-color:var(--border-c);}
 
-  .btn {
-    font-size: 10px; padding: 3px 10px; border-radius: 5px;
-    cursor: pointer; border: none; font-family: var(--font-ui);
-    transition: all 0.15s;
-  }
-  .btn-cyan {
-    background: rgba(0,255,200,0.08);
-    border: 1px solid rgba(0,255,200,0.2) !important;
-    color: var(--cyan);
-  }
-  .btn-cyan:hover { background: rgba(0,255,200,0.18); }
-  .btn-ghost {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    color: #777;
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.1); color: #aaa; }
-  .btn-red {
-    background: rgba(255,80,80,0.08);
-    border: 1px solid rgba(255,80,80,0.2) !important;
-    color: #ff8888;
-  }
-  .btn-red:hover { background: rgba(255,80,80,0.18); }
+/* Preview */
+#pvtb{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);}
+#pvframe{flex:1;border:none;background:#fff;display:none;}
+#pvph{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);gap:10px;font-size:13px;}
+#pvph .big{font-size:36px;}
 
-  /* Warning banner */
-  #file-warning {
-    display: none; align-items: center; justify-content: space-between;
-    padding: 6px 12px; flex-shrink: 0;
-    background: rgba(255,180,0,0.07);
-    border-bottom: 1px solid rgba(255,180,0,0.2);
-    font-size: 10px; color: #ffcc44;
-  }
-  #file-warning.show { display: flex; }
-  #file-warning button { background: none; border: none; color: #ffcc44; cursor: pointer; font-size: 14px; }
+/* Version drawer */
+#vdrawer{position:fixed;right:0;top:0;bottom:0;width:260px;background:var(--bg2);border-left:1px solid var(--border-c);display:flex;flex-direction:column;z-index:100;transform:translateX(100%);transition:transform 0.25s ease;}
+#vdrawer.open{transform:translateX(0);}
+#vdrawer h3{padding:12px 14px;font-size:12px;color:var(--cyan);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+#vdrawer h3 button{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;}
+#vlist{flex:1;overflow-y:auto;padding:6px;}
+.vitem{padding:8px 10px;border-radius:7px;cursor:pointer;margin-bottom:4px;border:1px solid var(--border);background:var(--input-bg);transition:all 0.15s;}
+.vitem:hover{border-color:var(--border-c);background:var(--tab-active);}
+.vlabel{font-size:11px;color:var(--text);font-weight:600;}
+.vmeta{font-size:9px;color:var(--text-dim);margin-top:2px;}
+#voverlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;display:none;}
+#voverlay.show{display:block;}
 
-  /* Focus mode bar */
-  #focus-bar {
-    display: flex; align-items: center; gap: 7px;
-    padding: 4px 12px; flex-shrink: 0;
-    background: rgba(0,0,0,0.2);
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-  }
-  #focus-bar.active { background: rgba(0,255,200,0.04); }
-  #focus-bar .focus-inputs { display: none; align-items: center; gap: 6px; }
-  #focus-bar.active .focus-inputs { display: flex; }
+/* Messages */
+#msgs{flex:1;overflow-y:auto;padding:10px 10px 4px;display:flex;flex-direction:column;gap:8px;}
+.msg{border-radius:10px;padding:9px 11px;animation:slidein 0.2s ease-out;}
+.msg.u{align-self:flex-end;max-width:92%;background:var(--msg-user-bg);border:1px solid var(--msg-user-b);}
+.msg.a{align-self:flex-start;max-width:100%;background:var(--msg-ai-bg);border:1px solid var(--msg-ai-b);}
+.mlabel{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.msg.u .mlabel{color:rgba(0,136,255,0.7);}
+.msg.a .mlabel{color:rgba(0,255,200,0.6);}
+.mtext{font-size:12px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.mtext strong{color:var(--cyan);font-weight:600;}
+.mtext em{color:var(--text-dim);font-style:italic;}
+.mtext code{background:rgba(0,255,200,0.08);padding:1px 4px;border-radius:3px;font-family:var(--font-code);font-size:10px;color:var(--cyan);}
 
-  .focus-input {
-    width: 50px; background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,255,200,0.2); border-radius: 4px;
-    color: var(--cyan); font-size: 10px; padding: 2px 6px;
-    font-family: var(--font-code); outline: none;
-  }
-  .focus-hint { font-size: 9px; color: rgba(0,255,200,0.45); }
+/* Code blocks */
+.cblock{margin-top:7px;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);}
+.cbhdr{display:flex;justify-content:space-between;align-items:center;padding:4px 10px;background:var(--code-hdr);border-bottom:1px solid rgba(255,255,255,0.06);}
+.clang{font-size:8px;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.cacts{display:flex;gap:4px;}
+.cacts button{font-size:8px;padding:2px 7px;border-radius:4px;cursor:pointer;font-family:var(--font-ui);transition:all 0.15s;border:none;}
+.bedit{background:rgba(0,136,255,0.1);border:1px solid rgba(0,136,255,0.2)!important;color:#5599ff;}
+.bedit:hover{background:rgba(0,136,255,0.2);}
+.bcopy{background:rgba(0,255,200,0.08);border:1px solid var(--border-c)!important;color:#7af0d8;}
+.bcopy:hover{background:rgba(0,255,200,0.18);}
+.bcopy.ok{color:var(--cyan);}
+.cblock pre{margin:0;padding:10px 12px;background:var(--code-bg);overflow-x:auto;}
+.cblock pre code{font-family:var(--font-code);font-size:11px;line-height:1.65;background:transparent!important;}
 
-  /* Editor area */
-  #editor-area { display: flex; flex: 1; overflow: hidden; }
+/* Typing */
+#typing{display:none;gap:4px;padding:8px 12px;background:var(--msg-ai-bg);border:1px solid var(--msg-ai-b);border-radius:10px;width:fit-content;margin:0 10px 6px;}
+#typing.on{display:flex;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);}
+.dot:nth-child(1){animation:bounce 1.2s infinite 0s}
+.dot:nth-child(2){animation:bounce 1.2s infinite 0.2s}
+.dot:nth-child(3){animation:bounce 1.2s infinite 0.4s}
 
-  #line-numbers {
-    padding: 12px 8px 12px 6px;
-    background: rgba(0,0,0,0.25);
-    color: rgba(255,255,255,0.16);
-    font-size: 12px; line-height: 1.65;
-    font-family: var(--font-code);
-    user-select: none; min-width: 38px;
-    text-align: right; overflow: hidden;
-    border-right: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  #line-numbers div { height: 19.8px; }
+/* Quick prompts */
+#qps{display:flex;gap:5px;padding:5px 10px;flex-shrink:0;overflow-x:auto;border-top:1px solid var(--border);scrollbar-width:none;}
+#qps::-webkit-scrollbar{display:none;}
+.qp{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:var(--input-bg);border:1px solid var(--border);color:var(--text-dim);white-space:nowrap;font-family:var(--font-ui);transition:all 0.15s;flex-shrink:0;}
+.qp:hover{border-color:var(--border-c);color:var(--cyan);background:var(--tab-active);}
 
-  #code-editor {
-    flex: 1; background: var(--bg2);
-    color: #abb2bf; border: none; outline: none;
-    resize: none; padding: 12px 14px;
-    font-size: 12px; line-height: 1.65;
-    font-family: var(--font-code);
-    overflow-y: auto; tab-size: 2;
-    white-space: pre;
-  }
+/* Chat input */
+#cia{display:flex;gap:7px;padding:8px 10px;flex-shrink:0;background:var(--toolbar);border-top:1px solid var(--border-c);}
+#cinput{flex:1;background:var(--input-bg);border:1px solid var(--input-b);border-radius:10px;color:var(--text);padding:8px 11px;font-size:12px;resize:none;height:54px;line-height:1.5;font-family:var(--font-ui);outline:none;}
+#cinput::placeholder{color:var(--text-dim);}
+#sbtn{width:42px;height:54px;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--blue));border:none;border-radius:10px;color:#000;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.15s;}
+#sbtn:hover{transform:scale(1.05);}
+#sbtn:disabled{background:rgba(0,255,200,0.2);color:var(--cyan);cursor:not-allowed;transform:none;}
 
-  #editor-footer {
-    display: flex; justify-content: space-between;
-    padding: 4px 12px; flex-shrink: 0;
-    background: rgba(0,0,0,0.4);
-    border-top: 1px solid var(--border);
-    font-size: 10px; color: rgba(255,255,255,0.2);
-    font-family: var(--font-code);
-  }
+.cur{display:inline-block;width:2px;height:12px;background:var(--cyan);margin-left:1px;animation:blink 0.8s infinite;vertical-align:middle;}
 
-  /* ── Chat Panel ── */
-  #chat-panel { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 
-  #messages {
-    flex: 1; overflow-y: auto;
-    padding: 12px 12px 4px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
+/* API Key Modal */
+#apimodal{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;}
+#apimodal.hide{display:none;}
+#apibox{background:#0e0e1c;border:1px solid rgba(0,255,200,0.3);border-radius:14px;padding:24px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:14px;}
+#apibox h2{font-size:16px;color:var(--cyan);font-weight:700;}
+#apibox p{font-size:11px;color:var(--text-dim);line-height:1.6;}
+#apibox a{color:var(--cyan);text-decoration:none;}
+#apiinput{background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,200,0.25);border-radius:8px;color:var(--text);padding:10px 12px;font-size:12px;font-family:var(--font-code);outline:none;width:100%;}
+#apiinput::placeholder{color:var(--text-dim);}
+#apisave{background:linear-gradient(135deg,var(--cyan),var(--blue));border:none;border-radius:8px;color:#000;font-weight:700;font-size:13px;padding:10px;cursor:pointer;width:100%;font-family:var(--font-ui);}
+#apikey-bar{display:flex;align-items:center;gap:6px;padding:3px 8px;background:rgba(0,255,200,0.06);border-radius:5px;cursor:pointer;border:1px solid var(--border-c);}
+#apikey-bar span{font-size:9px;color:var(--cyan);}
 
-  .msg {
-    border-radius: 10px; padding: 10px 12px;
-    animation: slide-in 0.2s ease-out;
-  }
-  .msg.user {
-    align-self: flex-end; max-width: 90%;
-    background: rgba(0,136,255,0.09);
-    border: 1px solid rgba(0,136,255,0.2);
-  }
-  .msg.ai {
-    align-self: flex-start; max-width: 100%;
-    background: rgba(0,255,200,0.03);
-    border: 1px solid rgba(0,255,200,0.1);
-  }
-  .msg-label {
-    font-size: 9px; font-weight: 700; letter-spacing: 1px;
-    text-transform: uppercase; margin-bottom: 6px;
-  }
-  .msg.user .msg-label { color: rgba(0,136,255,0.7); }
-  .msg.ai .msg-label { color: rgba(0,255,200,0.6); }
-
-  .msg-text {
-    font-size: 12.5px; line-height: 1.65;
-    color: rgba(255,255,255,0.82);
-    white-space: pre-wrap; word-break: break-word;
-  }
-  .msg-text strong { color: var(--cyan); }
-  .msg-text em { color: rgba(255,255,255,0.55); font-style: italic; }
-
-  /* Code blocks in chat */
-  .code-block {
-    margin-top: 8px; border-radius: 8px; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.07);
-  }
-  .code-block-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 5px 12px; background: #141428;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .code-lang {
-    font-size: 9px; color: var(--cyan);
-    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-  }
-  .code-actions { display: flex; gap: 4px; }
-  .code-actions button {
-    font-size: 9px; padding: 2px 8px; border-radius: 4px;
-    cursor: pointer; font-family: var(--font-ui); border: none;
-    transition: all 0.15s;
-  }
-  .btn-to-editor {
-    background: rgba(0,136,255,0.1);
-    border: 1px solid rgba(0,136,255,0.2) !important;
-    color: #5599ff;
-  }
-  .btn-to-editor:hover { background: rgba(0,136,255,0.2); }
-  .btn-copy-code {
-    background: rgba(0,255,200,0.08);
-    border: 1px solid rgba(0,255,200,0.2) !important;
-    color: #7af0d8;
-  }
-  .btn-copy-code:hover { background: rgba(0,255,200,0.18); }
-  .btn-copy-code.copied { color: var(--cyan); }
-
-  .code-block pre {
-    margin: 0; padding: 12px 14px;
-    background: #0e0e1c; overflow-x: auto;
-  }
-  .code-block pre code {
-    font-family: var(--font-code); font-size: 11.5px; line-height: 1.65;
-    background: transparent !important;
-  }
-
-  /* Typing dots */
-  #typing {
-    display: none; gap: 5px; padding: 10px 14px;
-    background: rgba(0,255,200,0.03);
-    border: 1px solid rgba(0,255,200,0.1);
-    border-radius: 10px; width: fit-content;
-  }
-  #typing.show { display: flex; }
-  .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan);
-  }
-  .dot:nth-child(1) { animation: bounce 1.2s infinite 0s; }
-  .dot:nth-child(2) { animation: bounce 1.2s infinite 0.2s; }
-  .dot:nth-child(3) { animation: bounce 1.2s infinite 0.4s; }
-
-  /* Chat input */
-  #chat-input-area {
-    display: flex; gap: 8px; padding: 10px 12px;
-    border-top: 1px solid var(--border-cyan);
-    background: rgba(0,0,0,0.25); flex-shrink: 0;
-  }
-  #chat-input {
-    flex: 1; background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(0,255,200,0.18); border-radius: 10px;
-    color: var(--text); padding: 9px 12px;
-    font-size: 12px; resize: none; height: 58px;
-    line-height: 1.5; font-family: var(--font-ui); outline: none;
-  }
-  #chat-input::placeholder { color: rgba(255,255,255,0.2); }
-  #send-btn {
-    width: 44px; height: 58px; flex-shrink: 0;
-    background: linear-gradient(135deg, var(--cyan), var(--blue));
-    border: none; border-radius: 10px;
-    color: #000; font-size: 18px; font-weight: 700;
-    cursor: pointer; transition: all 0.15s;
-  }
-  #send-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
-  #send-btn:disabled {
-    background: rgba(0,255,200,0.2); color: var(--cyan);
-    cursor: not-allowed; transform: none;
-  }
-
-  /* Upload label */
-  label.upload-label {
-    font-size: 10px; padding: 3px 10px;
-    background: rgba(0,255,200,0.08);
-    border: 1px solid rgba(0,255,200,0.2);
-    border-radius: 5px; color: var(--cyan);
-    cursor: pointer; transition: all 0.15s;
-    font-family: var(--font-ui);
-  }
-  label.upload-label:hover { background: rgba(0,255,200,0.18); }
-
-  /* Animations */
-  @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 6px var(--cyan); }
-    50% { box-shadow: 0 0 14px var(--cyan), 0 0 28px rgba(0,255,200,0.3); }
-  }
-  @keyframes bounce {
-    0%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-6px); }
-  }
-  @keyframes slide-in {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+@keyframes gpulse{0%,100%{box-shadow:0 0 5px var(--cyan)}50%{box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,255,200,0.3)}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+@keyframes slidein{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 </style>
 </head>
 <body>
-
 <div id="app">
 
-  <!-- Header -->
   <div id="header">
     <div class="logo">
       <div class="logo-icon">⚡</div>
       <span class="logo-name">CodeMind</span>
       <span class="badge">AI · Web Dev</span>
     </div>
-    <div class="status">
-      <div class="status-dot"></div>
-      <span>Claude API</span>
+    <div class="hcontrols">
+      <div class="sdot"></div>
+      <button class="ctrl-btn on" onclick="setTheme('dark')" id="t-dark">🌙 Dark</button>
+      <button class="ctrl-btn" onclick="setTheme('light')" id="t-light">☀️ Light</button>
+      <button class="ctrl-btn" onclick="setTheme('hacker')" id="t-hacker">💚 Hacker</button>
+      <button class="ctrl-btn" onclick="toggleVD()">📜 History</button>
+      <span style="font-size:9px;color:var(--cyan);background:rgba(0,255,200,0.08);padding:2px 8px;border-radius:10px;border:1px solid var(--border-c);">🔒 Secured</span>
     </div>
   </div>
 
-  <!-- Main Split -->
+  <div id="tab-bar">
+    <button class="tab on" onclick="switchTab('editor')" id="tab-editor">📝 Editor</button>
+    <button class="tab" onclick="switchTab('preview')" id="tab-preview">👁 Preview</button>
+    <button class="tab" onclick="switchTab('chat')" id="tab-chat">💬 Chat</button>
+  </div>
+
   <div id="main">
 
-    <!-- Editor Panel -->
-    <div id="editor-panel">
-
-      <!-- Toolbar -->
-      <div class="panel-toolbar">
-        <div style="display:flex;align-items:center;gap:5px">
-          <div class="traffic-lights">
-            <div class="tl tl-r"></div>
-            <div class="tl tl-y"></div>
-            <div class="tl tl-g"></div>
-          </div>
-          <span class="file-name" id="file-name-label">index.html</span>
+    <!-- Editor -->
+    <div class="panel on" id="panel-editor">
+      <div class="ptb">
+        <div style="display:flex;align-items:center">
+          <div class="tls"><div class="tl tr"></div><div class="tl ty"></div><div class="tl tg"></div></div>
+          <span class="fname" id="flabel">index.html</span>
         </div>
-        <div class="btn-group">
-          <label class="upload-label">
-            📁 Upload
-            <input type="file" id="file-upload" accept=".html,.css,.js,.txt" style="display:none">
-          </label>
-          <button class="btn btn-ghost" id="copy-all-btn">Copy All</button>
-          <button class="btn btn-cyan" id="download-btn">⬇ Download</button>
+        <div class="brow">
+          <label class="btn bc">📁 Upload<input type="file" id="fup" accept=".html,.css,.js,.txt" style="display:none"></label>
+          <button class="btn bg" id="caBtn">Copy All</button>
+          <button class="btn bc" id="dlBtn">⬇ Download</button>
+          <button class="btn bg" id="scanBtn">🔍 Scan</button>
         </div>
       </div>
-
-      <!-- File warning -->
-      <div id="file-warning">
-        <span id="warning-text"></span>
-        <button onclick="document.getElementById('file-warning').classList.remove('show')">×</button>
-      </div>
-
-      <!-- Focus Mode bar -->
-      <div id="focus-bar">
-        <button class="btn btn-ghost" id="focus-toggle" style="font-size:9px;padding:2px 9px;">🎯 Focus Mode</button>
-        <div class="focus-inputs">
-          <span style="font-size:9px;color:#555">Lines</span>
-          <input class="focus-input" id="focus-start" placeholder="From" type="number" min="1">
-          <span style="font-size:9px;color:#555">to</span>
-          <input class="focus-input" id="focus-end" placeholder="To" type="number" min="1">
-          <span class="focus-hint">Only these lines sent to AI</span>
+      <div class="banner" id="fwarn"><span id="wtext"></span><button onclick="this.parentElement.classList.remove('on')">×</button></div>
+      <div class="banner" id="ebanner"><span id="etext"></span><button onclick="this.parentElement.classList.remove('on')">×</button></div>
+      <div id="focusbar">
+        <button class="btn bg" id="ftoggle" style="font-size:9px;padding:2px 8px">🎯 Focus Mode</button>
+        <div class="finputs">
+          <span style="font-size:9px;color:var(--text-dim)">Lines</span>
+          <input class="fi" id="fs" placeholder="From" type="number" min="1">
+          <span style="font-size:9px;color:var(--text-dim)">to</span>
+          <input class="fi" id="fe" placeholder="To" type="number" min="1">
+          <span class="fhint">Selected lines → AI</span>
         </div>
       </div>
+      <div id="ewrap">
+        <div id="lnums"></div>
+        <textarea id="ced" spellcheck="false"><!-- 👋 Welcome to CodeMind AI!
 
-      <!-- Editor area -->
-      <div id="editor-area">
-        <div id="line-numbers"></div>
-        <textarea id="code-editor" spellcheck="false"><!-- 👋 Welcome to CodeMind AI!
-
-  Tell me what you want to build:
+  Tell me what to build in the Chat tab:
   • "Build me a landing page for a fitness app"
-  • "Create a dark to-do list"
+  • "Create a dark to-do list with animations"
   • "Make a glassmorphic calculator"
-  • "Build a countdown timer"
+  • "Build a habit tracker dashboard"
 
   Or upload your HTML/CSS/JS file and ask me to debug it.
-  Your generated code will appear here automatically!
+  Generated code appears here automatically!
 --></textarea>
       </div>
-
-      <!-- Editor footer -->
-      <div id="editor-footer">
-        <span id="footer-lang">HTML · CSS · JS</span>
-        <span id="footer-stats">0 lines</span>
+      <div id="efoot">
+        <span id="flang">HTML · CSS · JS</span>
+        <div class="fszc">
+          <button class="fsbtn" onclick="chFS(-1)">−</button>
+          <span id="fslabel" style="font-size:9px">12px</span>
+          <button class="fsbtn" onclick="chFS(1)">+</button>
+        </div>
+        <span id="fstats">0 lines</span>
       </div>
     </div>
 
-    <!-- Chat Panel -->
-    <div id="chat-panel">
-
-      <!-- Chat Toolbar -->
-      <div class="panel-toolbar">
-        <span style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1px;text-transform:uppercase" id="msg-count">AI Chat</span>
-        <button class="btn btn-red" id="clear-btn">Clear Chat</button>
+    <!-- Preview -->
+    <div class="panel" id="panel-preview">
+      <div id="pvtb">
+        <span style="font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:0.5px">LIVE PREVIEW</span>
+        <div class="brow">
+          <button class="btn bc" onclick="refreshPV()">↺ Refresh</button>
+          <button class="btn bg" onclick="clearPV()">✕ Clear</button>
+        </div>
       </div>
-
-      <!-- Messages -->
-      <div id="messages">
-        <!-- Welcome message injected by JS -->
+      <div id="pvph">
+        <div class="big">👁</div>
+        <div>Preview will appear here</div>
+        <div style="font-size:11px;color:var(--text-dim)">Write or generate code in the Editor, then tap Refresh</div>
+        <button class="btn bc" onclick="refreshPV()" style="margin-top:8px;font-size:11px;padding:6px 18px">▶ Preview Now</button>
       </div>
-
-      <!-- Typing indicator -->
-      <div id="typing" style="margin:0 12px 6px">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-
-      <!-- Input area -->
-      <div id="chat-input-area">
-        <textarea id="chat-input" placeholder='Ask anything... "Fix this bug", "Add dark mode", "Build me a login page"'></textarea>
-        <button id="send-btn">↑</button>
-      </div>
-
+      <iframe id="pvframe" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
+
+    <!-- Chat -->
+    <div class="panel" id="panel-chat">
+      <div class="ptb">
+        <span style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:0.5px" id="mcnt">AI CHAT</span>
+        <button class="btn br" id="clrBtn">Clear</button>
+      </div>
+      <div id="msgs"></div>
+      <div id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div id="qps">
+        <button class="qp" onclick="useP('Make it fully responsive for mobile')">📱 Responsive</button>
+        <button class="qp" onclick="useP('Add a dark mode toggle button')">🌙 Dark mode</button>
+        <button class="qp" onclick="useP('Add smooth CSS animations and transitions')">✨ Animations</button>
+        <button class="qp" onclick="useP('Find and fix all bugs in my code')">🐛 Fix bugs</button>
+        <button class="qp" onclick="useP('Improve the overall UI design and make it look more modern and polished')">🎨 Improve UI</button>
+        <button class="qp" onclick="useP('Add hover effects to all interactive elements')">🖱 Hover effects</button>
+        <button class="qp" onclick="useP('Add a loading spinner animation')">⏳ Spinner</button>
+        <button class="qp" onclick="useP('Clean up the layout with better spacing and whitespace')">🧹 Clean layout</button>
+        <button class="qp" onclick="useP('Add JavaScript form validation with error messages')">✅ Form validation</button>
+        <button class="qp" onclick="useP('Add a sticky navigation bar')">📌 Sticky nav</button>
+        <button class="qp" onclick="useP('Add a scroll-to-top button')">⬆ Scroll to top</button>
+        <button class="qp" onclick="useP('Make the color scheme more vibrant and modern')">🎨 Better colors</button>
+      </div>
+      <div id="cia">
+        <textarea id="cinput" placeholder="Describe what to build, or ask me to fix/improve the editor code..."></textarea>
+        <button id="sbtn">↑</button>
+      </div>
+    </div>
+
+  </div>
+
+<!-- API Key Modal -->
+<div id="apimodal">
+  <div id="apibox">
+    <h2>⚡ CodeMind Setup</h2>
+    <p>To use AI features, enter your <strong>Anthropic API key</strong>.<br>
+    Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+    <p style="background:rgba(255,200,0,0.07);border:1px solid rgba(255,200,0,0.2);border-radius:6px;padding:8px;color:#ffcc44;">
+    ⚠️ Your key is stored only in this browser session. Never share it with others.</p>
+    <input id="apiinput" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
+    <button id="apisave" onclick="saveKey()">Save & Start Coding ⚡</button>
   </div>
 </div>
 
+</div>
+
+<div id="voverlay" onclick="toggleVD()"></div>
+<div id="vdrawer">
+  <h3>📜 Version History <button onclick="toggleVD()">×</button></h3>
+  <div id="vlist"><div style="padding:16px;font-size:11px;color:var(--text-dim);text-align:center">No versions yet.<br>Auto-saved when AI generates code.</div></div>
+</div>
+
 <script>
-// ── Config ──────────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are CodeMind, an expert web developer AI assistant specializing in HTML, CSS, and JavaScript.
+const SYSPROMPT = `You are CodeMind, an expert web developer AI specializing in HTML, CSS, and JavaScript.
 
-You have TWO modes:
+## BUILD MODE — triggered by: build, create, make, generate, design, give me, I want
+- Output ONE complete self-contained HTML file (HTML + CSS + JS all in one)
+- Visually polished: dark themes, gradients, glassmorphism, modern typography
+- Google Fonts via @import, no external dependencies except CDN fonts
+- Must work instantly in browser
+- Wrap in a single \`\`\`html code block
+- After the code: short summary + next step suggestions
 
-## BUILD MODE (user describes something to build)
-When the user says things like "build me", "create", "make", "I want", "generate" — you BUILD it.
-- Generate a COMPLETE, self-contained HTML file (HTML + CSS + JS all in one file)
-- Make it visually polished and modern — dark themes, gradients, clean typography
-- Use Google Fonts via @import in the CSS
-- The code must work immediately when opened in a browser
-- Wrap the entire file in a single \`\`\`html code block
-- After the code, give a 1-2 sentence summary and suggest what the user can ask next
+## DEBUG/REVIEW MODE — triggered by sharing code or asking to fix/improve
+- Analyze carefully, spot bugs and improvements
+- Provide targeted fixes in proper \`\`\`html / \`\`\`css / \`\`\`javascript blocks
+- Reference line numbers when relevant
 
-## REVIEW / FIX / DEBUG MODE
-When the user shares code or asks about it:
-- Analyze carefully and identify bugs or improvements
-- Provide targeted, clean fixes
-- Wrap fixes in proper \`\`\`html / \`\`\`css / \`\`\`javascript blocks
+Always write modern ES6+, CSS custom properties, semantic HTML5. No placeholder content.`;
 
-## RULES
-- Modern ES6+ JavaScript always
-- CSS custom properties for theming
-- Semantic HTML5
-- Concise, developer-friendly explanations
-- Never leave placeholder/lorem content — always write real implementations`;
+let hist=[], loading=false, lastCode='', sentOnce=false, focusOn=false, versions=[], fontSize=12, mc=0;
+const BUILD=/\b(build|create|make|generate|design|give me|i want)\b/i;
 
-const BUILD_REGEX = /\b(build|create|make|generate|design|give me|i want)\b/i;
-const API_URL = "https://api.anthropic.com/v1/messages";
+// ── API KEY MANAGEMENT ─────────────────────────────────────────────────
+let API_KEY = '';
 
-// ── State ────────────────────────────────────────────────────────────────
-let messages = [];        // chat history for API
-let isLoading = false;
-let lastSentCode = "";
-let codeSentOnce = false;
-let focusModeOn = false;
-let msgCount = 0;
+function showAPIModal(){document.getElementById('apimodal').classList.remove('hide');}
+function hideAPIModal(){document.getElementById('apimodal').classList.add('hide');}
 
-// ── DOM refs ─────────────────────────────────────────────────────────────
-const editor       = document.getElementById('code-editor');
-const lineNums     = document.getElementById('line-numbers');
-const chatMessages = document.getElementById('messages');
-const typingEl     = document.getElementById('typing');
-const chatInput    = document.getElementById('chat-input');
-const sendBtn      = document.getElementById('send-btn');
-const footerStats  = document.getElementById('footer-stats');
-const focusBar     = document.getElementById('focus-bar');
-const focusToggle  = document.getElementById('focus-toggle');
-const focusStart   = document.getElementById('focus-start');
-const focusEnd     = document.getElementById('focus-end');
-const fileWarning  = document.getElementById('file-warning');
-const warningText  = document.getElementById('warning-text');
-const msgCountEl   = document.getElementById('msg-count');
-const fileUpload   = document.getElementById('file-upload');
-const copyAllBtn   = document.getElementById('copy-all-btn');
-const clearBtn     = document.getElementById('clear-btn');
-const fileLabel    = document.getElementById('file-name-label');
-
-// ── Init ─────────────────────────────────────────────────────────────────
-updateLineNumbers();
-updateFooter();
-addWelcomeMessage();
-
-// ── Line numbers ─────────────────────────────────────────────────────────
-function updateLineNumbers() {
-  const lines = editor.value.split('\n').length;
-  lineNums.innerHTML = Array.from({length: lines}, (_, i) =>
-    `<div>${i + 1}</div>`
-  ).join('');
+function saveKey(){
+  const k=document.getElementById('apiinput').value.trim();
+  if(!k.startsWith('sk-')){alert('Please enter a valid Anthropic API key (starts with sk-)');return;}
+  API_KEY=k;
+  try{localStorage.setItem('cm_api_key',k);}catch(e){}
+  document.getElementById('key-status').textContent='🔑 Key Set ✓';
+  document.getElementById('apikey-bar').style.borderColor='rgba(0,255,200,0.5)';
+  hideAPIModal();
 }
 
-function updateFooter() {
-  const lines = editor.value.split('\n').length;
-  const chars = editor.value.length;
-  footerStats.textContent = `${lines.toLocaleString()} lines · ${(chars/1000).toFixed(1)}k chars`;
-  const focusActive = focusModeOn ? ' · 🎯 Focus ON' : '';
-  document.getElementById('footer-lang').textContent = 'HTML · CSS · JS' + focusActive;
+// Load saved key on start
+hideAPIModal(); // Worker handles API key securely
+
+document.getElementById('apisave').addEventListener('click',saveKey);
+document.getElementById('apiinput').addEventListener('keydown',e=>{if(e.key==='Enter')saveKey();});
+
+
+const ced=document.getElementById('ced'), lnums=document.getElementById('lnums'),
+      msgs=document.getElementById('msgs'), typing=document.getElementById('typing'),
+      cinput=document.getElementById('cinput'), sbtn=document.getElementById('sbtn'),
+      focusbar=document.getElementById('focusbar'), ftoggle=document.getElementById('ftoggle'),
+      fsI=document.getElementById('fs'), feI=document.getElementById('fe'),
+      fwarn=document.getElementById('fwarn'), wtext=document.getElementById('wtext'),
+      eba=document.getElementById('ebanner'), etext=document.getElementById('etext'),
+      flabel=document.getElementById('flabel'), pvframe=document.getElementById('pvframe'),
+      pvph=document.getElementById('pvph'), vlist=document.getElementById('vlist'),
+      vdrawer=document.getElementById('vdrawer'), voverlay=document.getElementById('voverlay');
+
+// Init
+updateLN(); updateFoot();
+addAI("Hey! I'm **CodeMind** ⚡ — your AI web dev assistant.\n\nTell me what to build and the full code will land in the Editor automatically. Or upload a file to debug it.\n\nTap the quick prompts below or type anything. Try:\n*\"Build me a dark landing page for a habit tracker\"*");
+
+// Tabs
+function switchTab(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+n).classList.add('on');
+  document.getElementById('tab-'+n).classList.add('on');
+  if(n==='chat') setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);
 }
 
-editor.addEventListener('input', () => {
-  updateLineNumbers();
-  updateFooter();
-  // Mark code as changed so it'll be resent
-  if (editor.value !== lastSentCode) codeSentOnce = false;
+// Themes
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t==='dark'?'':t);
+  ['dark','light','hacker'].forEach(x=>document.getElementById('t-'+x).classList.toggle('on',x===t));
+}
+
+// Font size
+function chFS(d){
+  fontSize=Math.min(20,Math.max(10,fontSize+d));
+  document.documentElement.style.setProperty('--fs',fontSize+'px');
+  document.getElementById('fslabel').textContent=fontSize+'px';
+  updateLN();
+}
+
+// Editor
+function updateLN(){
+  const n=ced.value.split('\n').length;
+  lnums.innerHTML=Array.from({length:n},(_,i)=>`<div>${i+1}</div>`).join('');
+}
+function updateFoot(){
+  const l=ced.value.split('\n').length, c=ced.value.length;
+  document.getElementById('fstats').textContent=`${l.toLocaleString()} lines · ${(c/1000).toFixed(1)}k`;
+  document.getElementById('flang').textContent='HTML · CSS · JS'+(focusOn?' · 🎯':'');
+}
+ced.addEventListener('input',()=>{updateLN();updateFoot();if(ced.value!==lastCode)sentOnce=false;});
+ced.addEventListener('scroll',()=>lnums.scrollTop=ced.scrollTop);
+ced.addEventListener('keydown',e=>{
+  if(e.key==='Tab'){e.preventDefault();const s=ced.selectionStart;ced.value=ced.value.substring(0,s)+'  '+ced.value.substring(ced.selectionEnd);ced.selectionStart=ced.selectionEnd=s+2;updateLN();}
 });
 
-editor.addEventListener('scroll', () => {
-  lineNums.scrollTop = editor.scrollTop;
-});
-
-// Tab support
-editor.addEventListener('keydown', e => {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const s = editor.selectionStart;
-    const end = editor.selectionEnd;
-    editor.value = editor.value.substring(0, s) + '  ' + editor.value.substring(end);
-    editor.selectionStart = editor.selectionEnd = s + 2;
-    updateLineNumbers();
-  }
-});
-
-// ── File Upload ───────────────────────────────────────────────────────────
-fileUpload.addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  fileLabel.textContent = file.name;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    editor.value = ev.target.result;
-    updateLineNumbers();
-    updateFooter();
-    codeSentOnce = false;
-    lastSentCode = '';
-    const lines = ev.target.result.split('\n').length;
-    if (lines > 500) {
-      warningText.textContent = `⚡ ${lines.toLocaleString()} lines loaded. Use Focus Mode to target specific lines for faster, precise debugging.`;
-      fileWarning.classList.add('show');
-      setTimeout(() => fileWarning.classList.remove('show'), 7000);
-    }
+// File upload
+document.getElementById('fup').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  flabel.textContent=f.name;
+  const r=new FileReader();
+  r.onload=ev=>{
+    ced.value=ev.target.result; updateLN(); updateFoot(); sentOnce=false; lastCode='';
+    const l=ev.target.result.split('\n').length;
+    if(l>300){wtext.textContent=`⚡ ${l.toLocaleString()} lines loaded. Use 🎯 Focus Mode to target specific lines.`;fwarn.classList.add('on');setTimeout(()=>fwarn.classList.remove('on'),7000);}
   };
-  reader.readAsText(file);
-  e.target.value = '';
+  r.readAsText(f); e.target.value='';
 });
 
-// ── Universal Copy (works in Eruda + all browsers) ───────────────────────
-function copyToClipboard(text) {
-  // Try modern API first
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+// Copy all
+document.getElementById('caBtn').addEventListener('click',function(){
+  clip(ced.value).then(()=>{this.textContent='✓ Copied';this.style.color='var(--cyan)';setTimeout(()=>{this.textContent='Copy All';this.style.color='';},1500);});
+});
+
+// Download
+document.getElementById('dlBtn').addEventListener('click',function(){
+  const blob=new Blob([ced.value],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=flabel.textContent||'codemind-output.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  this.textContent='✓ Saved';setTimeout(()=>this.textContent='⬇ Download',2000);
+});
+
+// Scan / Error detection
+document.getElementById('scanBtn').addEventListener('click',()=>{
+  const code=ced.value; const errs=[];
+  if(!code.trim()){errs.push('Editor is empty.');}
+  else{
+    if(!code.toLowerCase().includes('<!doctype')) errs.push('Missing <!DOCTYPE html>');
+    const so=(code.match(/<script/gi)||[]).length, sc=(code.match(/<\/script>/gi)||[]).length;
+    if(so!==sc) errs.push(`Mismatched <script> tags (${so} open, ${sc} close)`);
+    const sto=(code.match(/<style/gi)||[]).length, stc=(code.match(/<\/style>/gi)||[]).length;
+    if(sto!==stc) errs.push('Mismatched <style> tags');
+    ['div','section','header','footer','main','nav','ul','ol'].forEach(t=>{
+      const o=(code.match(new RegExp(`<${t}[\\s>]`,'gi'))||[]).length;
+      const c=(code.match(new RegExp(`</${t}>`,'gi'))||[]).length;
+      if(o!==c) errs.push(`Possible unclosed <${t}> (${o} open, ${c} close)`);
+    });
   }
-  fallbackCopy(text);
-  return Promise.resolve();
-}
-
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
-  document.body.appendChild(ta);
-  ta.focus();
-  ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-// ── Copy All ──────────────────────────────────────────────────────────────
-copyAllBtn.addEventListener('click', () => {
-  copyToClipboard(editor.value).then(() => {
-    copyAllBtn.textContent = '✓ Copied';
-    copyAllBtn.style.color = 'var(--cyan)';
-    setTimeout(() => { copyAllBtn.textContent = 'Copy All'; copyAllBtn.style.color = ''; }, 1500);
-  });
-});
-
-// ── Download ──────────────────────────────────────────────────────────────
-document.getElementById('download-btn').addEventListener('click', () => {
-  const code = editor.value;
-  const fname = fileLabel.textContent || 'codemind-output.html';
-  const blob = new Blob([code], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = fname;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  const btn = document.getElementById('download-btn');
-  btn.textContent = '✓ Saved';
-  setTimeout(() => { btn.textContent = '⬇ Download'; }, 2000);
-});
-
-// ── Focus Mode ────────────────────────────────────────────────────────────
-focusToggle.addEventListener('click', () => {
-  focusModeOn = !focusModeOn;
-  focusBar.classList.toggle('active', focusModeOn);
-  focusToggle.style.color = focusModeOn ? 'var(--cyan)' : '';
-  focusToggle.style.borderColor = focusModeOn ? 'rgba(0,255,200,0.4)' : '';
-  focusToggle.style.background = focusModeOn ? 'rgba(0,255,200,0.12)' : '';
-  updateFooter();
-});
-
-// ── Clear Chat ────────────────────────────────────────────────────────────
-clearBtn.addEventListener('click', () => {
-  messages = [];
-  chatMessages.innerHTML = '';
-  msgCount = 0;
-  codeSentOnce = false;
-  updateMsgCount();
-  addAIMessage('Chat cleared! Ready to help. What would you like to build or debug? 🚀');
-});
-
-// ── Send on Enter ─────────────────────────────────────────────────────────
-chatInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-sendBtn.addEventListener('click', sendMessage);
-
-// ── Welcome message ───────────────────────────────────────────────────────
-function addWelcomeMessage() {
-  addAIMessage("Hey! I'm **CodeMind**, your web dev AI. 🚀\n\nTell me what to build and the code will appear in the editor automatically. Or upload an existing file and ask me to debug it.\n\nTry: *\"Build me a dark landing page for a habit tracker\"*");
-}
-
-function updateMsgCount() {
-  msgCountEl.textContent = `AI Chat · ${msgCount} messages`;
-}
-
-// ── Send Message ──────────────────────────────────────────────────────────
-async function sendMessage() {
-  const text = chatInput.value.trim();
-  if (isLoading) return;
-
-  const isBuild = BUILD_REGEX.test(text) && !focusModeOn;
-  const codeChanged = editor.value !== lastSentCode;
-  const shouldSendCode = !isBuild && (codeChanged || !codeSentOnce);
-
-  // Build context for API
-  let codeContext = editor.value;
-  if (focusModeOn && focusStart.value && focusEnd.value) {
-    const lines = editor.value.split('\n');
-    const s = Math.max(0, parseInt(focusStart.value) - 1);
-    const en = Math.min(lines.length, parseInt(focusEnd.value));
-    codeContext = lines.slice(s, en).join('\n');
-  }
-
-  let apiContent;
-  if (isBuild) {
-    apiContent = text;
-  } else if (shouldSendCode) {
-    const focusNote = (focusModeOn && focusStart.value && focusEnd.value)
-      ? `\n(Showing lines ${focusStart.value}–${focusEnd.value} of ${editor.value.split('\n').length} total)`
-      : '';
-    apiContent = text
-      ? `${text}${focusNote}\n\nCode:\n\`\`\`html\n${codeContext}\n\`\`\``
-      : `Review this code${focusNote}:\n\`\`\`html\n${codeContext}\n\`\`\``;
-    lastSentCode = editor.value;
-    codeSentOnce = true;
+  if(errs.length===0){
+    etext.textContent='✅ No obvious errors found!';
+    eba.style.cssText='background:rgba(0,255,100,0.07);border-bottom:1px solid rgba(0,255,100,0.2);color:#88ffaa;';
   } else {
-    apiContent = text || 'Continue helping with the current code.';
+    etext.textContent='⚠ '+errs.join(' · ');
+    eba.style.cssText='';
+  }
+  eba.classList.add('on');
+  setTimeout(()=>eba.classList.remove('on'),8000);
+});
+
+// Preview
+function refreshPV(){
+  const code=ced.value.trim();
+  if(!code||code.startsWith('<!--')){clearPV();return;}
+  pvph.style.display='none'; pvframe.style.display='block';
+  try {
+    const blob=new Blob([code],{type:'text/html'});
+    const url=URL.createObjectURL(blob);
+    pvframe.src=url;
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+  } catch(e) {
+    pvframe.srcdoc=code;
+  }
+  switchTab('preview');
+}
+function clearPV(){pvframe.style.display='none';pvph.style.display='flex';pvframe.srcdoc='';}
+
+// Focus mode
+ftoggle.addEventListener('click',()=>{
+  focusOn=!focusOn;
+  focusbar.classList.toggle('on',focusOn);
+  ftoggle.className=focusOn?'btn bc':'btn bg';
+  updateFoot();
+});
+
+// Version history
+function saveVer(label){
+  versions.unshift({label,code:ced.value,time:new Date(),lines:ced.value.split('\n').length});
+  if(versions.length>20) versions.pop();
+  renderVers();
+}
+function renderVers(){
+  if(!versions.length){vlist.innerHTML='<div style="padding:16px;font-size:11px;color:var(--text-dim);text-align:center">No versions yet.</div>';return;}
+  vlist.innerHTML=versions.map((v,i)=>`<div class="vitem" onclick="restoreVer(${i})"><div class="vlabel">${esc(v.label)}</div><div class="vmeta">${v.lines.toLocaleString()} lines · ${v.time.toLocaleTimeString()}</div></div>`).join('');
+}
+function restoreVer(i){ced.value=versions[i].code;updateLN();updateFoot();sentOnce=false;toggleVD();}
+function toggleVD(){const o=vdrawer.classList.toggle('open');voverlay.classList.toggle('show',o);}
+
+// Clear chat
+document.getElementById('clrBtn').addEventListener('click',()=>{
+  hist=[];msgs.innerHTML='';mc=0;sentOnce=false;updMC();
+  addAI('Chat cleared! Ready to build or debug. 🚀');
+});
+
+// Quick prompts
+function useP(t){cinput.value=t;switchTab('chat');cinput.focus();}
+
+// Send
+cinput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+sbtn.addEventListener('click',send);
+
+function updMC(){document.getElementById('mcnt').textContent=`AI CHAT · ${mc} msgs`;}
+
+async function send(){
+  const txt=cinput.value.trim(); if(loading) return;
+
+  const isBuild=BUILD.test(txt)&&!focusOn;
+  const changed=ced.value!==lastCode;
+  const sendCode=!isBuild&&(changed||!sentOnce);
+
+  let ctx=ced.value;
+  if(focusOn&&fsI.value&&feI.value){
+    const lines=ced.value.split('\n');
+    const s=Math.max(0,parseInt(fsI.value)-1), en=Math.min(lines.length,parseInt(feI.value));
+    ctx=lines.slice(s,en).join('\n');
   }
 
-  const focusLabel = (focusModeOn && focusStart.value && focusEnd.value)
-    ? ` [Lines ${focusStart.value}–${focusEnd.value}]` : '';
-  const displayText = (text || 'Review my code') + focusLabel;
+  let api;
+  if(isBuild) api=txt;
+  else if(sendCode){
+    const note=(focusOn&&fsI.value&&feI.value)?`\n(Lines ${fsI.value}–${feI.value} of ${ced.value.split('\n').length} total)`:'';
+    api=txt?`${txt}${note}\n\nCode:\n\`\`\`html\n${ctx}\n\`\`\``:`Review this code${note}:\n\`\`\`html\n${ctx}\n\`\`\``;
+    lastCode=ced.value; sentOnce=true;
+  } else api=txt||'Continue helping with the current code.';
 
-  // Show user message
-  addUserMessage(displayText);
-  messages.push({ role: 'user', content: apiContent });
-  chatInput.value = '';
-  setLoading(true);
+  const fl=(focusOn&&fsI.value&&feI.value)?` [L${fsI.value}–${feI.value}]`:'';
+  addUser((txt||'Review my code')+fl);
+  hist.push({role:'user',content:api});
+  cinput.value=''; setLoad(true); switchTab('chat');
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
-        system: SYSTEM_PROMPT,
-        messages: messages
-      })
+    const res=await fetch('https://holy-meadow-3d03.fancytreaz.workers.dev',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:SYSPROMPT,messages:hist})
     });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'Something went wrong. Please try again.';
 
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Sorry, something went wrong.';
-
-    // Auto-populate editor if full HTML was generated
-    const htmlMatch = reply.match(/```html\n?([\s\S]*?)```/);
-    if (htmlMatch && htmlMatch[1].trim().toLowerCase().startsWith('<!doctype')) {
-      editor.value = htmlMatch[1].trim();
-      updateLineNumbers();
-      updateFooter();
-      lastSentCode = editor.value;
-      codeSentOnce = true;
+    const hm=reply.match(/```html\n?([\s\S]*?)```/);
+    if(hm&&hm[1].trim().toLowerCase().startsWith('<!doctype')){
+      saveVer('AI Built · '+(txt.slice(0,28)||'generated'));
+      ced.value=hm[1].trim(); updateLN(); updateFoot(); lastCode=ced.value; sentOnce=true;
     }
+    hist.push({role:'assistant',content:reply});
+    addAI(reply);
+  } catch(e){
+    addAI('⚠️ Connection error. Check your internet and try again.');
+  } finally { setLoad(false); }
+}
 
-    messages.push({ role: 'assistant', content: reply });
-    addAIMessage(reply);
-  } catch (err) {
-    addAIMessage('⚠️ Connection error. Please check your internet and try again.');
-  } finally {
-    setLoading(false);
+function setLoad(on){
+  loading=on; sbtn.disabled=on; sbtn.textContent=on?'·':'↑';
+  typing.classList.toggle('on',on);
+  if(!on) scrlBot();
+}
+
+// Render messages
+function addUser(t){
+  mc++;
+  const d=document.createElement('div'); d.className='msg u';
+  d.innerHTML=`<div class="mlabel">👤 You</div><div class="mtext">${esc(t)}</div>`;
+  msgs.appendChild(d); updMC(); scrlBot();
+}
+function addAI(t){
+  mc++;
+  const d=document.createElement('div'); d.className='msg a';
+  const lb=document.createElement('div'); lb.className='mlabel'; lb.textContent='⚡ CodeMind';
+  d.appendChild(lb); d.appendChild(renderAI(t));
+  msgs.appendChild(d);
+  d.querySelectorAll('pre code').forEach(el=>{if(window.hljs)window.hljs.highlightElement(el);});
+  updMC(); scrlBot();
+}
+
+function renderAI(txt){
+  const wrap=document.createElement('div');
+  const re=/```(\w+)?\n?([\s\S]*?)```/g; let last=0, m;
+  while((m=re.exec(txt))!==null){
+    if(m.index>last){const p=document.createElement('div');p.className='mtext';p.innerHTML=fmt(esc(txt.slice(last,m.index)));wrap.appendChild(p);}
+    const lang=m[1]||'html', code=m[2].trim(), id='c'+Date.now()+Math.random().toString(36).slice(2);
+    const blk=document.createElement('div'); blk.className='cblock';
+    blk.innerHTML=`<div class="cbhdr"><span class="clang">${esc(lang)}</span><div class="cacts"><button class="bedit" onclick="toEditor('${id}')">→ Editor</button><button class="bcopy" id="cp-${id}" onclick="cpCode('${id}')">Copy</button></div></div><pre><code id="${id}" class="language-${esc(lang)}">${esc(code)}</code></pre>`;
+    wrap.appendChild(blk); last=m.index+m[0].length;
   }
+  if(last<txt.length){const p=document.createElement('div');p.className='mtext';p.innerHTML=fmt(esc(txt.slice(last)));wrap.appendChild(p);}
+  return wrap;
 }
 
-// ── Loading state ─────────────────────────────────────────────────────────
-function setLoading(on) {
-  isLoading = on;
-  sendBtn.disabled = on;
-  sendBtn.textContent = on ? '·' : '↑';
-  typingEl.classList.toggle('show', on);
-  if (!on) scrollToBottom();
+function toEditor(id){
+  const el=document.getElementById(id); if(!el) return;
+  saveVer('Manual restore · '+new Date().toLocaleTimeString());
+  ced.value=el.textContent; updateLN(); updateFoot(); sentOnce=false; switchTab('editor');
+}
+function cpCode(id){
+  const el=document.getElementById(id); if(!el) return;
+  clip(el.textContent).then(()=>{const b=document.getElementById('cp-'+id);if(b){b.textContent='✓';b.classList.add('ok');setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok');},1500);}});
 }
 
-// ── Render messages ───────────────────────────────────────────────────────
-function addUserMessage(text) {
-  msgCount++;
-  updateMsgCount();
-  const div = document.createElement('div');
-  div.className = 'msg user';
-  div.innerHTML = `<div class="msg-label">👤 You</div><div class="msg-text">${escHtml(text)}</div>`;
-  chatMessages.appendChild(div);
-  scrollToBottom();
+// Clipboard (works in Eruda)
+function clip(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(text).catch(()=>fb(text));
+  fb(text); return Promise.resolve();
 }
+function fb(text){const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
 
-function addAIMessage(text) {
-  msgCount++;
-  updateMsgCount();
-  const div = document.createElement('div');
-  div.className = 'msg ai';
-  const labelDiv = document.createElement('div');
-  labelDiv.className = 'msg-label';
-  labelDiv.textContent = '⚡ CodeMind';
-  div.appendChild(labelDiv);
-  div.appendChild(renderAIContent(text));
-  chatMessages.appendChild(div);
-  // Highlight any code blocks
-  div.querySelectorAll('pre code').forEach(el => {
-    if (window.hljs) window.hljs.highlightElement(el);
-  });
-  scrollToBottom();
-}
-
-function renderAIContent(text) {
-  const container = document.createElement('div');
-  const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
-  let last = 0, match;
-
-  while ((match = codeBlockRegex.exec(text)) !== null) {
-    // Text before code block
-    if (match.index > last) {
-      const p = document.createElement('div');
-      p.className = 'msg-text';
-      p.innerHTML = formatText(text.slice(last, match.index));
-      container.appendChild(p);
-    }
-    // Code block
-    const lang = match[1] || 'html';
-    const code = match[2].trim();
-    const blockId = 'cb-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-    const block = document.createElement('div');
-    block.className = 'code-block';
-    block.innerHTML = `
-      <div class="code-block-header">
-        <span class="code-lang">${escHtml(lang)}</span>
-        <div class="code-actions">
-          <button class="btn-to-editor" onclick="pushToEditor('${blockId}')">→ Editor</button>
-          <button class="btn-copy-code" id="copy-${blockId}" onclick="copyCode('${blockId}')">Copy</button>
-        </div>
-      </div>
-      <pre><code id="${blockId}" class="language-${escHtml(lang)}">${escHtml(code)}</code></pre>`;
-    container.appendChild(block);
-    last = match.index + match[0].length;
-  }
-
-  // Remaining text
-  if (last < text.length) {
-    const p = document.createElement('div');
-    p.className = 'msg-text';
-    p.innerHTML = formatText(text.slice(last));
-    container.appendChild(p);
-  }
-
-  return container;
-}
-
-// Push code block content to editor
-function pushToEditor(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  editor.value = el.textContent;
-  updateLineNumbers();
-  updateFooter();
-  codeSentOnce = false;
-}
-
-// Copy a specific code block
-function copyCode(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  copyToClipboard(el.textContent).then(() => {
-    const btn = document.getElementById('copy-' + id);
-    if (btn) {
-      btn.textContent = '✓ Copied';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
-    }
-  });
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-function formatText(text) {
-  return escHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code style="background:rgba(0,255,200,0.08);padding:1px 5px;border-radius:3px;font-family:var(--font-code);font-size:11px;color:var(--cyan)">$1</code>');
-}
-
-function scrollToBottom() {
-  setTimeout(() => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }, 50);
-}
+function scrlBot(){setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function fmt(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');}
 </script>
 </body>
 </html>
