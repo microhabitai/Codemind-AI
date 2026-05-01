@@ -45,7 +45,7 @@
   --code-hdr:#001a00;--code-bg:#000d00;--cyan:#00ff41;--blue:#00cc33;
 }
 
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-ui);transition:background 0.3s,color 0.3s;}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:var(--bg);color:var(--text);font-family:var(--font-ui);transition:background 0.3s,color 0.3s;}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,200,0.2);border-radius:2px}
 
@@ -410,6 +410,18 @@ const ced=document.getElementById('ced'), lnums=document.getElementById('lnums')
       pvph=document.getElementById('pvph'), vlist=document.getElementById('vlist'),
       vdrawer=document.getElementById('vdrawer'), voverlay=document.getElementById('voverlay');
 
+
+// Fix keyboard hiding input on mobile
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const app = document.getElementById('app');
+    app.style.height = window.visualViewport.height + 'px';
+  });
+  window.visualViewport.addEventListener('scroll', () => {
+    window.scrollTo(0, 0);
+  });
+}
+
 // Init
 updateLN(); updateFoot();
 addAI("Hey! I'm **CodeMind** ⚡ — your AI web dev assistant.\n\nTell me what to build and the full code will land in the Editor automatically. Or upload a file to debug it.\n\nTap the quick prompts below or type anything. Try:\n*\"Build me a dark landing page for a habit tracker\"*");
@@ -595,6 +607,11 @@ async function send(){
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:SYSPROMPT,messages:hist})
     });
     const data=await res.json();
+    // Show detailed error if API returns one
+    if(data.error){
+      const reply='⚠️ API Error: '+data.error.message;
+      addAI(reply); setLoad(false); return;
+    }
     const reply=data.content?.[0]?.text||'Something went wrong. Please try again.';
 
     const hm=reply.match(/```html\n?([\s\S]*?)```/);
