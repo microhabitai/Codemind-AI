@@ -527,8 +527,11 @@ When user shares code or asks to fix/improve:
 - Provide fixes in \`\`\`html / \`\`\`css / \`\`\`js blocks
 - Explain what was wrong
 
+## CONVERSATIONAL MESSAGES
+If someone says hi, hello, thanks, or sends a short greeting — respond briefly and warmly in 1-2 sentences. Do NOT generate any code. Example: "Hey! Ready to build something awesome? Tell me what you have in mind! 🚀"
+
 ## OFF-TOPIC
-If asked anything unrelated to web development, HTML, CSS, or JavaScript: "I'm specialized in web development only. Ask me to build or improve a website!"
+If asked anything unrelated to web development, HTML, CSS, or JavaScript: respond with "I'm specialized in web development only. Ask me to build or improve a website!" — no code.
 
 ## RULES
 - Always modern ES6+, CSS custom properties, semantic HTML5
@@ -542,7 +545,7 @@ let hist=[], loading=false, lastCode='', sentOnce=false, focusOn=false;
 let versions=[], fontSize=12, mc=0, autoPreview=false;
 let WORKER_URL='https://holy-meadow-3d03.fancytreaz.workers.dev';
 let MODEL='google/gemini-2.5-pro-exp-03-25:free';
-const BUILD=/\b(build|create|make|generate|design|give me|i want|i need|develop|code me)\b/i;
+const BUILD=/^(?!.*(hi|hello|hey|thanks|thank you|ok|okay|yes|no|what|who|how|why|when|where|tell me|explain|can you|do you|are you|what is|what's)\b).*(\b(build|create|make|generate|design|give me|i want|i need|develop|code me)\b)/is;
 
 // ── SESSION / CHAT HISTORY ──
 let sessions=[], currentSessionId=null;
@@ -899,7 +902,7 @@ async function send(){
   cinput.value='';setLoad(true);switchTab('chat');
 
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:SYSPROMPT},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:SYSPROMPT},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL,max_tokens:8000})});
     const data=await res.json();
     if(data.error){const reply='⚠️ '+data.error.message;addAI(reply);hist.push({role:'assistant',content:reply});}
     else{
@@ -907,8 +910,17 @@ async function send(){
       const hm=reply.match(/```html\n?([\s\S]*?)```/);
       if(hm&&hm[1].trim().toLowerCase().startsWith('<!doctype')){
         saveVer('AI Built · '+(txt.slice(0,28)));
-        ced.value=hm[1].trim();updateLN();updateFoot();lastCode=ced.value;sentOnce=true;
+        const generatedCode=hm[1].trim();
+        ced.value=generatedCode;updateLN();updateFoot();lastCode=ced.value;sentOnce=true;
         if(autoPreview)setTimeout(()=>refreshPV(true),500);
+        // Check if code is complete
+        const hasClosingHtml=generatedCode.toLowerCase().includes('</html>');
+        const hasClosingBody=generatedCode.toLowerCase().includes('</body>');
+        if(!hasClosingHtml||!hasClosingBody){
+          showToast('⚠️ Code may be incomplete — tap Fix bugs to complete it');
+        } else {
+          showToast('✅ Code generated! Tap Preview to see it');
+        }
       }
       hist.push({role:'assistant',content:reply});
       addAI(reply);
