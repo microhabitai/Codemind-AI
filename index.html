@@ -33,8 +33,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,200,0.2);border-radius:2px;}
 #app{display:flex;flex-direction:column;height:100vh;height:100dvh;}
-
-/* Header */
 #hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--bc);gap:6px;}
 .logo{display:flex;align-items:center;gap:7px;flex-shrink:0;}
 .logo-icon{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#000;}
@@ -44,19 +42,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .hbtn{font-size:9px;padding:3px 6px;border-radius:5px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);font-family:var(--ui);transition:all 0.15s;white-space:nowrap;}
 .hbtn:hover,.hbtn.on{color:var(--cyan);border-color:var(--bc);background:var(--tab);}
 .sdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:gpulse 2s infinite;flex-shrink:0;}
-
-/* Tabs */
 #tabs{display:flex;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);}
 .tab{flex:1;padding:7px 4px;border:none;cursor:pointer;background:transparent;color:var(--dim);font-size:10px;font-family:var(--ui);font-weight:600;border-bottom:2px solid transparent;transition:all 0.15s;}
 .tab.on{color:var(--tabtext);border-bottom-color:var(--cyan);background:var(--tab);}
 .tab:hover:not(.on){color:var(--text);background:var(--ibg);}
-
-/* Panels */
 #main{flex:1;overflow:hidden;position:relative;}
 .panel{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
 .panel.on{display:flex;}
-
-/* Buttons */
 .btn{font-size:9px;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:var(--ui);transition:all 0.15s;border:1px solid transparent;}
 .bc{background:rgba(0,255,200,0.08);border-color:var(--bc)!important;color:var(--cyan);}
 .bc:hover{background:rgba(0,255,200,0.18);}
@@ -67,16 +59,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .bpurple{background:rgba(180,100,255,0.08);border-color:rgba(180,100,255,0.25)!important;color:#c77dff;}
 .bpurple:hover{background:rgba(180,100,255,0.18);}
 label.bc{cursor:pointer;}
-
-/* Toolbar */
 .ptb{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);gap:6px;flex-wrap:wrap;}
 .tls{display:flex;gap:4px;align-items:center;}
 .tl{width:8px;height:8px;border-radius:50%;}
 .tr{background:#ff5f57}.ty{background:#febc2e}.tg{background:#28c840}
 .fname{font-size:9px;color:var(--dim);font-family:var(--mono);margin-left:6px;}
 .brow{display:flex;gap:3px;align-items:center;flex-wrap:wrap;}
-
-/* Banners */
 .bnr{display:none;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;font-size:10px;gap:8px;}
 .bnr.on{display:flex;}
 .bnr button{background:none;border:none;cursor:pointer;font-size:14px;flex-shrink:0;}
@@ -84,37 +72,44 @@ label.bc{cursor:pointer;}
 #fwarn button{color:#ffcc44;}
 #ebnr{background:rgba(255,60,60,0.07);border-bottom:1px solid rgba(255,60,60,0.2);color:#ff9999;}
 #ebnr button{color:#ff9999;}
-
-/* Focus bar */
 #focbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 10px;flex-shrink:0;background:rgba(0,0,0,0.15);border-bottom:1px solid var(--border);}
 #focbar.on{background:rgba(0,255,200,0.04);}
 .fins{display:none;align-items:center;gap:5px;}
 #focbar.on .fins{display:flex;}
 .fi{width:46px;background:var(--ibg);border:1px solid var(--bc);border-radius:4px;color:var(--cyan);font-size:9px;padding:2px 5px;font-family:var(--mono);outline:none;}
-
-/* Find & Replace */
 #fnrbar{display:none;align-items:center;gap:5px;padding:5px 10px;flex-shrink:0;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
 #fnrbar.on{display:flex;}
 .fnri{background:var(--ibg);border:1px solid var(--bc);border-radius:5px;color:var(--text);font-size:10px;padding:3px 8px;font-family:var(--mono);outline:none;width:100px;}
-
-/* Editor */
-#ewrap{display:flex;flex:1;overflow:hidden;position:relative;}
+#lock-bar{display:none;align-items:center;gap:6px;padding:4px 10px;flex-shrink:0;background:rgba(255,100,0,0.06);border-bottom:1px solid rgba(255,140,0,0.2);font-size:10px;color:#ffaa44;flex-wrap:wrap;}
+#lock-bar.on{display:flex;}
+.lock-range{display:inline-flex;align-items:center;gap:4px;background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.25);border-radius:4px;padding:2px 7px;font-size:9px;color:#ffaa44;}
+.lock-range button{background:none;border:none;color:#ffaa44;cursor:pointer;font-size:11px;padding:0 2px;}
+#inline-popup{position:fixed;z-index:500;background:var(--bg3);border:1px solid var(--bc);border-radius:8px;padding:8px;display:none;flex-direction:column;gap:6px;min-width:200px;max-width:280px;box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+#inline-popup.on{display:flex;}
+#inline-popup-label{font-size:9px;color:var(--cyan);font-weight:700;}
+#inline-input{background:var(--ibg);border:1px solid var(--bc);border-radius:5px;color:var(--text);font-size:11px;padding:5px 8px;font-family:var(--ui);outline:none;width:100%;}
+#inline-popup-btns{display:flex;gap:5px;}
+.qual-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.qual-a{background:rgba(0,255,100,0.12);border:1px solid rgba(0,255,100,0.3);color:#44ff88;}
+.qual-b{background:rgba(100,200,255,0.12);border:1px solid rgba(100,200,255,0.3);color:#66ccff;}
+.qual-c{background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.3);color:#ffcc00;}
+.qual-d{background:rgba(255,100,0,0.12);border:1px solid rgba(255,100,0,0.3);color:#ff8844;}
+#ewrap{display:flex;flex:1;overflow:hidden;}
 #lnums{padding:11px 7px 11px 5px;background:rgba(0,0,0,0.2);color:var(--dim);font-size:var(--fs);line-height:var(--lh);font-family:var(--mono);user-select:none;min-width:34px;text-align:right;overflow:hidden;border-right:1px solid var(--border);flex-shrink:0;}
 #lnums div{height:calc(var(--fs) * var(--lh));}
 #lnums div.aln{background:rgba(0,255,200,0.08);color:var(--cyan);border-radius:2px;}
 #ced{flex:1;background:var(--bg2);color:var(--code);border:none;outline:none;resize:none;padding:11px 12px;font-size:var(--fs);line-height:var(--lh);font-family:var(--mono);overflow-y:auto;tab-size:2;white-space:pre;caret-color:var(--cyan);}
-
-/* Highlighted view */
 #hlview{flex:1;background:var(--bg2);overflow:auto;padding:11px 12px;display:none;font-size:var(--fs);line-height:var(--lh);}
 #hlview pre{margin:0;background:transparent!important;}
 #hlview pre code{background:transparent!important;font-family:var(--mono);font-size:var(--fs);line-height:var(--lh);}
-
 #efoot{display:flex;justify-content:space-between;align-items:center;padding:3px 10px;flex-shrink:0;background:rgba(0,0,0,0.35);border-top:1px solid var(--border);font-size:9px;color:var(--dim);font-family:var(--mono);gap:6px;flex-wrap:wrap;}
 .fszc{display:flex;align-items:center;gap:3px;}
 .fsbtn{width:17px;height:17px;border-radius:3px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);font-size:11px;display:flex;align-items:center;justify-content:center;}
 .fsbtn:hover{color:var(--cyan);border-color:var(--bc);}
-
-/* Preview */
+.undoredo{display:flex;gap:3px;}
+.undoredo button{font-size:12px;padding:1px 6px;border-radius:4px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);transition:all 0.15s;}
+.undoredo button:hover:not(:disabled){color:var(--cyan);border-color:var(--bc);}
+.undoredo button:disabled{opacity:0.3;cursor:not-allowed;}
 #pvtb{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;flex-shrink:0;background:var(--toolbar);border-bottom:1px solid var(--border);gap:5px;flex-wrap:wrap;}
 #pvframe{flex:1;border:none;background:#fff;display:none;}
 #pvph{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--dim);gap:10px;font-size:13px;}
@@ -123,38 +118,15 @@ label.bc{cursor:pointer;}
 .pvsize.on{color:var(--cyan);border-color:var(--bc);background:var(--tab);}
 #pvframe.mobile{max-width:375px;margin:0 auto;box-shadow:0 0 40px rgba(0,0,0,0.6);}
 #pvframe.mobile-framed{max-width:395px;margin:0 auto;border:12px solid #1a1a2e;border-radius:40px;box-shadow:0 0 0 2px #333,0 20px 60px rgba(0,0,0,0.7);}
-
-/* ── STYLE PRESETS PANEL ── */
-#presets-bar{display:flex;gap:5px;padding:6px 10px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid var(--border);scrollbar-width:none;background:rgba(0,0,0,0.2);}
+#presets-bar{display:flex;gap:5px;padding:6px 10px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2);scrollbar-width:none;}
 #presets-bar::-webkit-scrollbar{display:none;}
-.preset-btn{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;flex-shrink:0;display:flex;align-items:center;gap:4px;}
+.preset-btn{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;flex-shrink:0;}
 .preset-btn:hover,.preset-btn.on{border-color:var(--bc);color:var(--cyan);background:var(--tab);}
-
-/* Color picker bar */
 #color-bar{display:flex;align-items:center;gap:8px;padding:5px 10px;flex-shrink:0;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15);flex-wrap:wrap;}
 #color-bar span{font-size:9px;color:var(--dim);}
 .color-dot{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.15s;flex-shrink:0;}
 .color-dot:hover,.color-dot.on{border-color:#fff;transform:scale(1.2);}
-#custom-color{width:18px;height:18px;border-radius:50%;cursor:pointer;border:1px solid var(--border);background:transparent;padding:0;overflow:hidden;}
-
-/* Component Library Drawer */
-#complib{position:fixed;bottom:0;left:0;right:0;height:55%;background:var(--bg2);border-top:1px solid var(--bc);z-index:200;transform:translateY(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
-#complib.open{transform:translateY(0);}
-#complib-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-#complib-hdr span{font-size:12px;font-weight:700;color:var(--cyan);}
-#complib-hdr button{background:none;border:none;color:var(--dim);cursor:pointer;font-size:16px;}
-#comp-cats{display:flex;gap:5px;padding:6px 10px;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
-#comp-cats::-webkit-scrollbar{display:none;}
-.comp-cat{font-size:9px;padding:3px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;}
-.comp-cat.on{color:var(--cyan);border-color:var(--bc);background:var(--tab);}
-#comp-grid{flex:1;overflow-y:auto;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.comp-item{padding:10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--ibg);transition:all 0.15s;text-align:center;}
-.comp-item:hover{border-color:var(--bc);background:var(--tab);}
-.comp-item .ci-icon{font-size:20px;margin-bottom:4px;}
-.comp-item .ci-name{font-size:10px;color:var(--text);font-weight:600;}
-.comp-item .ci-desc{font-size:9px;color:var(--dim);margin-top:2px;}
-
-/* Messages */
+#custom-color{width:18px;height:18px;border-radius:50%;cursor:pointer;border:1px solid var(--border);padding:0;overflow:hidden;}
 #msgs{flex:1;overflow-y:auto;padding:10px 10px 4px;display:flex;flex-direction:column;gap:8px;}
 .msg{border-radius:10px;padding:9px 11px;animation:slidein 0.2s ease-out;}
 .msg.u{align-self:flex-end;max-width:92%;background:var(--ubg);border:1px solid var(--ub);}
@@ -169,17 +141,12 @@ label.bc{cursor:pointer;}
 .mtext code{background:rgba(0,255,200,0.08);padding:1px 4px;border-radius:3px;font-family:var(--mono);font-size:10px;color:var(--cyan);}
 .cpmbtn{font-size:8px;padding:1px 6px;border-radius:3px;cursor:pointer;background:rgba(0,255,200,0.06);border:1px solid rgba(0,255,200,0.15);color:rgba(0,255,200,0.5);font-family:var(--ui);transition:all 0.15s;margin-left:4px;}
 .cpmbtn:hover{color:var(--cyan);}
-
-/* Follow-up suggestions */
 .followups{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
 .fu-btn{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.2);color:#5599ff;white-space:nowrap;font-family:var(--ui);transition:all 0.15s;}
-.fu-btn:hover{background:rgba(0,136,255,0.18);border-color:rgba(0,136,255,0.35);}
-
-/* Continue building button */
+.fu-btn:hover{background:rgba(0,136,255,0.18);}
 .continue-btn{display:flex;align-items:center;gap:6px;margin-top:8px;padding:7px 12px;border-radius:8px;cursor:pointer;background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.25);color:#ffcc44;font-size:10px;font-family:var(--ui);transition:all 0.15s;width:fit-content;}
 .continue-btn:hover{background:rgba(255,180,0,0.15);}
-
-/* Code blocks */
+.img-preview{max-width:100%;border-radius:6px;margin-top:6px;border:1px solid var(--border);}
 .cblk{margin-top:7px;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);}
 .cbhdr{display:flex;justify-content:space-between;align-items:center;padding:4px 10px;background:var(--chdr);border-bottom:1px solid rgba(255,255,255,0.06);}
 .clang{font-size:8px;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
@@ -192,30 +159,22 @@ label.bc{cursor:pointer;}
 .bcopy.ok{color:var(--cyan);}
 .cblk pre{margin:0;padding:10px 12px;background:var(--cbg);overflow-x:auto;}
 .cblk pre code{font-family:var(--mono);font-size:11px;line-height:1.65;background:transparent!important;}
-
-/* Typing */
 #typing{display:none;gap:4px;padding:8px 12px;background:var(--abg);border:1px solid var(--ab);border-radius:10px;width:fit-content;margin:0 10px 4px;flex-shrink:0;}
 #typing.on{display:flex;}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);}
 .dot:nth-child(1){animation:bounce 1.2s infinite 0s}
 .dot:nth-child(2){animation:bounce 1.2s infinite 0.2s}
 .dot:nth-child(3){animation:bounce 1.2s infinite 0.4s}
-
-/* Quick prompts */
 #qps{display:flex;gap:5px;padding:5px 10px;flex-shrink:0;overflow-x:auto;border-top:1px solid var(--border);scrollbar-width:none;}
 #qps::-webkit-scrollbar{display:none;}
 .qp{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;flex-shrink:0;}
 .qp:hover{border-color:var(--bc);color:var(--cyan);background:var(--tab);}
-
-/* Chat input */
 #cia{display:flex;gap:7px;padding:8px 10px;flex-shrink:0;background:var(--toolbar);border-top:1px solid var(--bc);}
 #cinput{flex:1;background:var(--ibg);border:1px solid var(--ib);border-radius:10px;color:var(--text);padding:8px 11px;font-size:12px;resize:none;height:54px;line-height:1.5;font-family:var(--ui);outline:none;}
 #cinput::placeholder{color:var(--dim);}
 #sbtn{width:42px;height:54px;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--blue));border:none;border-radius:10px;color:#000;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.15s;}
 #sbtn:hover{transform:scale(1.05);}
 #sbtn:disabled{background:rgba(0,255,200,0.2);color:var(--cyan);cursor:not-allowed;transform:none;}
-
-/* ── SIDEBAR ── */
 #sidebar{position:fixed;left:0;top:0;bottom:0;width:265px;background:var(--sidebar);border-right:1px solid var(--bc);display:flex;flex-direction:column;z-index:300;transform:translateX(-100%);transition:transform 0.25s ease;backdrop-filter:blur(20px);}
 #sidebar.open{transform:translateX(0);}
 #sb-hdr{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
@@ -230,15 +189,12 @@ label.bc{cursor:pointer;}
 .sitem.active{border-color:rgba(0,255,200,0.3);}
 .si-info{flex:1;min-width:0;}
 .si-title{font-size:11px;color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.si-title input{background:transparent;border:none;border-bottom:1px solid var(--bc);color:var(--text);font-size:11px;font-family:var(--ui);font-weight:600;outline:none;width:100%;}
 .si-meta{font-size:9px;color:var(--dim);margin-top:2px;}
 .si-actions{display:flex;gap:3px;flex-shrink:0;opacity:0;transition:opacity 0.15s;}
 .sitem:hover .si-actions{opacity:1;}
 .si-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:12px;padding:2px;}
 .si-btn:hover{color:var(--cyan);}
 .si-del:hover{color:#ff8888!important;}
-
-/* Settings & Version drawers */
 #sdrawer,#vdrawer{position:fixed;right:0;top:0;bottom:0;width:280px;background:var(--bg2);border-left:1px solid var(--bc);display:flex;flex-direction:column;z-index:300;transform:translateX(100%);transition:transform 0.25s ease;}
 #sdrawer.open,#vdrawer.open{transform:translateX(0);}
 .drawer-hdr{padding:12px 14px;font-size:12px;color:var(--cyan);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:700;flex-shrink:0;}
@@ -254,40 +210,24 @@ label.bc{cursor:pointer;}
 .vitem:hover{border-color:var(--bc);background:var(--tab);}
 .vlbl{font-size:11px;color:var(--text);font-weight:600;}
 .vmeta{font-size:9px;color:var(--dim);margin-top:2px;}
-
-/* Overlay */
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;display:none;}
 #overlay.on{display:block;}
-
-
-/* Undo/Redo buttons */
-.undoredo{display:flex;gap:3px;}
-.undoredo button{font-size:12px;padding:2px 7px;border-radius:4px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);transition:all 0.15s;}
-.undoredo button:hover:not(:disabled){color:var(--cyan);border-color:var(--bc);}
-.undoredo button:disabled{opacity:0.3;cursor:not-allowed;}
-
-/* Lock overlay */
-#lock-bar{display:none;align-items:center;gap:6px;padding:4px 10px;flex-shrink:0;background:rgba(255,100,0,0.06);border-bottom:1px solid rgba(255,140,0,0.2);font-size:10px;color:#ffaa44;flex-wrap:wrap;}
-#lock-bar.on{display:flex;}
-.lock-range{display:inline-flex;align-items:center;gap:4px;background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.25);border-radius:4px;padding:2px 7px;font-size:9px;color:#ffaa44;}
-.lock-range button{background:none;border:none;color:#ffaa44;cursor:pointer;font-size:11px;padding:0 2px;}
-
-/* Inline edit popup */
-#inline-popup{position:fixed;z-index:500;background:var(--bg3);border:1px solid var(--bc);border-radius:8px;padding:8px;display:none;flex-direction:column;gap:6px;min-width:200px;max-width:280px;box-shadow:0 8px 30px rgba(0,0,0,0.4);}
-#inline-popup.on{display:flex;}
-#inline-popup-label{font-size:9px;color:var(--cyan);font-weight:700;}
-#inline-input{background:var(--ibg);border:1px solid var(--bc);border-radius:5px;color:var(--text);font-size:11px;padding:5px 8px;font-family:var(--ui);outline:none;width:100%;}
-#inline-popup-btns{display:flex;gap:5px;}
-
-/* Quality badge */
-.qual-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
-.qual-a{background:rgba(0,255,100,0.12);border:1px solid rgba(0,255,100,0.3);color:#44ff88;}
-.qual-b{background:rgba(100,200,255,0.12);border:1px solid rgba(100,200,255,0.3);color:#66ccff;}
-.qual-c{background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.3);color:#ffcc00;}
-.qual-d{background:rgba(255,100,0,0.12);border:1px solid rgba(255,100,0,0.3);color:#ff8844;}
-
-/* Deploy modal */
-#deploy-modal{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,0.8);}
+#complib{position:fixed;bottom:0;left:0;right:0;height:55%;background:var(--bg2);border-top:1px solid var(--bc);z-index:200;transform:translateY(100%);transition:transform 0.3s ease;display:flex;flex-direction:column;}
+#complib.open{transform:translateY(0);}
+#complib-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+#complib-hdr span{font-size:12px;font-weight:700;color:var(--cyan);}
+#complib-hdr button{background:none;border:none;color:var(--dim);cursor:pointer;font-size:16px;}
+#comp-cats{display:flex;gap:5px;padding:6px 10px;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
+#comp-cats::-webkit-scrollbar{display:none;}
+.comp-cat{font-size:9px;padding:3px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;}
+.comp-cat.on{color:var(--cyan);border-color:var(--bc);background:var(--tab);}
+#comp-grid{flex:1;overflow-y:auto;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.comp-item{padding:10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--ibg);transition:all 0.15s;text-align:center;}
+.comp-item:hover{border-color:var(--bc);background:var(--tab);}
+.comp-item .ci-icon{font-size:20px;margin-bottom:4px;}
+.comp-item .ci-name{font-size:10px;color:var(--text);font-weight:600;}
+.comp-item .ci-desc{font-size:9px;color:var(--dim);margin-top:2px;}
+#deploy-modal{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,0.85);}
 #deploy-modal.on{display:flex;}
 #deploy-box{background:var(--bg2);border:1px solid var(--bc);border-radius:14px;padding:22px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;}
 #deploy-box h3{font-size:14px;color:var(--cyan);font-weight:700;}
@@ -295,13 +235,8 @@ label.bc{cursor:pointer;}
 #deploy-url{background:rgba(0,255,200,0.06);border:1px solid var(--bc);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--cyan);font-family:var(--mono);word-break:break-all;display:none;}
 #deploy-progress{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;display:none;}
 #deploy-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));width:0%;transition:width 0.3s;border-radius:2px;}
-
-/* Image upload in chat */
 #img-upload-btn{font-size:9px;padding:3px 7px;border-radius:5px;cursor:pointer;background:rgba(180,100,255,0.08);border:1px solid rgba(180,100,255,0.25);color:#c77dff;font-family:var(--ui);transition:all 0.15s;}
 #img-upload-btn:hover{background:rgba(180,100,255,0.18);}
-.img-preview{max-width:100%;border-radius:6px;margin-top:6px;border:1px solid var(--border);}
-
-/* Animations */
 @keyframes gpulse{0%,100%{box-shadow:0 0 5px var(--cyan)}50%{box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,255,200,0.25)}}
 @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 @keyframes slidein{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
@@ -309,16 +244,10 @@ label.bc{cursor:pointer;}
 </head>
 <body>
 <div id="app">
-
-  <!-- Header -->
   <div id="hdr">
     <div style="display:flex;align-items:center;gap:7px">
       <button class="hbtn" onclick="openDrawer('sb')" style="font-size:14px;padding:2px 5px">☰</button>
-      <div class="logo">
-        <div class="logo-icon">⚡</div>
-        <span class="logo-name">CodeMind</span>
-        <span class="badge">AI · Web Dev</span>
-      </div>
+      <div class="logo"><div class="logo-icon">⚡</div><span class="logo-name">CodeMind</span><span class="badge">AI · Web Dev</span></div>
     </div>
     <div class="hbtns">
       <div class="sdot"></div>
@@ -329,17 +258,13 @@ label.bc{cursor:pointer;}
       <button class="hbtn" onclick="openDrawer('s')">⚙️</button>
     </div>
   </div>
-
-  <!-- Tabs -->
   <div id="tabs">
     <button class="tab on" onclick="switchTab('editor')" id="tab-editor">📝 Editor</button>
     <button class="tab" onclick="switchTab('preview')" id="tab-preview">👁 Preview</button>
     <button class="tab" onclick="switchTab('chat')" id="tab-chat">💬 Chat</button>
   </div>
-
   <div id="main">
-
-    <!-- ── EDITOR ── -->
+    <!-- EDITOR -->
     <div class="panel on" id="panel-editor">
       <div class="ptb">
         <div style="display:flex;align-items:center">
@@ -350,14 +275,14 @@ label.bc{cursor:pointer;}
           <label class="btn bc">📁<input type="file" id="fup" accept=".html,.css,.js,.txt" style="display:none"></label>
           <button class="btn bg" id="caBtn">Copy</button>
           <button class="btn bc" id="dlBtn">⬇ Save</button>
-          <button class="btn bg" id="fmtBtn">✨ Format</button>
+          <button class="btn bg" id="fmtBtn">✨ Fmt</button>
           <button class="btn bg" id="hlBtn">🎨 HL</button>
           <button class="btn bg" id="fnrBtn">🔍</button>
-          <button class="btn bg" id="scanBtn">⚡ Scan</button>
-          <button class="btn bc" id="autofixBtn">🔧 AutoFix</button>
-          <button class="btn bg" id="qualBtn">📊 Quality</button>
-          <button class="btn bg" id="lockBtn">🔒 Lock</button>
-          <button class="btn bpurple" id="compBtn">🧩 Components</button>
+          <button class="btn bc" id="autofixBtn">🔧 Fix</button>
+          <button class="btn bg" id="qualBtn">📊</button>
+          <button class="btn bg" id="lockBtn">🔒</button>
+          <button class="btn bg" id="scanBtn">⚡</button>
+          <button class="btn bpurple" id="compBtn">🧩</button>
         </div>
       </div>
       <div class="bnr" id="fwarn"><span id="wtext"></span><button onclick="this.parentElement.classList.remove('on')">×</button></div>
@@ -369,6 +294,11 @@ label.bc{cursor:pointer;}
         <button class="btn bg" onclick="doReplaceAll()">All</button>
         <button class="btn bg" onclick="document.getElementById('fnrbar').classList.remove('on')">×</button>
       </div>
+      <div id="lock-bar">
+        <span>🔒 Locked:</span>
+        <span id="lock-list" style="display:flex;gap:4px;flex-wrap:wrap"></span>
+        <button class="btn br" style="font-size:9px;padding:2px 7px" onclick="clearLocks()">Clear all</button>
+      </div>
       <div id="focbar">
         <button class="btn bg" id="foct" style="font-size:9px;padding:2px 8px">🎯 Focus</button>
         <div class="fins">
@@ -379,25 +309,31 @@ label.bc{cursor:pointer;}
           <span style="font-size:9px;color:rgba(0,255,200,0.4)">→ AI only</span>
         </div>
       </div>
-      <div id="lock-bar"><span>🔒 Locked sections:</span><span id="lock-list" style="display:flex;gap:4px;flex-wrap:wrap"></span><button class="btn br" style="font-size:9px;padding:2px 7px" onclick="clearLocks()">Clear all</button></div>
-
-      <div id="inline-popup"><div id="inline-popup-label">✏️ Edit Line <span id="inline-line-num">1</span></div><input id="inline-input" placeholder="What to change on this line?"><div id="inline-popup-btns"><button class="btn bc" style="flex:1;font-size:10px" onclick="submitInlineEdit()">Ask AI</button><button class="btn bg" style="font-size:10px" onclick="closeInlinePopup()">Cancel</button></div></div>
-
+      <div id="inline-popup">
+        <div id="inline-popup-label">✏️ Edit Line <span id="inline-line-num">1</span></div>
+        <input id="inline-input" placeholder="What to change on this line?">
+        <div id="inline-popup-btns">
+          <button class="btn bc" style="flex:1;font-size:10px" onclick="submitInlineEdit()">Ask AI</button>
+          <button class="btn bg" style="font-size:10px" onclick="closeInlinePopup()">Cancel</button>
+        </div>
+      </div>
       <div id="ewrap">
         <div id="lnums"></div>
-        <textarea id="ced" spellcheck="false"><!-- 👋 Welcome to CodeMind AI v4.0!
+        <textarea id="ced" spellcheck="false"><!-- 👋 Welcome to CodeMind AI v5.0!
 
-  NEW: Style Presets, Color Picker, Component Library,
-  Follow-up suggestions, Continue Building, & more!
+  NEW: Image→Code, Deploy, Lock, Inline Edit,
+  Undo/Redo, AutoFix, Quality Score & more!
 
   Go to Chat tab and tell me what to build.
-  Your chat history saves automatically.
 --></textarea>
         <div id="hlview"></div>
       </div>
       <div id="efoot">
         <span id="flang">HTML · CSS · JS</span>
-        <div class="undoredo"><button id="undoBtn" onclick="doUndo()" disabled title="Undo">↩</button><button id="redoBtn" onclick="doRedo()" disabled title="Redo">↪</button></div>
+        <div class="undoredo">
+          <button id="undoBtn" onclick="doUndo()" disabled title="Undo">↩</button>
+          <button id="redoBtn" onclick="doRedo()" disabled title="Redo">↪</button>
+        </div>
         <div class="fszc">
           <button class="fsbtn" onclick="chFS(-1)">−</button>
           <span id="fslbl" style="font-size:9px;min-width:24px;text-align:center">12px</span>
@@ -406,42 +342,38 @@ label.bc{cursor:pointer;}
         <span id="fstats">0 lines</span>
       </div>
     </div>
-
-    <!-- ── PREVIEW ── -->
+    <!-- PREVIEW -->
     <div class="panel" id="panel-preview">
       <div id="pvtb">
         <span style="font-size:10px;color:var(--dim);font-weight:600">LIVE PREVIEW</span>
         <div class="brow">
-          <button class="pvsize on" id="pv-desk" onclick="setPVSize('desk')">🖥</button>
+          <button class="pvsize on" id="pv-desk" onclick="setPVSize('desk')">🖥 Desktop</button>
           <button class="pvsize" id="pv-mob" onclick="setPVSize('mob')">📱 Mobile</button>
           <button class="pvsize" id="pv-frame" onclick="setPVSize('frame')">📲 Frame</button>
           <button class="btn bc" onclick="refreshPV()">↺ Refresh</button>
-          <button class="btn bg" onclick="openInBrowser()">🌐 Browser</button>
+          <button class="btn bg" onclick="openInBrowser()">🌐</button>
           <button class="btn bg" onclick="clearPV()">✕</button>
         </div>
       </div>
       <div id="pvph">
         <div class="big">👁</div>
         <div>Preview will appear here</div>
-        <div style="font-size:11px;color:var(--dim)">Generate or write code, then tap Refresh</div>
+        <div style="font-size:11px;color:var(--dim)">Generate code then tap Refresh</div>
         <button class="btn bc" onclick="refreshPV()" style="margin-top:8px;font-size:11px;padding:6px 18px">▶ Preview Now</button>
       </div>
       <iframe id="pvframe" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
-
-    <!-- ── CHAT ── -->
+    <!-- CHAT -->
     <div class="panel" id="panel-chat">
       <div class="ptb">
         <span style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:0.5px" id="mcnt">AI CHAT</span>
         <div class="brow">
-          <label id="img-upload-btn">🖼 Image→Code<input type="file" id="img-fup" accept="image/*" style="display:none"></label>
+          <label id="img-upload-btn">🖼 Img→Code<input type="file" id="img-fup" accept="image/*" style="display:none"></label>
           <button class="btn bc" id="deployBtn">🚀 Deploy</button>
           <button class="btn bg" id="expBtn">📤</button>
           <button class="btn br" id="clrBtn">Clear</button>
         </div>
       </div>
-
-      <!-- Style presets -->
       <div id="presets-bar">
         <span style="font-size:9px;color:var(--dim);flex-shrink:0;align-self:center">Style:</span>
         <button class="preset-btn on" onclick="setPreset('auto')" id="ps-auto">🎯 Auto</button>
@@ -452,40 +384,32 @@ label.bc{cursor:pointer;}
         <button class="preset-btn" onclick="setPreset('corporate')" id="ps-corporate">💼 Corporate</button>
         <button class="preset-btn" onclick="setPreset('dark')" id="ps-dark">🌑 Dark</button>
       </div>
-
-      <!-- Color picker -->
       <div id="color-bar">
         <span>Accent:</span>
-        <div class="color-dot on" style="background:#00ffc8" onclick="setAccent('#00ffc8',this)" title="Cyan"></div>
-        <div class="color-dot" style="background:#6366f1" onclick="setAccent('#6366f1',this)" title="Indigo"></div>
-        <div class="color-dot" style="background:#f59e0b" onclick="setAccent('#f59e0b',this)" title="Amber"></div>
-        <div class="color-dot" style="background:#ef4444" onclick="setAccent('#ef4444',this)" title="Red"></div>
-        <div class="color-dot" style="background:#c9a96e" onclick="setAccent('#c9a96e',this)" title="Gold"></div>
-        <div class="color-dot" style="background:#a855f7" onclick="setAccent('#a855f7',this)" title="Purple"></div>
-        <div class="color-dot" style="background:#10b981" onclick="setAccent('#10b981',this)" title="Emerald"></div>
-        <div class="color-dot" style="background:#f97316" onclick="setAccent('#f97316',this)" title="Orange"></div>
-        <input type="color" id="custom-color" value="#00ffc8" onchange="setAccent(this.value,null)" title="Custom color">
-        <span style="font-size:9px;color:var(--dim);margin-left:2px">Custom</span>
+        <div class="color-dot on" style="background:#00ffc8" onclick="setAccent('#00ffc8',this)"></div>
+        <div class="color-dot" style="background:#6366f1" onclick="setAccent('#6366f1',this)"></div>
+        <div class="color-dot" style="background:#f59e0b" onclick="setAccent('#f59e0b',this)"></div>
+        <div class="color-dot" style="background:#ef4444" onclick="setAccent('#ef4444',this)"></div>
+        <div class="color-dot" style="background:#c9a96e" onclick="setAccent('#c9a96e',this)"></div>
+        <div class="color-dot" style="background:#a855f7" onclick="setAccent('#a855f7',this)"></div>
+        <div class="color-dot" style="background:#10b981" onclick="setAccent('#10b981',this)"></div>
+        <div class="color-dot" style="background:#f97316" onclick="setAccent('#f97316',this)"></div>
+        <input type="color" id="custom-color" value="#00ffc8" onchange="setAccent(this.value,null)" title="Custom">
       </div>
-
       <div id="msgs"></div>
       <div id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-
       <div id="qps">
         <button class="qp" onclick="useP('Make it fully responsive for mobile')">📱 Responsive</button>
         <button class="qp" onclick="useP('Add a dark mode toggle')">🌙 Dark mode</button>
         <button class="qp" onclick="useP('Add smooth entrance animations and micro-interactions')">✨ Animations</button>
         <button class="qp" onclick="useP('Find and fix all bugs and complete the site')">🐛 Fix & Complete</button>
-        <button class="qp" onclick="useP('Make it look more premium and polished like a top agency built it')">💎 Premium UI</button>
-        <button class="qp" onclick="useP('Add glassmorphism effects to cards and panels')">🪟 Glassmorphism</button>
-        <button class="qp" onclick="useP('Improve typography — better fonts, hierarchy and spacing')">✍️ Typography</button>
+        <button class="qp" onclick="useP('Make it look more premium and polished')">💎 Premium UI</button>
+        <button class="qp" onclick="useP('Add glassmorphism effects to cards and panels')">🪟 Glass</button>
+        <button class="qp" onclick="useP('Improve typography, fonts, hierarchy and spacing')">✍️ Typography</button>
         <button class="qp" onclick="useP('Add hover effects and transitions to all interactive elements')">🖱 Hover FX</button>
         <button class="qp" onclick="useP('Add a sticky navigation bar with backdrop blur')">📌 Sticky nav</button>
-        <button class="qp" onclick="useP('Make the color scheme more vibrant and sophisticated')">🎨 Colors</button>
         <button class="qp" onclick="useP('Add a footer with links and social icons')">🔗 Footer</button>
-        <button class="qp" onclick="useP('Add a hero section with a bold headline and CTA')">🚀 Hero section</button>
       </div>
-
       <div id="cia">
         <textarea id="cinput" placeholder="Describe what to build, or ask me to improve the code..."></textarea>
         <button id="sbtn">↑</button>
@@ -494,30 +418,21 @@ label.bc{cursor:pointer;}
   </div>
 </div>
 
-<!-- Overlay -->
 <div id="overlay" onclick="closeDrawers()"></div>
 
-<!-- Sidebar -->
 <div id="sidebar">
   <div id="sb-hdr">
-    <div id="sb-top">
-      <span>💬 Chat History</span>
-      <button onclick="closeDrawers()">×</button>
-    </div>
+    <div id="sb-top"><span>💬 Chat History</span><button onclick="closeDrawers()">×</button></div>
     <button id="new-chat-btn" onclick="newChat()">+ New Chat</button>
   </div>
-  <div id="session-list">
-    <div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No saved chats yet.<br>Start a conversation!</div>
-  </div>
+  <div id="session-list"><div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No saved chats yet.</div></div>
 </div>
 
-<!-- Version Drawer -->
 <div id="vdrawer">
   <div class="drawer-hdr">📜 Code Versions <button onclick="closeDrawers()">×</button></div>
   <div id="vlist"><div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No versions yet.</div></div>
 </div>
 
-<!-- Settings Drawer -->
 <div id="sdrawer">
   <div class="drawer-hdr">⚙️ Settings <button onclick="closeDrawers()">×</button></div>
   <div style="flex:1;overflow-y:auto;">
@@ -531,14 +446,7 @@ label.bc{cursor:pointer;}
     </div>
     <div class="sgroup">
       <h4>🎨 Theme</h4>
-      <div class="srow">
-        <span class="slbl">Color theme</span>
-        <select class="sinput" id="s-theme" onchange="setTheme(this.value)" style="width:auto">
-          <option value="dark">🌙 Dark</option>
-          <option value="light">☀️ Light</option>
-          <option value="hacker">💚 Hacker</option>
-        </select>
-      </div>
+      <div class="srow"><span class="slbl">Color theme</span><select class="sinput" id="s-theme" onchange="setTheme(this.value)" style="width:auto"><option value="dark">🌙 Dark</option><option value="light">☀️ Light</option><option value="hacker">💚 Hacker</option></select></div>
     </div>
     <div class="sgroup">
       <h4>⚙️ Options</h4>
@@ -551,153 +459,134 @@ label.bc{cursor:pointer;}
     </div>
     <div class="sgroup">
       <h4>ℹ️ About</h4>
-      <div style="font-size:10px;color:var(--dim);line-height:1.8">
-        <div>CodeMind AI v4.0</div>
-        <div>Built by Fancy (Treaz)</div>
-        <div style="color:rgba(0,255,200,0.5)">Powered by OpenRouter</div>
-      </div>
+      <div style="font-size:10px;color:var(--dim);line-height:1.8"><div>CodeMind AI v5.0</div><div>Built by Fancy (Treaz)</div><div style="color:rgba(0,255,200,0.5)">Powered by OpenRouter</div></div>
     </div>
   </div>
 </div>
 
-<!-- Deploy Modal -->
-<div id="deploy-modal">
-  <div id="deploy-box">
-    <h3>🚀 Deploy to Netlify</h3>
-    <p>Your site will be published live instantly with a public URL. No account needed!</p>
-    <div id="deploy-progress"><div id="deploy-bar"></div></div>
-    <div id="deploy-url"></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn bc" id="deploy-go-btn" style="flex:1;padding:8px;font-size:11px;font-weight:600" onclick="deployToNetlify()">🚀 Publish Now</button>
-      <button class="btn bg" style="padding:8px;font-size:11px" onclick="document.getElementById('deploy-modal').classList.remove('on')">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- Component Library -->
 <div id="complib">
-  <div id="complib-hdr">
-    <span>🧩 Component Library</span>
-    <button onclick="closeCompLib()">×</button>
-  </div>
+  <div id="complib-hdr"><span>🧩 Component Library</span><button onclick="closeCompLib()">×</button></div>
   <div id="comp-cats"></div>
   <div id="comp-grid"></div>
 </div>
 <div id="comp-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;display:none;" onclick="closeCompLib()"></div>
 
+<div id="deploy-modal">
+  <div id="deploy-box">
+    <h3>🚀 Deploy to Netlify</h3>
+    <p>Your site will be published live instantly. No account needed!</p>
+    <div id="deploy-progress"><div id="deploy-bar"></div></div>
+    <div id="deploy-url"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bc" id="deploy-go-btn" style="flex:1;padding:8px;font-size:11px;font-weight:600">🚀 Publish Now</button>
+      <button class="btn bg" style="padding:8px;font-size:11px" onclick="document.getElementById('deploy-modal').classList.remove('on')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ══════════════════════════════════════════════════════
-// SYSTEM PROMPT BASE
-// ══════════════════════════════════════════════════════
-const BASE_SYSPROMPT = `You are CodeMind, a world-class AI web developer and UI/UX designer. Your name is CodeMind. Never reveal any underlying model or provider. If asked who you are, say "I'm CodeMind, your AI web dev assistant."
+// ══════ SYSTEM PROMPT ══════
+const BASE_SYSPROMPT=`You are CodeMind, a world-class AI web developer. Your name is CodeMind. Never reveal any underlying model or provider. If asked who you are, say "I'm CodeMind, your AI web dev assistant."
 
 ## DESIGN PHILOSOPHY
-You build websites that look like they were crafted by senior designers at Stripe, Linear, Apple, or Vercel. Every site should feel premium, intentional, and beautiful.
+Build websites that look like they were crafted by senior designers at Stripe, Linear, Apple, or Vercel. Every site should feel premium, intentional, and beautiful.
 
 ### TYPOGRAPHY
-- Always use 2 Google Fonts: a distinctive display font for headings + a clean body font
-- Great display fonts: Playfair Display, Cormorant Garamond, Space Grotesk, Syne, Bebas Neue, DM Serif Display, Fraunces
-- Great body fonts: DM Sans, Inter, Outfit, Plus Jakarta Sans, Manrope
-- Use proper type scale: hero 48-72px, h1 36-48px, h2 28-36px, body 16-18px
-- Letter spacing on headings, generous line heights
+Always use 2 Google Fonts: a distinctive display font + a clean body font.
+Display: Playfair Display, Cormorant, Space Grotesk, Syne, Bebas Neue, DM Serif Display
+Body: DM Sans, Inter, Outfit, Plus Jakarta Sans, Manrope
+Type scale: hero 48-72px, h1 36-48px, body 16-18px
 
-### COMPONENTS EVERY BUILD MUST HAVE
-- Hero section with compelling headline + subtext + CTA button(s)
-- Smooth scroll behavior (scroll-behavior: smooth)
-- Entrance animations using @keyframes + Intersection Observer
+### EVERY BUILD MUST HAVE
+- Hero section with headline + subtext + CTA buttons
+- Smooth scroll (scroll-behavior: smooth)
+- Entrance animations with @keyframes + Intersection Observer
 - Hover effects on ALL interactive elements
-- Gradient text on key headlines (background-clip: text)
+- Gradient text on headlines (background-clip: text)
 - Glassmorphism where appropriate (backdrop-filter: blur)
-- Subtle colored shadows (box-shadow with brand color at low opacity)
-- Buttons: gradient backgrounds, border-radius 8-12px, padding 14px 32px
-- Smooth transitions: transition: all 0.3s ease on interactive elements
+- Colored shadows (box-shadow with brand color at low opacity)
+- Smooth transitions on all interactive elements
 
-### CODE QUALITY
-- COMPLETE self-contained HTML file — ALWAYS include </body></html> at the end
+### CODE RULES
+- COMPLETE self-contained HTML file — ALWAYS end with </body></html>
 - Google Fonts via @import in CSS
 - No external dependencies except fonts
-- Works instantly in any browser
 - Wrap in single \`\`\`html code block
-- After code: 2-3 sentence summary + 3 specific follow-up suggestions labeled [SUGGESTIONS]: suggestion1 | suggestion2 | suggestion3
+- After code: 2-3 sentence summary + follow-ups labeled [SUGGESTIONS]: s1 | s2 | s3
 
-## DEBUG MODE
-When user shares code: analyze carefully, find all bugs, provide fixes.
-
-## CONVERSATIONAL MESSAGES
-Short greetings (hi, hello, thanks, ok): respond briefly in 1-2 sentences, NO code.
+## CONVERSATIONAL
+Short greetings (hi, hello, thanks): respond briefly in 1-2 sentences, NO code.
 
 ## OFF-TOPIC
-Anything unrelated to web dev: "I specialize in web development only. Ask me to build or improve a website!"
+Anything not web dev: "I specialize in web development only!"
 
-## RULES
-- ALWAYS complete the HTML file with </body></html>
-- Never lorem ipsum — write real, meaningful content
-- Every build should make someone say "wow"`;
+## DEBUG MODE
+When user shares code: find bugs, provide fixes in proper code blocks.
 
-// Style preset additions
-const PRESET_PROMPTS = {
-  auto: '',
-  minimal: '\n\n## STYLE PRESET: MINIMAL\nUse lots of whitespace, clean lines, monochrome palette with one accent, subtle typography, no flashy gradients. Think Apple or Linear.',
-  bold: '\n\n## STYLE PRESET: BOLD\nLarge dramatic typography, high contrast, strong geometric shapes, vibrant gradients, confident layout. Think Awwwards winner.',
-  luxury: '\n\n## STYLE PRESET: LUXURY\nBlack/dark background with gold (#c9a96e) or rose gold accents, elegant serif fonts like Cormorant or Playfair, refined spacing, premium feel. Think Louis Vuitton or Rolls Royce.',
-  playful: '\n\n## STYLE PRESET: PLAYFUL\nBright colors, rounded shapes, bouncy animations, fun typography mixing weights, friendly and approachable. Think Notion or Duolingo.',
-  corporate: '\n\n## STYLE PRESET: CORPORATE\nClean professional layout, navy/blue palette, confident sans-serif fonts, structured grid, trustworthy feel. Think McKinsey or Salesforce.',
-  dark: '\n\n## STYLE PRESET: DARK\nDeep dark background (#050510), neon/electric accents, glow effects, glassmorphism, cyberpunk-inspired. Think Vercel or Linear dark mode.'
+ALWAYS complete the HTML file. Never lorem ipsum. Every build should make someone say "wow".`;
+
+const PRESET_PROMPTS={
+  auto:'',
+  minimal:'\n\nSTYLE: Minimal — lots of whitespace, clean lines, monochrome + one accent, subtle typography. Think Apple or Linear.',
+  bold:'\n\nSTYLE: Bold — large dramatic typography, high contrast, strong geometric shapes, vibrant gradients. Think Awwwards winner.',
+  luxury:'\n\nSTYLE: Luxury — black/dark background with gold (#c9a96e) or rose gold accents, elegant serif fonts, refined spacing. Think Louis Vuitton.',
+  playful:'\n\nSTYLE: Playful — bright colors, rounded shapes, bouncy animations, fun typography. Think Notion or Duolingo.',
+  corporate:'\n\nSTYLE: Corporate — clean professional layout, navy/blue palette, confident sans-serif, trustworthy. Think McKinsey or Salesforce.',
+  dark:'\n\nSTYLE: Dark — deep dark background (#050510), neon/electric accents, glow effects, glassmorphism, cyberpunk. Think Vercel dark mode.'
 };
 
-// ══════════════════════════════════════════════════════
-// COMPONENTS LIBRARY DATA
-// ══════════════════════════════════════════════════════
-const COMPONENTS = {
-  'Sections': [
-    {icon:'🚀',name:'Hero',desc:'Bold headline + CTA',prompt:'Add a stunning hero section with a bold headline, subheadline, two CTA buttons, and a subtle animated background gradient or particle effect'},
-    {icon:'💰',name:'Pricing',desc:'3-tier pricing cards',prompt:'Add a pricing section with 3 tiers (Free, Pro, Enterprise), feature lists, highlighted middle plan, and a monthly/yearly toggle'},
-    {icon:'❓',name:'FAQ',desc:'Accordion FAQ section',prompt:'Add a FAQ section with 6 questions and accordion-style expand/collapse answers with smooth animations'},
-    {icon:'⭐',name:'Testimonials',desc:'Customer reviews',prompt:'Add a testimonials section with 3-4 customer review cards showing avatar, name, role, star rating and quote with glassmorphism styling'},
-    {icon:'📊',name:'Features',desc:'Feature showcase grid',prompt:'Add a features section with 6 feature cards in a grid layout, each with an icon, title and description, with hover animations'},
-    {icon:'🔗',name:'Footer',desc:'Full site footer',prompt:'Add a professional footer with logo, 4 link columns, social media icons, newsletter signup and copyright notice'},
+const COMPONENTS={
+  'Sections':[
+    {icon:'🚀',name:'Hero',desc:'Bold headline + CTA',prompt:'Add a stunning hero section with bold headline, subheadline, two CTA buttons, and animated background'},
+    {icon:'💰',name:'Pricing',desc:'3-tier pricing cards',prompt:'Add a pricing section with 3 tiers (Free, Pro, Enterprise), feature lists, highlighted middle plan, monthly/yearly toggle'},
+    {icon:'❓',name:'FAQ',desc:'Accordion FAQ',prompt:'Add a FAQ section with 6 questions and accordion expand/collapse with smooth animations'},
+    {icon:'⭐',name:'Testimonials',desc:'Customer reviews',prompt:'Add a testimonials section with 4 customer review cards showing avatar, name, role, star rating and quote'},
+    {icon:'📊',name:'Features',desc:'Feature showcase grid',prompt:'Add a features section with 6 feature cards in a grid, each with icon, title and description with hover animations'},
+    {icon:'🔗',name:'Footer',desc:'Full site footer',prompt:'Add a professional footer with logo, 4 link columns, social media icons, newsletter signup and copyright'}
   ],
-  'Navigation': [
-    {icon:'📌',name:'Sticky Nav',desc:'Blur on scroll navbar',prompt:'Add a sticky navigation bar that applies backdrop-filter blur and changes background on scroll, with logo, nav links and a CTA button'},
-    {icon:'🍔',name:'Mobile Menu',desc:'Hamburger menu',prompt:'Add a mobile hamburger menu that slides in from the side with smooth animation, includes nav links and closes on link click'},
-    {icon:'🔖',name:'Breadcrumb',desc:'Page breadcrumb trail',prompt:'Add a breadcrumb navigation component styled to match the site'},
+  'Navigation':[
+    {icon:'📌',name:'Sticky Nav',desc:'Blur on scroll navbar',prompt:'Add a sticky navigation bar that applies backdrop-filter blur on scroll, with logo, nav links and a CTA button'},
+    {icon:'🍔',name:'Mobile Menu',desc:'Hamburger menu',prompt:'Add a mobile hamburger menu that slides in from the side with smooth animation'},
+    {icon:'🔖',name:'Breadcrumb',desc:'Page breadcrumb trail',prompt:'Add a breadcrumb navigation component styled to match the site'}
   ],
-  'UI Elements': [
-    {icon:'🃏',name:'Cards',desc:'Content cards grid',prompt:'Add beautiful content cards with image, title, description, tags and a read more link with hover lift effect'},
-    {icon:'📝',name:'Contact Form',desc:'Styled contact form',prompt:'Add a contact form with name, email, subject and message fields, validation, and a styled submit button with loading state'},
-    {icon:'🎠',name:'Carousel',desc:'Image/content slider',prompt:'Add a carousel/slider with navigation arrows, dot indicators, smooth slide transitions and auto-play'},
-    {icon:'📈',name:'Stats',desc:'Number statistics',prompt:'Add a stats/metrics section with 4 key numbers that animate counting up when scrolled into view'},
-    {icon:'🏷️',name:'Badge/Tags',desc:'Tag and badge components',prompt:'Add a collection of badge and tag UI components in various styles and colors'},
-    {icon:'⏳',name:'Timeline',desc:'Vertical timeline',prompt:'Add a vertical timeline component showing process steps or history events with icons and descriptions'},
+  'UI Elements':[
+    {icon:'🃏',name:'Cards',desc:'Content cards grid',prompt:'Add beautiful content cards with image, title, description, tags and read more link with hover lift effect'},
+    {icon:'📝',name:'Contact Form',desc:'Styled contact form',prompt:'Add a contact form with name, email, subject and message fields, validation, and styled submit button'},
+    {icon:'📈',name:'Stats',desc:'Animated numbers',prompt:'Add a stats section with 4 key numbers that animate counting up when scrolled into view'},
+    {icon:'⏳',name:'Timeline',desc:'Vertical timeline',prompt:'Add a vertical timeline component showing process steps or history events with icons and descriptions'}
   ],
-  'Extras': [
-    {icon:'🍪',name:'Cookie Banner',desc:'GDPR cookie notice',prompt:'Add a cookie consent banner at the bottom with accept/decline buttons, styled to match the site'},
+  'Extras':[
     {icon:'⬆️',name:'Scroll Top',desc:'Back to top button',prompt:'Add a back-to-top button that appears after scrolling 300px, with smooth scroll animation'},
-    {icon:'💬',name:'Chat Widget',desc:'Live chat bubble',prompt:'Add a floating chat widget button in the corner with a popup chat interface'},
     {icon:'🔔',name:'Toast Alerts',desc:'Notification system',prompt:'Add a toast notification system with success, error, warning and info variants that auto-dismiss'},
+    {icon:'🍪',name:'Cookie Banner',desc:'GDPR cookie notice',prompt:'Add a cookie consent banner at the bottom with accept/decline buttons'},
+    {icon:'💬',name:'Chat Widget',desc:'Live chat bubble',prompt:'Add a floating chat widget button in the corner with a popup chat interface'}
   ]
 };
 
-// ══════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════
-let hist=[], loading=false, lastCode='', sentOnce=false, focusOn=false;
-let versions=[], fontSize=12, mc=0, autoPreview=false, showFollowups=true;
+// ══════ STATE ══════
+let hist=[],loading=false,lastCode='',sentOnce=false,focusOn=false;
+let versions=[],fontSize=12,mc=0,autoPreview=false,showFollowups=true;
 let WORKER_URL='https://holy-meadow-3d03.fancytreaz.workers.dev';
 let MODEL='meta-llama/llama-3.3-70b-instruct:free';
-let currentPreset='auto', accentColor='#00ffc8';
-let sessions=[], currentSessionId=null;
+let currentPreset='auto',accentColor='#00ffc8';
+let sessions=[],currentSessionId=null;
 let hlMode=false;
+let undoStack=[],redoStack=[];
+let lockedRanges=[];
+let inlineLineNum=1;
 
-const BUILD=/^(?!.{0,}(^|\s)(hi|hello|hey|thanks|thank you|ok|okay|yes|no|what is|who are|explain|tell me about|can you tell)(\s|$)).*(build|create|make|generate|design|give me|i want|i need|develop|code me|write me)/is;
+const BUILD=/^(?!.{0,}(\b(hi|hello|hey|thanks|thank you|ok|okay|yes|no|what is|who are|explain|tell me about)\b)).*(build|create|make|generate|design|give me|i want|i need|develop|code me|write me)/is;
 
-function getSysPrompt(){return BASE_SYSPROMPT+(PRESET_PROMPTS[currentPreset]||'')+(accentColor!=='#00ffc8'?`\n\n## ACCENT COLOR\nUse ${accentColor} as the primary accent/brand color throughout the design.`:'');}
+function getSysPrompt(){
+  let p=BASE_SYSPROMPT+(PRESET_PROMPTS[currentPreset]||'');
+  if(accentColor!=='#00ffc8')p+='\n\nACCENT COLOR: Use '+accentColor+' as the primary brand color throughout.';
+  if(lockedRanges.length)p+='\n\n⚠️ DO NOT MODIFY locked line ranges: '+lockedRanges.map(r=>'lines '+r.start+'–'+r.end).join(', ')+'. Keep them exactly as-is.';
+  return p;
+}
 
-// ══════════════════════════════════════════════════════
-// SESSION MANAGEMENT
-// ══════════════════════════════════════════════════════
+// ══════ SESSIONS ══════
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
-function genTitle(t){const w=t.replace(/[^\w\s]/g,'').trim().split(/\s+/).slice(0,5).join(' ');return w.charAt(0).toUpperCase()+w.slice(1)||'New Chat';}
+function genTitle(t){const w=t.replace(/[^\w\s]/g,'').trim().split(/\s+/).slice(0,5).join(' ');return(w.charAt(0).toUpperCase()+w.slice(1))||'New Chat';}
 function saveSessions(){try{localStorage.setItem('cm_sessions',JSON.stringify(sessions));}catch(e){if(sessions.length>5){sessions=sessions.slice(0,5);saveSessions();}}}
 function loadSessions(){try{const s=localStorage.getItem('cm_sessions');if(s)sessions=JSON.parse(s);}catch(e){sessions=[];}}
 function getCurrentSession(){return sessions.find(s=>s.id===currentSessionId);}
@@ -705,22 +594,19 @@ function saveCurrentSession(){const sess=getCurrentSession();if(!sess)return;ses
 function createSession(firstMsg){const id=genId();const sess={id,title:genTitle(firstMsg||'New Chat'),hist:[],code:'',created:Date.now(),updated:Date.now(),msgCount:0};sessions.unshift(sess);currentSessionId=id;saveSessions();renderSessions();return sess;}
 function loadSession(id){const sess=sessions.find(s=>s.id===id);if(!sess)return;currentSessionId=id;hist=sess.hist||[];mc=sess.msgCount||0;if(sess.code){ced.value=sess.code;updateLN();updateFoot();}msgs.innerHTML='';hist.forEach(m=>{if(m.role==='user')addUser(m._display||m.content,true);else if(m.role==='assistant')addAI(m.content,true);});updMC();renderSessions();sentOnce=!!sess.code;lastCode=sess.code||'';closeDrawers();switchTab('chat');setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,100);}
 function deleteSession(id,e){if(e)e.stopPropagation();sessions=sessions.filter(s=>s.id!==id);if(currentSessionId===id){currentSessionId=null;newChat();}saveSessions();renderSessions();}
-function renameSession(id,e){if(e)e.stopPropagation();const sess=sessions.find(s=>s.id===id);if(!sess)return;const titleEl=document.querySelector(`[data-sid="${id}"] .si-title`);if(!titleEl)return;const cur=sess.title;titleEl.innerHTML=`<input type="text" value="${esc(cur)}" onblur="finishRename('${id}',this)" onkeydown="if(event.key==='Enter')this.blur()">`;titleEl.querySelector('input').focus();}
+function renameSession(id,e){if(e)e.stopPropagation();const sess=sessions.find(s=>s.id===id);if(!sess)return;const titleEl=document.querySelector('[data-sid="'+id+'"] .si-title');if(!titleEl)return;const cur=sess.title;titleEl.innerHTML='<input type="text" value="'+esc(cur)+'" onblur="finishRename(\''+id+'\',this)" onkeydown="if(event.key===\'Enter\')this.blur()">';titleEl.querySelector('input').focus();}
 function finishRename(id,input){const sess=sessions.find(s=>s.id===id);if(sess&&input.value.trim())sess.title=input.value.trim();saveSessions();renderSessions();}
-function duplicateSession(id,e){if(e)e.stopPropagation();const sess=sessions.find(s=>s.id===id);if(!sess)return;const copy={...JSON.parse(JSON.stringify(sess)),id:genId(),title:sess.title+' (copy)',created:Date.now(),updated:Date.now()};sessions.unshift(copy);saveSessions();renderSessions();showToast('Session duplicated ✓');}
+function duplicateSession(id,e){if(e)e.stopPropagation();const sess=sessions.find(s=>s.id===id);if(!sess)return;const copy={...JSON.parse(JSON.stringify(sess)),id:genId(),title:sess.title+' (copy)',created:Date.now(),updated:Date.now()};sessions.unshift(copy);saveSessions();renderSessions();showToast('Duplicated ✓');}
 function clearAllSessions(){if(!confirm('Delete all chat history?'))return;sessions=[];currentSessionId=null;saveSessions();renderSessions();newChat();closeDrawers();showToast('All history deleted');}
-function newChat(){currentSessionId=null;hist=[];mc=0;msgs.innerHTML='';ced.value='<!-- Start a new conversation in the Chat tab! -->';updateLN();updateFoot();sentOnce=false;lastCode='';updMC();addAI("New chat! Tell me what to build 🚀\n\nPick a **style preset** and **accent color** above, then describe your site.");closeDrawers();switchTab('chat');}
+function newChat(){currentSessionId=null;hist=[];mc=0;msgs.innerHTML='';ced.value='<!-- Start a new conversation in the Chat tab! -->';updateLN();updateFoot();sentOnce=false;lastCode='';updMC();addAI("New chat! Pick a style preset and tell me what to build 🚀");closeDrawers();switchTab('chat');}
 function timeAgo(ts){const d=Date.now()-ts;if(d<60000)return 'just now';if(d<3600000)return Math.floor(d/60000)+'m ago';if(d<86400000)return Math.floor(d/3600000)+'h ago';return Math.floor(d/86400000)+'d ago';}
-
 function renderSessions(){
   const list=document.getElementById('session-list');
   if(!sessions.length){list.innerHTML='<div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No saved chats yet.</div>';return;}
-  list.innerHTML=sessions.map(s=>`<div class="sitem${s.id===currentSessionId?' active':''}" onclick="loadSession('${s.id}')" data-sid="${s.id}"><div class="si-info"><div class="si-title">${esc(s.title)}</div><div class="si-meta">${s.msgCount||0} msgs · ${timeAgo(s.updated)}</div></div><div class="si-actions"><button class="si-btn" onclick="renameSession('${s.id}',event)" title="Rename">✏️</button><button class="si-btn" onclick="duplicateSession('${s.id}',event)" title="Duplicate">⧉</button><button class="si-btn si-del" onclick="deleteSession('${s.id}',event)" title="Delete">🗑</button></div></div>`).join('');
+  list.innerHTML=sessions.map(s=>'<div class="sitem'+(s.id===currentSessionId?' active':'')+'" onclick="loadSession(\''+s.id+'\')" data-sid="'+s.id+'"><div class="si-info"><div class="si-title">'+esc(s.title)+'</div><div class="si-meta">'+(s.msgCount||0)+' msgs · '+timeAgo(s.updated)+'</div></div><div class="si-actions"><button class="si-btn" onclick="renameSession(\''+s.id+'\',event)" title="Rename">✏️</button><button class="si-btn" onclick="duplicateSession(\''+s.id+'\',event)" title="Duplicate">⧉</button><button class="si-btn si-del" onclick="deleteSession(\''+s.id+'\',event)" title="Delete">🗑</button></div></div>').join('');
 }
 
-// ══════════════════════════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════════════════════════
+// ══════ SETTINGS ══════
 function loadSettings(){
   try{
     const s=JSON.parse(localStorage.getItem('cm_settings')||'{}');
@@ -752,54 +638,39 @@ function saveSettings(){
   closeDrawers();showToast('Settings saved ✓');
 }
 
-// ══════════════════════════════════════════════════════
-// PRESETS & COLORS
-// ══════════════════════════════════════════════════════
-function setPreset(p){
-  currentPreset=p;
-  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('ps-'+p)?.classList.add('on');
-}
-function setAccent(color,dotEl){
-  accentColor=color;
-  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('on'));
-  if(dotEl)dotEl.classList.add('on');
-  document.getElementById('custom-color').value=color;
-}
+// ══════ PRESETS & COLORS ══════
+function setPreset(p){currentPreset=p;document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('on'));document.getElementById('ps-'+p)?.classList.add('on');}
+function setAccent(color,dotEl){accentColor=color;document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('on'));if(dotEl)dotEl.classList.add('on');document.getElementById('custom-color').value=color;}
 
-// ══════════════════════════════════════════════════════
-// COMPONENT LIBRARY
-// ══════════════════════════════════════════════════════
+// ══════ COMPONENT LIBRARY ══════
 let currentCat=Object.keys(COMPONENTS)[0];
 function initCompLib(){
   const cats=document.getElementById('comp-cats');
-  cats.innerHTML=Object.keys(COMPONENTS).map(c=>`<button class="comp-cat${c===currentCat?' on':''}" onclick="showCat('${c}')">${c}</button>`).join('');
+  cats.innerHTML=Object.keys(COMPONENTS).map(c=>'<button class="comp-cat'+(c===currentCat?' on':'')+'" onclick="showCat(\''+c+'\')">'+c+'</button>').join('');
   showCat(currentCat);
 }
 function showCat(cat){
   currentCat=cat;
   document.querySelectorAll('.comp-cat').forEach(b=>b.classList.toggle('on',b.textContent===cat));
   const grid=document.getElementById('comp-grid');
-  grid.innerHTML=(COMPONENTS[cat]||[]).map(c=>`<div class="comp-item" onclick="insertComp(${JSON.stringify(c.prompt).replace(/'/g,"\\'")})""><div class="ci-icon">${c.icon}</div><div class="ci-name">${c.name}</div><div class="ci-desc">${c.desc}</div></div>`).join('');
+  grid.innerHTML=(COMPONENTS[cat]||[]).map(c=>'<div class="comp-item" onclick="insertComp(this)"><div class="ci-icon">'+c.icon+'</div><div class="ci-name">'+c.name+'</div><div class="ci-desc">'+c.desc+'</div></div>').join('');
+  // Store prompt in dataset
+  (COMPONENTS[cat]||[]).forEach((c,i)=>{grid.children[i].dataset.prompt=c.prompt;});
 }
 function openCompLib(){initCompLib();document.getElementById('complib').classList.add('open');document.getElementById('comp-overlay').style.display='block';}
 function closeCompLib(){document.getElementById('complib').classList.remove('open');document.getElementById('comp-overlay').style.display='none';}
-function insertComp(prompt){closeCompLib();cinput.value=prompt;switchTab('chat');cinput.focus();}
+function insertComp(el){closeCompLib();cinput.value=el.dataset.prompt;switchTab('chat');cinput.focus();}
 document.getElementById('compBtn').addEventListener('click',openCompLib);
 
-// ══════════════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════════════
+// ══════ TOAST ══════
 function showToast(msg,duration){
   let t=document.getElementById('toast');
   if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,255,200,0.15);border:1px solid var(--bc);color:var(--cyan);padding:6px 16px;border-radius:20px;font-size:11px;z-index:999;font-family:var(--ui);backdrop-filter:blur(10px);transition:opacity 0.3s;pointer-events:none;white-space:nowrap;';document.body.appendChild(t);}
   t.textContent=msg;t.style.opacity='1';
-  clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',duration||2000);
+  clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity='0';},duration||2000);
 }
 
-// ══════════════════════════════════════════════════════
-// DOM REFS
-// ══════════════════════════════════════════════════════
+// ══════ DOM REFS ══════
 const ced=document.getElementById('ced'),lnums=document.getElementById('lnums'),
   msgs=document.getElementById('msgs'),typing=document.getElementById('typing'),
   cinput=document.getElementById('cinput'),sbtn=document.getElementById('sbtn'),
@@ -808,50 +679,97 @@ const ced=document.getElementById('ced'),lnums=document.getElementById('lnums'),
   fwarn=document.getElementById('fwarn'),wtext=document.getElementById('wtext'),
   ebnr=document.getElementById('ebnr'),etext=document.getElementById('etext'),
   flbl=document.getElementById('flbl'),pvframe=document.getElementById('pvframe'),
-  pvph=document.getElementById('pvph'),vlist=document.getElementById('vlist'),fnrbar=document.getElementById('fnrbar'),
-  hlview=document.getElementById('hlview');
+  pvph=document.getElementById('pvph'),vlist=document.getElementById('vlist'),
+  fnrbar=document.getElementById('fnrbar'),hlview=document.getElementById('hlview');
 
-// ══════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════
+// ══════ INIT ══════
 loadSessions();loadSettings();updateLN();updateFoot();
 if(sessions.length)loadSession(sessions[0].id);
-else addAI("Hey! I'm **CodeMind** ⚡ v4.0 — your AI web dev assistant.\n\nPick a **style preset** and **accent color** in the Chat tab, then tell me what to build. Your history saves automatically!\n\nTry: *\"Build me a premium SaaS landing page for a project management tool\"*");
+else addAI("Hey! I'm **CodeMind** ⚡ v5.0 — your AI web dev assistant.\n\nPick a **style preset** and **accent color**, then tell me what to build. Chat history saves automatically!\n\nTry: *\"Build me a premium SaaS landing page\"*");
 
-if(window.visualViewport){window.visualViewport.addEventListener('resize',()=>document.getElementById('app').style.height=window.visualViewport.height+'px');}
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>document.getElementById('app').style.height=window.visualViewport.height+'px');
 
-// ══════════════════════════════════════════════════════
-// TABS & DRAWERS
-// ══════════════════════════════════════════════════════
+// ══════ TABS & DRAWERS ══════
 function switchTab(n){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.getElementById('panel-'+n).classList.add('on');document.getElementById('tab-'+n).classList.add('on');if(n==='chat')setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);}
 function openDrawer(type){closeDrawers();if(type==='sb')document.getElementById('sidebar').classList.add('open');else if(type==='v')document.getElementById('vdrawer').classList.add('open');else if(type==='s')document.getElementById('sdrawer').classList.add('open');document.getElementById('overlay').classList.add('on');}
 function closeDrawers(){['sidebar','vdrawer','sdrawer'].forEach(id=>document.getElementById(id).classList.remove('open'));document.getElementById('overlay').classList.remove('on');}
-
-// ══════════════════════════════════════════════════════
-// THEMES
-// ══════════════════════════════════════════════════════
 function setTheme(t){document.documentElement.setAttribute('data-theme',t==='dark'?'':t);['dark','light','hacker'].forEach(x=>document.getElementById('t-'+x)?.classList.toggle('on',x===t));const sel=document.getElementById('s-theme');if(sel)sel.value=t;}
-
-// ══════════════════════════════════════════════════════
-// FONT SIZE
-// ══════════════════════════════════════════════════════
 function chFS(d){fontSize=Math.min(20,Math.max(10,fontSize+d));document.documentElement.style.setProperty('--fs',fontSize+'px');document.getElementById('fslbl').textContent=fontSize+'px';updateLN();try{const s=JSON.parse(localStorage.getItem('cm_settings')||'{}');s.fontSize=fontSize;localStorage.setItem('cm_settings',JSON.stringify(s));}catch(e){}}
 
-// ══════════════════════════════════════════════════════
-// EDITOR
-// ══════════════════════════════════════════════════════
-function updateLN(){const lines=ced.value.split('\n');const cur=ced.value.substr(0,ced.selectionStart).split('\n').length;lnums.innerHTML=lines.map((_,i)=>`<div class="${i+1===cur?'aln':''}">${i+1}</div>`).join('');}
-function updateFoot(){const l=ced.value.split('\n').length,c=ced.value.length;document.getElementById('fstats').textContent=`${l.toLocaleString()} lines · ${(c/1000).toFixed(1)}k`;document.getElementById('flang').textContent='HTML · CSS · JS'+(focusOn?' · 🎯':'')+(hlMode?' · 🎨':'');}
-ced.addEventListener('input',()=>{updateLN();updateFoot();if(ced.value!==lastCode)sentOnce=false;if(autoPreview){clearTimeout(ced._pt);ced._pt=setTimeout(()=>refreshPV(true),1500);}saveCurrentSession();});
-ced.addEventListener('keyup',updateLN);ced.addEventListener('click',updateLN);
+// ══════ EDITOR ══════
+function updateLN(){const lines=ced.value.split('\n');const cur=ced.value.substr(0,ced.selectionStart).split('\n').length;lnums.innerHTML=lines.map((_,i)=>'<div class="'+(i+1===cur?'aln':'')+'">'+(i+1)+'</div>').join('');}
+function updateFoot(){const l=ced.value.split('\n').length,c=ced.value.length;document.getElementById('fstats').textContent=l.toLocaleString()+' lines · '+(c/1000).toFixed(1)+'k';document.getElementById('flang').textContent='HTML · CSS · JS'+(focusOn?' · 🎯':'')+(hlMode?' · 🎨':'');}
+let _undoTimer;
+ced.addEventListener('input',()=>{
+  updateLN();updateFoot();
+  if(ced.value!==lastCode)sentOnce=false;
+  if(autoPreview){clearTimeout(ced._pt);ced._pt=setTimeout(()=>refreshPV(true),1500);}
+  saveCurrentSession();
+  clearTimeout(_undoTimer);
+  _undoTimer=setTimeout(()=>{if(undoStack[undoStack.length-1]!==ced.value)pushUndo();},800);
+});
+ced.addEventListener('keyup',updateLN);
+ced.addEventListener('click',updateLN);
 ced.addEventListener('scroll',()=>lnums.scrollTop=ced.scrollTop);
 ced.addEventListener('keydown',e=>{
   if(e.key==='Tab'){e.preventDefault();const s=ced.selectionStart;ced.value=ced.value.substring(0,s)+'  '+ced.value.substring(ced.selectionEnd);ced.selectionStart=ced.selectionEnd=s+2;updateLN();}
-  const pairs={'(':')','[':']','{':'}','"':'"',"'":"'","`":"`"};
-  if(pairs[e.key]){e.preventDefault();const s=ced.selectionStart,en=ced.selectionEnd,sel=ced.value.substring(s,en);ced.value=ced.value.substring(0,s)+e.key+(sel||'')+pairs[e.key]+ced.value.substring(en);ced.selectionStart=ced.selectionEnd=s+1+(sel?sel.length:0);updateLN();}
+  const pairs={'(':')','[':']','{':'}','"':'"',"'":"'",'`':'`'};
+  if(pairs[e.key]&&!e.ctrlKey&&!e.metaKey){e.preventDefault();const s=ced.selectionStart,en=ced.selectionEnd,sel=ced.value.substring(s,en);ced.value=ced.value.substring(0,s)+e.key+(sel||'')+pairs[e.key]+ced.value.substring(en);ced.selectionStart=ced.selectionEnd=s+1+(sel?sel.length:0);updateLN();}
 });
 
-// Syntax Highlight toggle
+// ══════ UNDO/REDO ══════
+function pushUndo(){undoStack.push(ced.value);if(undoStack.length>50)undoStack.shift();redoStack=[];updateUndoRedo();}
+function doUndo(){if(!undoStack.length)return;redoStack.push(ced.value);ced.value=undoStack.pop();updateLN();updateFoot();updateUndoRedo();showToast('Undo ✓');}
+function doRedo(){if(!redoStack.length)return;undoStack.push(ced.value);ced.value=redoStack.pop();updateLN();updateFoot();updateUndoRedo();showToast('Redo ✓');}
+function updateUndoRedo(){document.getElementById('undoBtn').disabled=!undoStack.length;document.getElementById('redoBtn').disabled=!redoStack.length;}
+
+// ══════ LOCK SECTIONS ══════
+document.getElementById('lockBtn').addEventListener('click',()=>{
+  const start=ced.value.substr(0,ced.selectionStart).split('\n').length;
+  const end=ced.value.substr(0,ced.selectionEnd).split('\n').length;
+  const sel=ced.value.substring(ced.selectionStart,ced.selectionEnd).trim();
+  if(!sel){showToast('Select lines first, then tap Lock');return;}
+  lockedRanges.push({id:Date.now(),start,end});
+  renderLocks();showToast('Lines '+start+'–'+end+' locked 🔒');
+});
+function renderLocks(){
+  const list=document.getElementById('lock-list');
+  const bar=document.getElementById('lock-bar');
+  if(!lockedRanges.length){bar.classList.remove('on');list.innerHTML='';return;}
+  bar.classList.add('on');
+  list.innerHTML=lockedRanges.map(r=>'<span class="lock-range">L'+r.start+'–'+r.end+' <button onclick="removeLock('+r.id+')">×</button></span>').join('');
+}
+function removeLock(id){lockedRanges=lockedRanges.filter(r=>r.id!==id);renderLocks();}
+function clearLocks(){lockedRanges=[];renderLocks();showToast('Locks cleared');}
+
+// ══════ INLINE LINE EDIT ══════
+lnums.addEventListener('click',e=>{
+  const divs=[...lnums.querySelectorAll('div')];
+  divs.forEach((d,i)=>{if(d===e.target||d.contains(e.target))inlineLineNum=i+1;});
+  const popup=document.getElementById('inline-popup');
+  document.getElementById('inline-line-num').textContent=inlineLineNum;
+  document.getElementById('inline-input').value='';
+  const lnEl=document.querySelector('#lnums div:nth-child('+inlineLineNum+')');
+  if(lnEl){const rect=lnEl.getBoundingClientRect();popup.style.top=Math.min(rect.top,window.innerHeight-160)+'px';popup.style.left='46px';}
+  popup.classList.add('on');
+  document.getElementById('inline-input').focus();
+});
+function closeInlinePopup(){document.getElementById('inline-popup').classList.remove('on');}
+document.getElementById('inline-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitInlineEdit();if(e.key==='Escape')closeInlinePopup();});
+function submitInlineEdit(){
+  const ask=document.getElementById('inline-input').value.trim();if(!ask)return;
+  const lines=ced.value.split('\n');
+  const lineContent=(lines[inlineLineNum-1]||'').trim().slice(0,60);
+  closeInlinePopup();
+  cinput.value='On line '+inlineLineNum+': "'+lineContent+'" — '+ask;
+  switchTab('chat');send();
+}
+document.addEventListener('click',e=>{
+  const popup=document.getElementById('inline-popup');
+  if(popup.classList.contains('on')&&!popup.contains(e.target)&&!lnums.contains(e.target))closeInlinePopup();
+});
+
+// ══════ HIGHLIGHT TOGGLE ══════
 document.getElementById('hlBtn').addEventListener('click',()=>{
   hlMode=!hlMode;
   if(hlMode){
@@ -869,116 +787,228 @@ document.getElementById('hlBtn').addEventListener('click',()=>{
   updateFoot();
 });
 
-// Code Format
+// ══════ FORMAT ══════
 document.getElementById('fmtBtn').addEventListener('click',()=>{
   try{
-    let code=ced.value;let indent=0;const lines=[];
-    // Basic HTML formatter
-    code.split('\n').forEach(line=>{
-      const trimmed=line.trim();if(!trimmed)return;
-      if(/^<\/[^>]+>/.test(trimmed)&&!/<\/?(input|img|br|hr|meta|link)[^>]*>/i.test(trimmed))indent=Math.max(0,indent-1);
-      lines.push('  '.repeat(indent)+trimmed);
-      if(/^<[^/!][^>]*[^/]>/.test(trimmed)&&!/<\//.test(trimmed)&&!/<(input|img|br|hr|meta|link)[^>]*>/i.test(trimmed))indent++;
+    let indent=0;const lines=[];
+    ced.value.split('\n').forEach(line=>{
+      const t=line.trim();if(!t)return;
+      if(/^<\/[^>]+>/.test(t)&&!/<\/?(input|img|br|hr|meta|link)[^>]*>/i.test(t))indent=Math.max(0,indent-1);
+      lines.push('  '.repeat(indent)+t);
+      if(/^<[^/!][^>]*[^/]>/.test(t)&&!/<\//.test(t)&&!/<(input|img|br|hr|meta|link)[^>]*>/i.test(t))indent++;
     });
-    ced.value=lines.join('\n');updateLN();updateFoot();showToast('Code formatted ✓');
+    ced.value=lines.join('\n');updateLN();updateFoot();showToast('Formatted ✓');
   }catch(e){showToast('Format failed');}
 });
 
-// File upload
+// ══════ FILE UPLOAD ══════
 document.getElementById('fup').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;flbl.textContent=f.name;
-  const r=new FileReader();r.onload=ev=>{ced.value=ev.target.result;updateLN();updateFoot();sentOnce=false;lastCode='';const l=ev.target.result.split('\n').length;if(l>300){wtext.textContent=`⚡ ${l.toLocaleString()} lines. Use 🎯 Focus Mode.`;fwarn.classList.add('on');setTimeout(()=>fwarn.classList.remove('on'),7000);}};r.readAsText(f);e.target.value='';
+  const r=new FileReader();r.onload=ev=>{ced.value=ev.target.result;updateLN();updateFoot();sentOnce=false;lastCode='';pushUndo();const l=ev.target.result.split('\n').length;if(l>300){wtext.textContent=l.toLocaleString()+' lines loaded. Use 🎯 Focus Mode for precise debugging.';fwarn.classList.add('on');setTimeout(()=>fwarn.classList.remove('on'),7000);}};r.readAsText(f);e.target.value='';
 });
 
-// Copy & Download
+// ══════ COPY & DOWNLOAD ══════
 document.getElementById('caBtn').addEventListener('click',function(){clip(ced.value).then(()=>{this.textContent='✓';this.style.color='var(--cyan)';setTimeout(()=>{this.textContent='Copy';this.style.color='';},1500);});});
 document.getElementById('dlBtn').addEventListener('click',function(){const blob=new Blob([ced.value],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=flbl.textContent||'codemind.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);this.textContent='✓ Saved';setTimeout(()=>this.textContent='⬇ Save',2000);});
 
-// Find & Replace
+// ══════ FIND & REPLACE ══════
 document.getElementById('fnrBtn').addEventListener('click',()=>fnrbar.classList.toggle('on'));
-function doReplace(){const f=document.getElementById('fndfld').value,r=document.getElementById('repfld').value;if(!f)return;const i=ced.value.indexOf(f);if(i===-1){showToast('Not found');return;}ced.value=ced.value.substring(0,i)+r+ced.value.substring(i+f.length);updateLN();updateFoot();showToast('Replaced 1 match');}
-function doReplaceAll(){const f=document.getElementById('fndfld').value,r=document.getElementById('repfld').value;if(!f)return;const n=(ced.value.match(new RegExp(f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;if(!n){showToast('Not found');return;}ced.value=ced.value.split(f).join(r);updateLN();updateFoot();showToast(`Replaced ${n} match${n>1?'es':''}`);}
+function doReplace(){const f=document.getElementById('fndfld').value,r=document.getElementById('repfld').value;if(!f)return;const i=ced.value.indexOf(f);if(i===-1){showToast('Not found');return;}pushUndo();ced.value=ced.value.substring(0,i)+r+ced.value.substring(i+f.length);updateLN();updateFoot();showToast('Replaced 1 match');}
+function doReplaceAll(){const f=document.getElementById('fndfld').value,r=document.getElementById('repfld').value;if(!f)return;const n=(ced.value.match(new RegExp(f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;if(!n){showToast('Not found');return;}pushUndo();ced.value=ced.value.split(f).join(r);updateLN();updateFoot();showToast('Replaced '+n+' match'+(n>1?'es':''));}
 
-// Scan
+// ══════ SCAN ══════
 document.getElementById('scanBtn').addEventListener('click',()=>{
   const code=ced.value,errs=[];
-  if(!code.trim())errs.push('Editor is empty.');
+  if(!code.trim()){errs.push('Editor is empty.');}
   else{
     if(!code.toLowerCase().includes('<!doctype'))errs.push('Missing <!DOCTYPE html>');
-    const so=(code.match(/<script/gi)||[]).length,sc=(code.match(/<\/script>/gi)||[]).length;if(so!==sc)errs.push(`Mismatched <script> tags`);
-    if(!code.toLowerCase().includes('</html>'))errs.push('Missing </html> — site may be incomplete. Ask CodeMind to "continue and complete the site"');
-    ['div','section','header','footer','main','nav'].forEach(t=>{const o=(code.match(new RegExp(`<${t}[\\s>]`,'gi'))||[]).length,c=(code.match(new RegExp(`</${t}>`,'gi'))||[]).length;if(o!==c)errs.push(`Unclosed <${t}>`);});
+    if(!code.toLowerCase().includes('</html>'))errs.push('Incomplete — missing </html>');
+    const so=(code.match(/<script/gi)||[]).length,sc=(code.match(/<\/script>/gi)||[]).length;
+    if(so!==sc)errs.push('Mismatched <script> tags');
+    ['div','section','header','footer','main','nav'].forEach(t=>{
+      const o=(code.match(new RegExp('<'+t+'[\\s>]','gi'))||[]).length;
+      const c=(code.match(new RegExp('</'+t+'>','gi'))||[]).length;
+      if(o!==c)errs.push('Unclosed <'+t+'>');
+    });
   }
   if(errs.length===0){etext.textContent='✅ No errors found!';ebnr.style.cssText='background:rgba(0,255,100,0.07);border-bottom:1px solid rgba(0,255,100,0.2);color:#88ffaa;';}
   else{etext.textContent='⚠ '+errs.join(' · ');ebnr.style.cssText='';}
   ebnr.classList.add('on');setTimeout(()=>ebnr.classList.remove('on'),8000);
 });
 
-// Focus mode
+// ══════ AUTO-FIX ══════
+document.getElementById('autofixBtn').addEventListener('click',()=>{
+  if(!ced.value.trim()){showToast('Editor is empty');return;}
+  switchTab('chat');
+  cinput.value='Find and fix ALL bugs, errors, and issues. Make sure it is complete with </body></html> and works perfectly.';
+  send();
+});
+
+// ══════ CODE QUALITY ══════
+document.getElementById('qualBtn').addEventListener('click',()=>{
+  const code=ced.value;
+  if(!code.trim()){showToast('Editor is empty');return;}
+  let score=100;const issues=[];
+  if(!code.toLowerCase().includes('<!doctype')){score-=15;issues.push('Missing DOCTYPE');}
+  if(!code.toLowerCase().includes('</html>')){score-=20;issues.push('Incomplete HTML');}
+  if(!code.includes('<meta name="viewport"')){score-=5;issues.push('No viewport meta');}
+  if(!code.includes('@media')){score-=10;issues.push('Not responsive');}
+  if(!code.includes('transition')&&!code.includes('animation')){score-=5;issues.push('No animations');}
+  if(!code.includes(':hover')){score-=5;issues.push('No hover effects');}
+  if(!code.includes('@import')&&!code.includes('font-family')){score-=5;issues.push('No custom fonts');}
+  if(!code.includes('scroll-behavior')){score-=3;issues.push('No smooth scroll');}
+  const so=(code.match(/<script/gi)||[]).length,sc=(code.match(/<\/script>/gi)||[]).length;
+  if(so!==sc){score-=15;issues.push('Mismatched script tags');}
+  if(code.length<2000){score-=10;issues.push('Very short code');}
+  score=Math.max(0,score);
+  const grade=score>=90?'A':score>=75?'B':score>=60?'C':'D';
+  const gc=score>=90?'qual-a':score>=75?'qual-b':score>=60?'qual-c':'qual-d';
+  ebnr.style.cssText=score>=75?'background:rgba(0,200,100,0.07);border-bottom:1px solid rgba(0,200,100,0.2);color:#88ffaa;':'';
+  etext.innerHTML='<span class="qual-badge '+gc+'">Grade '+grade+' · '+score+'/100</span>  '+(issues.length?issues.slice(0,3).join(' · '):'Excellent code!');
+  ebnr.classList.add('on');setTimeout(()=>ebnr.classList.remove('on'),10000);
+});
+
+// ══════ FOCUS MODE ══════
 foct.addEventListener('click',()=>{focusOn=!focusOn;focbar.classList.toggle('on',focusOn);foct.className=focusOn?'btn bc':'btn bg';updateFoot();});
 
-// ══════════════════════════════════════════════════════
-// PREVIEW
-// ══════════════════════════════════════════════════════
-function setPVSize(sz){['desk','mob','frame'].forEach(s=>document.getElementById('pv-'+s)?.classList.toggle('on',s===sz));pvframe.className=sz==='mob'?'mobile':sz==='frame'?'mobile-framed':sz==='desk'?'':pvframe.className;}
+// ══════ PREVIEW ══════
+function setPVSize(sz){['desk','mob','frame'].forEach(s=>document.getElementById('pv-'+s)?.classList.toggle('on',s===sz));pvframe.className=sz==='mob'?'mobile':sz==='frame'?'mobile-framed':'';}
 function refreshPV(silent){
   const code=ced.value.trim();if(!code||code.startsWith('<!--')){if(!silent)clearPV();return;}
   pvph.style.display='none';pvframe.style.display='block';
-  try{const blob=new Blob([code],{type:'text/html'});const url=URL.createObjectURL(blob);pvframe.src=url;setTimeout(()=>URL.revokeObjectURL(url),5000);}catch(e){pvframe.srcdoc=code;}
+  try{const blob=new Blob([code],{type:'text/html'});const url=URL.createObjectURL(blob);pvframe.src=url;setTimeout(()=>URL.revokeObjectURL(url),5000);}
+  catch(e){pvframe.srcdoc=code;}
   if(!silent)switchTab('preview');
 }
 function clearPV(){pvframe.style.display='none';pvph.style.display='flex';pvframe.src='';}
 function openInBrowser(){const code=ced.value.trim();if(!code){showToast('Editor is empty');return;}const blob=new Blob([code],{type:'text/html'});const url=URL.createObjectURL(blob);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),5000);}
 
-// ══════════════════════════════════════════════════════
-// VERSION HISTORY
-// ══════════════════════════════════════════════════════
+// ══════ DEPLOY ══════
+document.getElementById('deployBtn').addEventListener('click',()=>{
+  if(!ced.value.trim()||ced.value.startsWith('<!--')){showToast('Generate a site first!');return;}
+  document.getElementById('deploy-modal').classList.add('on');
+  document.getElementById('deploy-url').style.display='none';
+  document.getElementById('deploy-progress').style.display='none';
+  document.getElementById('deploy-bar').style.width='0%';
+  const btn=document.getElementById('deploy-go-btn');
+  btn.disabled=false;btn.textContent='🚀 Publish Now';
+  btn.onclick=deployToNetlify;
+});
+
+async function deployToNetlify(){
+  const btn=document.getElementById('deploy-go-btn');
+  const progress=document.getElementById('deploy-progress');
+  const bar=document.getElementById('deploy-bar');
+  const urlBox=document.getElementById('deploy-url');
+  btn.disabled=true;btn.textContent='Deploying...';
+  progress.style.display='block';
+  let prog=0;
+  const progTimer=setInterval(()=>{prog=Math.min(prog+Math.random()*15,85);bar.style.width=prog+'%';},300);
+  try{
+    const res=await fetch('https://api.netlify.com/api/v1/sites',{
+      method:'POST',
+      headers:{'Content-Type':'application/zip'},
+      body:new Blob([ced.value],{type:'application/octet-stream'})
+    });
+    clearInterval(progTimer);
+    if(res.ok){
+      const data=await res.json();
+      bar.style.width='100%';
+      const url=data.ssl_url||data.url||'';
+      urlBox.textContent=url||'Deployed successfully!';urlBox.style.display='block';
+      btn.textContent='✓ Copy URL';btn.disabled=false;
+      btn.onclick=()=>clip(url).then(()=>showToast('URL copied ✓'));
+    } else {throw new Error('API failed');}
+  } catch(e){
+    clearInterval(progTimer);bar.style.width='100%';
+    urlBox.textContent='Download your file, then drag it to app.netlify.com/drop to publish!';
+    urlBox.style.display='block';
+    btn.disabled=false;btn.textContent='📁 Download + Open Netlify Drop';
+    btn.onclick=()=>{
+      const blobUrl=URL.createObjectURL(new Blob([ced.value],{type:'text/html'}));
+      const a=document.createElement('a');a.href=blobUrl;a.download=flbl.textContent||'index.html';
+      document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(blobUrl);
+      setTimeout(()=>window.open('https://app.netlify.com/drop','_blank'),500);
+    };
+  }
+}
+
+// ══════ IMAGE TO CODE ══════
+document.getElementById('img-fup').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;e.target.value='';
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const base64=ev.target.result.split(',')[1];
+    const mimeType=file.type||'image/jpeg';
+    const d=document.createElement('div');d.className='msg u';
+    d.innerHTML='<div class="mlbl"><span>👤 You</span><span class="mts">'+ts()+'</span></div><div class="mtext">Build a website based on this design:</div><img src="'+ev.target.result+'" class="img-preview">';
+    msgs.appendChild(d);scrlBot();switchTab('chat');
+    if(!currentSessionId)createSession('Image to Code');
+    mc++;updMC();setLoad(true);
+    try{
+      const imageMessages=[
+        {role:'system',content:getSysPrompt()},
+        {role:'user',content:[
+          {type:'image_url',image_url:{url:'data:'+mimeType+';base64,'+base64}},
+          {type:'text',text:'Look at this design carefully. Build a complete, beautiful HTML website that recreates or is inspired by this design. Match the layout, colors, typography, and sections. Output a complete self-contained HTML file from <!DOCTYPE html> through </html>.'}
+        ]}
+      ];
+      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:imageMessages,model:MODEL,max_tokens:8000})});
+      const data=await res.json();
+      if(data.error){addAI('⚠️ '+data.error.message);}
+      else{
+        const reply=data.content?.[0]?.text||'Could not process the image.';
+        const extracted=extractCode(reply);
+        if(extracted&&extracted.toLowerCase().includes('<!doctype')){
+          pushUndo();saveVer('From image · '+new Date().toLocaleTimeString());
+          ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
+          showToast('✅ Site built from image!',3000);
+          if(autoPreview)setTimeout(()=>refreshPV(true),500);
+        }
+        hist.push({role:'assistant',content:reply});addAI(reply);
+      }
+    } catch(err){addAI('⚠️ Could not process image. Try a model that supports vision.');}
+    finally{setLoad(false);saveCurrentSession();}
+  };
+  reader.readAsDataURL(file);
+});
+
+// ══════ VERSION HISTORY ══════
 function saveVer(label){versions.unshift({label,code:ced.value,time:new Date(),lines:ced.value.split('\n').length});if(versions.length>20)versions.pop();renderVers();}
-function renderVers(){if(!versions.length){vlist.innerHTML='<div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No versions yet.</div>';return;}vlist.innerHTML=versions.map((v,i)=>`<div class="vitem" onclick="ced.value=versions[${i}].code;updateLN();updateFoot();closeDrawers();showToast('Restored ✓')"><div class="vlbl">${esc(v.label)}</div><div class="vmeta">${v.lines.toLocaleString()} lines · ${v.time.toLocaleTimeString()}</div></div>`).join('');}
+function renderVers(){if(!versions.length){vlist.innerHTML='<div style="padding:16px;font-size:11px;color:var(--dim);text-align:center">No versions yet.</div>';return;}vlist.innerHTML=versions.map((v,i)=>'<div class="vitem" onclick="ced.value=versions['+i+'].code;updateLN();updateFoot();closeDrawers();showToast(\'Restored ✓\')"><div class="vlbl">'+esc(v.label)+'</div><div class="vmeta">'+v.lines.toLocaleString()+' lines · '+v.time.toLocaleTimeString()+'</div></div>').join('');}
 
-// Export chat
-document.getElementById('expBtn').addEventListener('click',()=>{const lines=[];document.querySelectorAll('.msg').forEach(m=>{const w=m.classList.contains('u')?'YOU':'CODEMIND';const t=m.querySelector('.mtext')?.textContent||'';lines.push(`[${w}]\n${t}\n`);});const blob=new Blob([lines.join('\n---\n\n')],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='codemind-chat.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showToast('Chat exported ✓');});
+// ══════ EXPORT CHAT ══════
+document.getElementById('expBtn').addEventListener('click',()=>{const lines=[];document.querySelectorAll('.msg').forEach(m=>{const w=m.classList.contains('u')?'YOU':'CODEMIND';const t=m.querySelector('.mtext')?.textContent||'';lines.push('['+w+']\n'+t+'\n');});const blob=new Blob([lines.join('\n---\n\n')],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='codemind-chat.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showToast('Chat exported ✓');});
 
-// Clear chat
+// ══════ CLEAR CHAT ══════
 document.getElementById('clrBtn').addEventListener('click',()=>{hist=[];msgs.innerHTML='';mc=0;sentOnce=false;updMC();addAI('Chat cleared! Ready to build. 🚀');saveCurrentSession();});
 
-// Quick prompts & send
+// ══════ QUICK PROMPTS & SEND ══════
 function useP(t){cinput.value=t;switchTab('chat');cinput.focus();}
-function updMC(){document.getElementById('mcnt').textContent=`AI CHAT · ${mc} msgs`;}
+function updMC(){document.getElementById('mcnt').textContent='AI CHAT · '+mc+' msgs';}
 cinput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
 sbtn.addEventListener('click',send);
 
-// ══════════════════════════════════════════════════════
-// EXTRACT CODE — ROBUST MULTI-PATTERN
-// ══════════════════════════════════════════════════════
+// ══════ EXTRACT CODE ══════
 function extractCode(text){
-  // Pattern 1: ```html ... ```
   let m=text.match(/```html\s*([\s\S]*?)```/i);
   if(m&&m[1].trim())return m[1].trim();
-  // Pattern 2: ```  ... ``` (no lang specified but has doctype)
   m=text.match(/```\s*(<!DOCTYPE[\s\S]*?)```/i);
   if(m&&m[1].trim())return m[1].trim();
-  // Pattern 3: Raw doctype in response
   m=text.match(/(<!DOCTYPE html>[\s\S]*<\/html>)/i);
   if(m&&m[1].trim())return m[1].trim();
-  // Pattern 4: Partial — starts with doctype but no closing tag (incomplete)
   m=text.match(/```html\s*(<!DOCTYPE[\s\S]*)/i);
   if(m&&m[1].trim())return m[1].trim();
   return null;
 }
 
-// ══════════════════════════════════════════════════════
-// PARSE FOLLOW-UP SUGGESTIONS
-// ══════════════════════════════════════════════════════
 function extractSuggestions(text){
   const m=text.match(/\[SUGGESTIONS\]:\s*(.+)/i);
   if(!m)return [];
   return m[1].split('|').map(s=>s.trim()).filter(Boolean).slice(0,3);
 }
 
-// ══════════════════════════════════════════════════════
-// SEND MESSAGE
-// ══════════════════════════════════════════════════════
+// ══════ SEND MESSAGE ══════
 async function send(){
   const txt=cinput.value.trim();if(loading||!txt)return;
   if(!currentSessionId)createSession(txt);
@@ -989,29 +1019,25 @@ async function send(){
   if(focusOn&&focS.value&&focE.value){const lines=ced.value.split('\n');const s=Math.max(0,parseInt(focS.value)-1),en=Math.min(lines.length,parseInt(focE.value));ctx=lines.slice(s,en).join('\n');}
   let api;
   if(isBuild)api=txt;
-  else if(sendCode){const note=(focusOn&&focS.value&&focE.value)?`\n(Lines ${focS.value}–${focE.value} of ${ced.value.split('\n').length} total)`:'';api=txt?`${txt}${note}\n\nCode:\n\`\`\`html\n${ctx}\n\`\`\``:`Review:\n\`\`\`html\n${ctx}\n\`\`\``;lastCode=ced.value;sentOnce=true;}
+  else if(sendCode){const note=(focusOn&&focS.value&&focE.value)?'\n(Lines '+focS.value+'–'+focE.value+' of '+ced.value.split('\n').length+' total)':'';api=txt?(txt+note+'\n\nCode:\n```html\n'+ctx+'\n```'):('Review:\n```html\n'+ctx+'\n```');lastCode=ced.value;sentOnce=true;}
   else api=txt;
-  const fl=(focusOn&&focS.value&&focE.value)?` [L${focS.value}–${focE.value}]`:'';
+  const fl=(focusOn&&focS.value&&focE.value)?' [L'+focS.value+'–'+focE.value+']':'';
   addUser(txt+fl);hist.push({role:'user',content:api,_display:txt+fl});cinput.value='';setLoad(true);switchTab('chat');
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:getSysPrompt()+getLockNote()},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL,max_tokens:8000})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:getSysPrompt()},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL,max_tokens:8000})});
     const data=await res.json();
     if(data.error){const reply='⚠️ '+data.error.message;addAI(reply);hist.push({role:'assistant',content:reply});}
     else{
       const reply=data.content?.[0]?.text||'Something went wrong.';
-      // Extract code robustly
       const extracted=extractCode(reply);
       if(extracted&&extracted.toLowerCase().includes('<!doctype')){
-        saveVer('AI Built · '+(txt.slice(0,28)));
-        pushUndo();
+        pushUndo();saveVer('AI Built · '+txt.slice(0,28));
         ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
-        // Check completeness
         const complete=extracted.toLowerCase().includes('</html>');
         if(autoPreview)setTimeout(()=>refreshPV(true),500);
         showToast(complete?'✅ Site generated! Tap Preview':'⚠️ Site may be incomplete',3000);
       }
-      hist.push({role:'assistant',content:reply});
-      addAI(reply);
+      hist.push({role:'assistant',content:reply});addAI(reply);
     }
   }catch(e){addAI('⚠️ Connection error. Check your internet and try again.');}
   finally{setLoad(false);saveCurrentSession();}
@@ -1019,11 +1045,15 @@ async function send(){
 
 function setLoad(on){loading=on;sbtn.disabled=on;sbtn.textContent=on?'·':'↑';typing.classList.toggle('on',on);if(!on)scrlBot();}
 
-// ══════════════════════════════════════════════════════
-// RENDER MESSAGES
-// ══════════════════════════════════════════════════════
+// ══════ RENDER MESSAGES ══════
 function ts(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
-function addUser(t,restore){if(!restore)mc++;const d=document.createElement('div');d.className='msg u';d.innerHTML=`<div class="mlbl"><span>👤 You</span><span class="mts">${ts()}</span></div><div class="mtext">${esc(t)}</div>`;msgs.appendChild(d);if(!restore){updMC();scrlBot();}}
+
+function addUser(t,restore){
+  if(!restore)mc++;
+  const d=document.createElement('div');d.className='msg u';
+  d.innerHTML='<div class="mlbl"><span>👤 You</span><span class="mts">'+ts()+'</span></div><div class="mtext">'+esc(t)+'</div>';
+  msgs.appendChild(d);if(!restore){updMC();scrlBot();}
+}
 
 function addAI(t,restore){
   if(!restore)mc++;
@@ -1034,22 +1064,16 @@ function addAI(t,restore){
   const tss=document.createElement('span');tss.className='mts';tss.textContent=ts();
   const cpb=document.createElement('button');cpb.className='cpmbtn';cpb.textContent='Copy';
   cpb.onclick=()=>clip(t).then(()=>{cpb.textContent='✓';setTimeout(()=>cpb.textContent='Copy',1500);});
-  rs.appendChild(tss);rs.appendChild(cpb);lbl.appendChild(ls);lbl.appendChild(rs);
-  d.appendChild(lbl);
-
-  // Strip suggestion line from display text
+  rs.appendChild(tss);rs.appendChild(cpb);lbl.appendChild(ls);lbl.appendChild(rs);d.appendChild(lbl);
   const displayText=t.replace(/\[SUGGESTIONS\]:.*/i,'').trim();
   d.appendChild(renderAI(displayText));
-
-  // Check for incomplete code
-  const hasCode=extractCode(t);
-  if(hasCode&&!hasCode.toLowerCase().includes('</html>')){
-    const cb=document.createElement('button');cb.className='continue-btn';cb.innerHTML='⏭ Continue & complete the site';
-    cb.onclick=()=>{cinput.value='Continue from where you stopped and complete the full site, make sure to end with </body></html>';send();};
+  const extracted=extractCode(t);
+  if(extracted&&!extracted.toLowerCase().includes('</html>')){
+    const cb=document.createElement('button');cb.className='continue-btn';
+    cb.innerHTML='⏭ Continue & complete the site';
+    cb.onclick=()=>{cinput.value='Continue from where you stopped and complete the full site, ending with </body></html>';send();};
     d.appendChild(cb);
   }
-
-  // Follow-up suggestions
   if(!restore&&showFollowups){
     const sugs=extractSuggestions(t);
     if(sugs.length){
@@ -1058,7 +1082,6 @@ function addAI(t,restore){
       d.appendChild(fw);
     }
   }
-
   msgs.appendChild(d);
   d.querySelectorAll('pre code').forEach(el=>{if(window.hljs)window.hljs.highlightElement(el);});
   if(!restore){updMC();scrlBot();}
@@ -1071,327 +1094,22 @@ function renderAI(txt){
     if(m.index>last){const p=document.createElement('div');p.className='mtext';p.innerHTML=fmt(esc(txt.slice(last,m.index)));wrap.appendChild(p);}
     const lang=m[1]||'html',code=m[2].trim(),id='c'+Date.now()+Math.random().toString(36).slice(2);
     const blk=document.createElement('div');blk.className='cblk';
-    blk.innerHTML=`<div class="cbhdr"><span class="clang">${esc(lang)}</span><div class="cacts"><button class="bedit" onclick="toEditor('${id}')">→ Editor</button><button class="bcopy" id="cp-${id}" onclick="cpCode('${id}')">Copy</button></div></div><pre><code id="${id}" class="language-${esc(lang)}">${esc(code)}</code></pre>`;
+    blk.innerHTML='<div class="cbhdr"><span class="clang">'+esc(lang)+'</span><div class="cacts"><button class="bedit" onclick="toEditor(\''+id+'\')">→ Editor</button><button class="bcopy" id="cp-'+id+'" onclick="cpCode(\''+id+'\')">Copy</button></div></div><pre><code id="'+id+'" class="language-'+esc(lang)+'">'+esc(code)+'</code></pre>';
     wrap.appendChild(blk);last=m.index+m[0].length;
   }
   if(last<txt.length){const p=document.createElement('div');p.className='mtext';p.innerHTML=fmt(esc(txt.slice(last)));wrap.appendChild(p);}
   return wrap;
 }
 
-function toEditor(id){const el=document.getElementById(id);if(!el)return;saveVer('From chat · '+new Date().toLocaleTimeString());ced.value=el.textContent;updateLN();updateFoot();sentOnce=false;switchTab('editor');showToast('Sent to Editor ✓');}
+function toEditor(id){const el=document.getElementById(id);if(!el)return;pushUndo();saveVer('From chat · '+new Date().toLocaleTimeString());ced.value=el.textContent;updateLN();updateFoot();sentOnce=false;switchTab('editor');showToast('Sent to Editor ✓');}
 function cpCode(id){const el=document.getElementById(id);if(!el)return;clip(el.textContent).then(()=>{const b=document.getElementById('cp-'+id);if(b){b.textContent='✓';b.classList.add('ok');setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok');},1500);}});}
 
-// ══════════════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════════════
+// ══════ HELPERS ══════
 function scrlBot(){setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,50);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function fmt(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');}
 function clip(text){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text).catch(()=>fb(text));fb(text);return Promise.resolve();}
 function fb(text){const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-
-// ══════════════════════════════════════════════════════
-// UNDO / REDO
-// ══════════════════════════════════════════════════════
-let undoStack=[], redoStack=[];
-const MAX_UNDO=50;
-
-function pushUndo(){
-  undoStack.push(ced.value);
-  if(undoStack.length>MAX_UNDO)undoStack.shift();
-  redoStack=[];
-  updateUndoRedo();
-}
-function doUndo(){
-  if(!undoStack.length)return;
-  redoStack.push(ced.value);
-  ced.value=undoStack.pop();
-  updateLN();updateFoot();updateUndoRedo();showToast('Undo ✓');
-}
-function doRedo(){
-  if(!redoStack.length)return;
-  undoStack.push(ced.value);
-  ced.value=redoStack.pop();
-  updateLN();updateFoot();updateUndoRedo();showToast('Redo ✓');
-}
-function updateUndoRedo(){
-  document.getElementById('undoBtn').disabled=!undoStack.length;
-  document.getElementById('redoBtn').disabled=!redoStack.length;
-}
-
-// Push undo on significant changes
-let _undoTimer;
-ced.addEventListener('input',()=>{
-  clearTimeout(_undoTimer);
-  _undoTimer=setTimeout(()=>{
-    if(undoStack[undoStack.length-1]!==ced.value)pushUndo();
-  },800);
-});
-
-// ══════════════════════════════════════════════════════
-// LOCK SECTIONS
-// ══════════════════════════════════════════════════════
-let lockedRanges=[];
-
-document.getElementById('lockBtn').addEventListener('click',()=>{
-  const start=ced.value.substr(0,ced.selectionStart).split('\n').length;
-  const end=ced.value.substr(0,ced.selectionEnd).split('\n').length;
-  if(start===end&&!ced.value.substring(ced.selectionStart,ced.selectionEnd).trim()){
-    showToast('Select code lines first, then tap Lock');return;
-  }
-  const id=Date.now();
-  lockedRanges.push({id,start,end,text:ced.value.substring(ced.selectionStart,ced.selectionEnd).trim().slice(0,30)+'...'});
-  renderLocks();showToast(`Lines ${start}–${end} locked 🔒`);
-});
-
-function renderLocks(){
-  const list=document.getElementById('lock-list');
-  const bar=document.getElementById('lock-bar');
-  if(!lockedRanges.length){bar.classList.remove('on');list.innerHTML='';return;}
-  bar.classList.add('on');
-  list.innerHTML=lockedRanges.map(r=>`<span class="lock-range">L${r.start}–${r.end} <button onclick="removeLock(${r.id})">×</button></span>`).join('');
-}
-function removeLock(id){lockedRanges=lockedRanges.filter(r=>r.id!==id);renderLocks();}
-function clearLocks(){lockedRanges=[];renderLocks();showToast('All locks cleared');}
-
-function getLockNote(){
-  if(!lockedRanges.length)return '';
-  return '\n\n⚠️ DO NOT MODIFY these locked line ranges: '+lockedRanges.map(r=>`lines ${r.start}–${r.end}`).join(', ')+'. Keep them exactly as they are.';
-}
-
-// ══════════════════════════════════════════════════════
-// INLINE LINE EDIT
-// ══════════════════════════════════════════════════════
-let inlineLineNum=1;
-
-lnums.addEventListener('click',e=>{
-  const divs=lnums.querySelectorAll('div');
-  divs.forEach((d,i)=>{if(d===e.target||d.contains(e.target)){inlineLineNum=i+1;}});
-  showInlinePopup(inlineLineNum);
-});
-
-function showInlinePopup(lineNum){
-  const popup=document.getElementById('inline-popup');
-  const lnEl=document.querySelector(`#lnums div:nth-child(${lineNum})`);
-  if(!lnEl)return;
-  document.getElementById('inline-line-num').textContent=lineNum;
-  document.getElementById('inline-input').value='';
-  const rect=lnEl.getBoundingClientRect();
-  popup.style.top=Math.min(rect.top,window.innerHeight-160)+'px';
-  popup.style.left='46px';
-  popup.classList.add('on');
-  document.getElementById('inline-input').focus();
-}
-function closeInlinePopup(){document.getElementById('inline-popup').classList.remove('on');}
-document.getElementById('inline-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitInlineEdit();if(e.key==='Escape')closeInlinePopup();});
-
-function submitInlineEdit(){
-  const ask=document.getElementById('inline-input').value.trim();if(!ask)return;
-  const lines=ced.value.split('\n');
-  const lineContent=lines[inlineLineNum-1]||'';
-  closeInlinePopup();
-  cinput.value=`On line ${inlineLineNum}: "${lineContent.trim()}" — ${ask}`;
-  switchTab('chat');
-  send();
-}
-
-// ══════════════════════════════════════════════════════
-// AUTO-FIX
-// ══════════════════════════════════════════════════════
-document.getElementById('autofixBtn').addEventListener('click',()=>{
-  if(!ced.value.trim()){showToast('Editor is empty');return;}
-  switchTab('chat');
-  cinput.value='Find and fix ALL bugs, errors, and issues in this code. Make sure it is complete with </body></html> and works perfectly in a browser.';
-  send();
-});
-
-// ══════════════════════════════════════════════════════
-// CODE QUALITY CHECKER
-// ══════════════════════════════════════════════════════
-document.getElementById('qualBtn').addEventListener('click',()=>{
-  const code=ced.value;
-  if(!code.trim()){showToast('Editor is empty');return;}
-  let score=100;const issues=[];
-
-  // Deductions
-  if(!code.toLowerCase().includes('<!doctype')){score-=15;issues.push('Missing DOCTYPE');}
-  if(!code.toLowerCase().includes('</html>')){score-=20;issues.push('Incomplete HTML (no </html>)');}
-  if(!code.includes('<meta name="viewport"')){score-=5;issues.push('No viewport meta');}
-  if(!code.includes('alt=')){score-=5;issues.push('Images missing alt text');}
-  if(!code.includes('@import')&&!code.includes('font-family')){score-=5;issues.push('No custom fonts');}
-  if(!code.includes('transition')&&!code.includes('animation')){score-=5;issues.push('No CSS animations');}
-  if(!code.includes(':hover')){score-=5;issues.push('No hover effects');}
-  if(!code.includes('@media')){score-=10;issues.push('Not responsive (no media queries)');}
-  if(!code.includes('scroll-behavior')){score-=3;issues.push('No smooth scroll');}
-  if(code.includes('lorem ipsum')||code.includes('Lorem Ipsum')){score-=5;issues.push('Contains placeholder text');}
-  if((code.match(/<script/gi)||[]).length!==(code.match(/<\/script>/gi)||[]).length){score-=15;issues.push('Mismatched script tags');}
-  if(code.length<2000){score-=10;issues.push('Very short code');}
-
-  score=Math.max(0,score);
-  const grade=score>=90?'A':score>=75?'B':score>=60?'C':'D';
-  const gradeClass=score>=90?'qual-a':score>=75?'qual-b':score>=60?'qual-c':'qual-d';
-
-  const etext=document.getElementById('etext');
-  const ebnr=document.getElementById('ebnr');
-  ebnr.style.cssText='';
-  if(score>=75){ebnr.style.cssText='background:rgba(0,200,100,0.07);border-bottom:1px solid rgba(0,200,100,0.2);color:#88ffaa;';}
-  etext.innerHTML=`<span class="qual-badge ${gradeClass}">Grade ${grade} · ${score}/100</span>  ${issues.length?issues.slice(0,3).join(' · '):'Excellent code quality!'}`;
-  ebnr.classList.add('on');
-  setTimeout(()=>ebnr.classList.remove('on'),10000);
-});
-
-// ══════════════════════════════════════════════════════
-// DEPLOY TO NETLIFY
-// ══════════════════════════════════════════════════════
-document.getElementById('deployBtn').addEventListener('click',()=>{
-  if(!ced.value.trim()||ced.value.startsWith('<!--')){showToast('Generate a site first!');return;}
-  document.getElementById('deploy-modal').classList.add('on');
-  document.getElementById('deploy-url').style.display='none';
-  document.getElementById('deploy-progress').style.display='none';
-  document.getElementById('deploy-bar').style.width='0%';
-  document.getElementById('deploy-go-btn').disabled=false;
-  document.getElementById('deploy-go-btn').textContent='🚀 Publish Now';
-});
-
-async function deployToNetlify(){
-  const btn=document.getElementById('deploy-go-btn');
-  const progress=document.getElementById('deploy-progress');
-  const bar=document.getElementById('deploy-bar');
-  const urlBox=document.getElementById('deploy-url');
-  btn.disabled=true;btn.textContent='Deploying...';
-  progress.style.display='block';
-
-  // Animate progress bar
-  let prog=0;const progTimer=setInterval(()=>{prog=Math.min(prog+Math.random()*15,85);bar.style.width=prog+'%';},300);
-
-  try{
-    // Create a ZIP-like structure using FormData for Netlify API
-    const code=ced.value;
-    const filename=flbl.textContent||'index.html';
-
-    // Use Netlify's drag-and-drop API
-    const formData=new FormData();
-    const blob=new Blob([code],{type:'text/html'});
-    formData.append('file',blob,'index.html');
-
-    // Try Netlify anonymous deploy
-    const res=await fetch('https://api.netlify.com/api/v1/sites',{
-      method:'POST',
-      headers:{'Content-Type':'application/zip'},
-      body:await createZipBlob(code)
-    });
-
-    clearInterval(progTimer);
-
-    if(res.ok){
-      const data=await res.json();
-      bar.style.width='100%';
-      const url=data.ssl_url||data.url||'https://'+data.subdomain+'.netlify.app';
-      urlBox.textContent=url;urlBox.style.display='block';
-      btn.textContent='✓ Deployed! Copy URL';
-      btn.disabled=false;
-      btn.onclick=()=>{clip(url).then(()=>showToast('URL copied ✓'));};
-    }else{
-      throw new Error('Deploy failed');
-    }
-  }catch(e){
-    clearInterval(progTimer);
-    // Fallback: open Netlify Drop
-    bar.style.width='100%';
-    urlBox.textContent='Redirecting to Netlify Drop — drag your downloaded file there to deploy!';
-    urlBox.style.display='block';
-    btn.textContent='📁 Download & Open Netlify Drop';
-    btn.disabled=false;
-    btn.onclick=()=>{
-      // Download file first
-      const blobUrl=URL.createObjectURL(new Blob([ced.value],{type:'text/html'}));
-      const a=document.createElement('a');a.href=blobUrl;a.download=flbl.textContent||'index.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(blobUrl);
-      // Open Netlify Drop
-      setTimeout(()=>window.open('https://app.netlify.com/drop','_blank'),500);
-    };
-  }
-}
-
-async function createZipBlob(htmlContent){
-  // Simple approach: just send the HTML as a single file
-  // Netlify API accepts a zip with index.html
-  try{
-    // Create minimal zip manually
-    const enc=new TextEncoder();
-    const data=enc.encode(htmlContent);
-    // Return as blob - Netlify will handle it
-    return new Blob([data],{type:'application/octet-stream'});
-  }catch(e){return new Blob([htmlContent],{type:'text/html'});}
-}
-
-// ══════════════════════════════════════════════════════
-// IMAGE TO CODE
-// ══════════════════════════════════════════════════════
-document.getElementById('img-fup').addEventListener('change',async e=>{
-  const file=e.target.files[0];if(!file)return;
-  e.target.value='';
-
-  // Show preview in chat
-  const reader=new FileReader();
-  reader.onload=async ev=>{
-    const base64=ev.target.result.split(',')[1];
-    const mimeType=file.type||'image/jpeg';
-
-    // Show image preview message
-    const d=document.createElement('div');d.className='msg u';
-    d.innerHTML=`<div class="mlbl"><span>👤 You</span><span class="mts">${ts()}</span></div>
-      <div class="mtext">Build a website based on this design:</div>
-      <img src="${ev.target.result}" class="img-preview">`;
-    msgs.appendChild(d);scrlBot();switchTab('chat');
-
-    if(!currentSessionId)createSession('Image to Code');
-    mc++;updMC();setLoad(true);
-
-    try{
-      // Send image to AI via worker
-      const imageMessages=[
-        {role:'system',content:getSysPrompt()},
-        {role:'user',content:[
-          {type:'image_url',image_url:{url:`data:${mimeType};base64,${base64}`}},
-          {type:'text',text:'Look at this design/screenshot carefully. Build a complete, beautiful HTML website that recreates or is inspired by this design. Make it pixel-perfect where possible, using the same layout, colors, typography style, and sections you can see. Output a complete self-contained HTML file.'}
-        ]}
-      ];
-
-      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({messages:imageMessages,model:MODEL,max_tokens:8000})});
-      const data=await res.json();
-
-      if(data.error){addAI('⚠️ '+data.error.message);}
-      else{
-        const reply=data.content?.[0]?.text||'Could not process the image.';
-        const extracted=extractCode(reply);
-        if(extracted&&extracted.toLowerCase().includes('<!doctype')){
-          saveVer('From image · '+new Date().toLocaleTimeString());
-          ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
-          pushUndo();
-          showToast('✅ Site built from image!',3000);
-          if(autoPreview)setTimeout(()=>refreshPV(true),500);
-        }
-        hist.push({role:'assistant',content:reply});
-        addAI(reply);
-      }
-    }catch(err){addAI('⚠️ Could not process image. Try a different model that supports vision.');}
-    finally{setLoad(false);saveCurrentSession();}
-  };
-  reader.readAsDataURL(file);
-});
-
-// Close inline popup when clicking outside
-document.addEventListener('click',e=>{
-  const popup=document.getElementById('inline-popup');
-  if(popup.classList.contains('on')&&!popup.contains(e.target)&&!lnums.contains(e.target)){
-    closeInlinePopup();
-  }
-});
-
-// Push undo before AI updates editor
-const _origSend=send;
-
 </script>
 </body>
 </html>
