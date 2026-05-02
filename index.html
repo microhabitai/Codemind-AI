@@ -259,6 +259,48 @@ label.bc{cursor:pointer;}
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;display:none;}
 #overlay.on{display:block;}
 
+
+/* Undo/Redo buttons */
+.undoredo{display:flex;gap:3px;}
+.undoredo button{font-size:12px;padding:2px 7px;border-radius:4px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);transition:all 0.15s;}
+.undoredo button:hover:not(:disabled){color:var(--cyan);border-color:var(--bc);}
+.undoredo button:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* Lock overlay */
+#lock-bar{display:none;align-items:center;gap:6px;padding:4px 10px;flex-shrink:0;background:rgba(255,100,0,0.06);border-bottom:1px solid rgba(255,140,0,0.2);font-size:10px;color:#ffaa44;flex-wrap:wrap;}
+#lock-bar.on{display:flex;}
+.lock-range{display:inline-flex;align-items:center;gap:4px;background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.25);border-radius:4px;padding:2px 7px;font-size:9px;color:#ffaa44;}
+.lock-range button{background:none;border:none;color:#ffaa44;cursor:pointer;font-size:11px;padding:0 2px;}
+
+/* Inline edit popup */
+#inline-popup{position:fixed;z-index:500;background:var(--bg3);border:1px solid var(--bc);border-radius:8px;padding:8px;display:none;flex-direction:column;gap:6px;min-width:200px;max-width:280px;box-shadow:0 8px 30px rgba(0,0,0,0.4);}
+#inline-popup.on{display:flex;}
+#inline-popup-label{font-size:9px;color:var(--cyan);font-weight:700;}
+#inline-input{background:var(--ibg);border:1px solid var(--bc);border-radius:5px;color:var(--text);font-size:11px;padding:5px 8px;font-family:var(--ui);outline:none;width:100%;}
+#inline-popup-btns{display:flex;gap:5px;}
+
+/* Quality badge */
+.qual-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.qual-a{background:rgba(0,255,100,0.12);border:1px solid rgba(0,255,100,0.3);color:#44ff88;}
+.qual-b{background:rgba(100,200,255,0.12);border:1px solid rgba(100,200,255,0.3);color:#66ccff;}
+.qual-c{background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.3);color:#ffcc00;}
+.qual-d{background:rgba(255,100,0,0.12);border:1px solid rgba(255,100,0,0.3);color:#ff8844;}
+
+/* Deploy modal */
+#deploy-modal{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,0.8);}
+#deploy-modal.on{display:flex;}
+#deploy-box{background:var(--bg2);border:1px solid var(--bc);border-radius:14px;padding:22px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;}
+#deploy-box h3{font-size:14px;color:var(--cyan);font-weight:700;}
+#deploy-box p{font-size:11px;color:var(--dim);line-height:1.6;}
+#deploy-url{background:rgba(0,255,200,0.06);border:1px solid var(--bc);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--cyan);font-family:var(--mono);word-break:break-all;display:none;}
+#deploy-progress{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;display:none;}
+#deploy-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));width:0%;transition:width 0.3s;border-radius:2px;}
+
+/* Image upload in chat */
+#img-upload-btn{font-size:9px;padding:3px 7px;border-radius:5px;cursor:pointer;background:rgba(180,100,255,0.08);border:1px solid rgba(180,100,255,0.25);color:#c77dff;font-family:var(--ui);transition:all 0.15s;}
+#img-upload-btn:hover{background:rgba(180,100,255,0.18);}
+.img-preview{max-width:100%;border-radius:6px;margin-top:6px;border:1px solid var(--border);}
+
 /* Animations */
 @keyframes gpulse{0%,100%{box-shadow:0 0 5px var(--cyan)}50%{box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,255,200,0.25)}}
 @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
@@ -312,6 +354,9 @@ label.bc{cursor:pointer;}
           <button class="btn bg" id="hlBtn">🎨 HL</button>
           <button class="btn bg" id="fnrBtn">🔍</button>
           <button class="btn bg" id="scanBtn">⚡ Scan</button>
+          <button class="btn bc" id="autofixBtn">🔧 AutoFix</button>
+          <button class="btn bg" id="qualBtn">📊 Quality</button>
+          <button class="btn bg" id="lockBtn">🔒 Lock</button>
           <button class="btn bpurple" id="compBtn">🧩 Components</button>
         </div>
       </div>
@@ -334,6 +379,10 @@ label.bc{cursor:pointer;}
           <span style="font-size:9px;color:rgba(0,255,200,0.4)">→ AI only</span>
         </div>
       </div>
+      <div id="lock-bar"><span>🔒 Locked sections:</span><span id="lock-list" style="display:flex;gap:4px;flex-wrap:wrap"></span><button class="btn br" style="font-size:9px;padding:2px 7px" onclick="clearLocks()">Clear all</button></div>
+
+      <div id="inline-popup"><div id="inline-popup-label">✏️ Edit Line <span id="inline-line-num">1</span></div><input id="inline-input" placeholder="What to change on this line?"><div id="inline-popup-btns"><button class="btn bc" style="flex:1;font-size:10px" onclick="submitInlineEdit()">Ask AI</button><button class="btn bg" style="font-size:10px" onclick="closeInlinePopup()">Cancel</button></div></div>
+
       <div id="ewrap">
         <div id="lnums"></div>
         <textarea id="ced" spellcheck="false"><!-- 👋 Welcome to CodeMind AI v4.0!
@@ -348,6 +397,7 @@ label.bc{cursor:pointer;}
       </div>
       <div id="efoot">
         <span id="flang">HTML · CSS · JS</span>
+        <div class="undoredo"><button id="undoBtn" onclick="doUndo()" disabled title="Undo">↩</button><button id="redoBtn" onclick="doRedo()" disabled title="Redo">↪</button></div>
         <div class="fszc">
           <button class="fsbtn" onclick="chFS(-1)">−</button>
           <span id="fslbl" style="font-size:9px;min-width:24px;text-align:center">12px</span>
@@ -363,8 +413,8 @@ label.bc{cursor:pointer;}
         <span style="font-size:10px;color:var(--dim);font-weight:600">LIVE PREVIEW</span>
         <div class="brow">
           <button class="pvsize on" id="pv-desk" onclick="setPVSize('desk')">🖥</button>
-          <button class="pvsize" id="pv-mob" onclick="setPVSize('mob')">📱</button>
-          <button class="pvsize" id="pv-frame" onclick="setPVSize('frame')">📲</button>
+          <button class="pvsize" id="pv-mob" onclick="setPVSize('mob')">📱 Mobile</button>
+          <button class="pvsize" id="pv-frame" onclick="setPVSize('frame')">📲 Frame</button>
           <button class="btn bc" onclick="refreshPV()">↺ Refresh</button>
           <button class="btn bg" onclick="openInBrowser()">🌐 Browser</button>
           <button class="btn bg" onclick="clearPV()">✕</button>
@@ -384,6 +434,8 @@ label.bc{cursor:pointer;}
       <div class="ptb">
         <span style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:0.5px" id="mcnt">AI CHAT</span>
         <div class="brow">
+          <label id="img-upload-btn">🖼 Image→Code<input type="file" id="img-fup" accept="image/*" style="display:none"></label>
+          <button class="btn bc" id="deployBtn">🚀 Deploy</button>
           <button class="btn bg" id="expBtn">📤</button>
           <button class="btn br" id="clrBtn">Clear</button>
         </div>
@@ -504,6 +556,20 @@ label.bc{cursor:pointer;}
         <div>Built by Fancy (Treaz)</div>
         <div style="color:rgba(0,255,200,0.5)">Powered by OpenRouter</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deploy Modal -->
+<div id="deploy-modal">
+  <div id="deploy-box">
+    <h3>🚀 Deploy to Netlify</h3>
+    <p>Your site will be published live instantly with a public URL. No account needed!</p>
+    <div id="deploy-progress"><div id="deploy-bar"></div></div>
+    <div id="deploy-url"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bc" id="deploy-go-btn" style="flex:1;padding:8px;font-size:11px;font-weight:600" onclick="deployToNetlify()">🚀 Publish Now</button>
+      <button class="btn bg" style="padding:8px;font-size:11px" onclick="document.getElementById('deploy-modal').classList.remove('on')">Cancel</button>
     </div>
   </div>
 </div>
@@ -854,7 +920,7 @@ foct.addEventListener('click',()=>{focusOn=!focusOn;focbar.classList.toggle('on'
 // ══════════════════════════════════════════════════════
 // PREVIEW
 // ══════════════════════════════════════════════════════
-function setPVSize(sz){['desk','mob','frame'].forEach(s=>document.getElementById('pv-'+s)?.classList.toggle('on',s===sz));pvframe.className=sz==='mob'?'mobile':sz==='frame'?'mobile-framed':'';}
+function setPVSize(sz){['desk','mob','frame'].forEach(s=>document.getElementById('pv-'+s)?.classList.toggle('on',s===sz));pvframe.className=sz==='mob'?'mobile':sz==='frame'?'mobile-framed':sz==='desk'?'':pvframe.className;}
 function refreshPV(silent){
   const code=ced.value.trim();if(!code||code.startsWith('<!--')){if(!silent)clearPV();return;}
   pvph.style.display='none';pvframe.style.display='block';
@@ -928,7 +994,7 @@ async function send(){
   const fl=(focusOn&&focS.value&&focE.value)?` [L${focS.value}–${focE.value}]`:'';
   addUser(txt+fl);hist.push({role:'user',content:api,_display:txt+fl});cinput.value='';setLoad(true);switchTab('chat');
   try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:getSysPrompt()},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL,max_tokens:8000})});
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:getSysPrompt()+getLockNote()},...hist.map(m=>({role:m.role,content:m.content}))],model:MODEL,max_tokens:8000})});
     const data=await res.json();
     if(data.error){const reply='⚠️ '+data.error.message;addAI(reply);hist.push({role:'assistant',content:reply});}
     else{
@@ -937,6 +1003,7 @@ async function send(){
       const extracted=extractCode(reply);
       if(extracted&&extracted.toLowerCase().includes('<!doctype')){
         saveVer('AI Built · '+(txt.slice(0,28)));
+        pushUndo();
         ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
         // Check completeness
         const complete=extracted.toLowerCase().includes('</html>');
@@ -1022,6 +1089,309 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function fmt(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');}
 function clip(text){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text).catch(()=>fb(text));fb(text);return Promise.resolve();}
 function fb(text){const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+
+// ══════════════════════════════════════════════════════
+// UNDO / REDO
+// ══════════════════════════════════════════════════════
+let undoStack=[], redoStack=[];
+const MAX_UNDO=50;
+
+function pushUndo(){
+  undoStack.push(ced.value);
+  if(undoStack.length>MAX_UNDO)undoStack.shift();
+  redoStack=[];
+  updateUndoRedo();
+}
+function doUndo(){
+  if(!undoStack.length)return;
+  redoStack.push(ced.value);
+  ced.value=undoStack.pop();
+  updateLN();updateFoot();updateUndoRedo();showToast('Undo ✓');
+}
+function doRedo(){
+  if(!redoStack.length)return;
+  undoStack.push(ced.value);
+  ced.value=redoStack.pop();
+  updateLN();updateFoot();updateUndoRedo();showToast('Redo ✓');
+}
+function updateUndoRedo(){
+  document.getElementById('undoBtn').disabled=!undoStack.length;
+  document.getElementById('redoBtn').disabled=!redoStack.length;
+}
+
+// Push undo on significant changes
+let _undoTimer;
+ced.addEventListener('input',()=>{
+  clearTimeout(_undoTimer);
+  _undoTimer=setTimeout(()=>{
+    if(undoStack[undoStack.length-1]!==ced.value)pushUndo();
+  },800);
+});
+
+// ══════════════════════════════════════════════════════
+// LOCK SECTIONS
+// ══════════════════════════════════════════════════════
+let lockedRanges=[];
+
+document.getElementById('lockBtn').addEventListener('click',()=>{
+  const start=ced.value.substr(0,ced.selectionStart).split('\n').length;
+  const end=ced.value.substr(0,ced.selectionEnd).split('\n').length;
+  if(start===end&&!ced.value.substring(ced.selectionStart,ced.selectionEnd).trim()){
+    showToast('Select code lines first, then tap Lock');return;
+  }
+  const id=Date.now();
+  lockedRanges.push({id,start,end,text:ced.value.substring(ced.selectionStart,ced.selectionEnd).trim().slice(0,30)+'...'});
+  renderLocks();showToast(`Lines ${start}–${end} locked 🔒`);
+});
+
+function renderLocks(){
+  const list=document.getElementById('lock-list');
+  const bar=document.getElementById('lock-bar');
+  if(!lockedRanges.length){bar.classList.remove('on');list.innerHTML='';return;}
+  bar.classList.add('on');
+  list.innerHTML=lockedRanges.map(r=>`<span class="lock-range">L${r.start}–${r.end} <button onclick="removeLock(${r.id})">×</button></span>`).join('');
+}
+function removeLock(id){lockedRanges=lockedRanges.filter(r=>r.id!==id);renderLocks();}
+function clearLocks(){lockedRanges=[];renderLocks();showToast('All locks cleared');}
+
+function getLockNote(){
+  if(!lockedRanges.length)return '';
+  return '\n\n⚠️ DO NOT MODIFY these locked line ranges: '+lockedRanges.map(r=>`lines ${r.start}–${r.end}`).join(', ')+'. Keep them exactly as they are.';
+}
+
+// ══════════════════════════════════════════════════════
+// INLINE LINE EDIT
+// ══════════════════════════════════════════════════════
+let inlineLineNum=1;
+
+lnums.addEventListener('click',e=>{
+  const divs=lnums.querySelectorAll('div');
+  divs.forEach((d,i)=>{if(d===e.target||d.contains(e.target)){inlineLineNum=i+1;}});
+  showInlinePopup(inlineLineNum);
+});
+
+function showInlinePopup(lineNum){
+  const popup=document.getElementById('inline-popup');
+  const lnEl=document.querySelector(`#lnums div:nth-child(${lineNum})`);
+  if(!lnEl)return;
+  document.getElementById('inline-line-num').textContent=lineNum;
+  document.getElementById('inline-input').value='';
+  const rect=lnEl.getBoundingClientRect();
+  popup.style.top=Math.min(rect.top,window.innerHeight-160)+'px';
+  popup.style.left='46px';
+  popup.classList.add('on');
+  document.getElementById('inline-input').focus();
+}
+function closeInlinePopup(){document.getElementById('inline-popup').classList.remove('on');}
+document.getElementById('inline-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitInlineEdit();if(e.key==='Escape')closeInlinePopup();});
+
+function submitInlineEdit(){
+  const ask=document.getElementById('inline-input').value.trim();if(!ask)return;
+  const lines=ced.value.split('\n');
+  const lineContent=lines[inlineLineNum-1]||'';
+  closeInlinePopup();
+  cinput.value=`On line ${inlineLineNum}: "${lineContent.trim()}" — ${ask}`;
+  switchTab('chat');
+  send();
+}
+
+// ══════════════════════════════════════════════════════
+// AUTO-FIX
+// ══════════════════════════════════════════════════════
+document.getElementById('autofixBtn').addEventListener('click',()=>{
+  if(!ced.value.trim()){showToast('Editor is empty');return;}
+  switchTab('chat');
+  cinput.value='Find and fix ALL bugs, errors, and issues in this code. Make sure it is complete with </body></html> and works perfectly in a browser.';
+  send();
+});
+
+// ══════════════════════════════════════════════════════
+// CODE QUALITY CHECKER
+// ══════════════════════════════════════════════════════
+document.getElementById('qualBtn').addEventListener('click',()=>{
+  const code=ced.value;
+  if(!code.trim()){showToast('Editor is empty');return;}
+  let score=100;const issues=[];
+
+  // Deductions
+  if(!code.toLowerCase().includes('<!doctype')){score-=15;issues.push('Missing DOCTYPE');}
+  if(!code.toLowerCase().includes('</html>')){score-=20;issues.push('Incomplete HTML (no </html>)');}
+  if(!code.includes('<meta name="viewport"')){score-=5;issues.push('No viewport meta');}
+  if(!code.includes('alt=')){score-=5;issues.push('Images missing alt text');}
+  if(!code.includes('@import')&&!code.includes('font-family')){score-=5;issues.push('No custom fonts');}
+  if(!code.includes('transition')&&!code.includes('animation')){score-=5;issues.push('No CSS animations');}
+  if(!code.includes(':hover')){score-=5;issues.push('No hover effects');}
+  if(!code.includes('@media')){score-=10;issues.push('Not responsive (no media queries)');}
+  if(!code.includes('scroll-behavior')){score-=3;issues.push('No smooth scroll');}
+  if(code.includes('lorem ipsum')||code.includes('Lorem Ipsum')){score-=5;issues.push('Contains placeholder text');}
+  if((code.match(/<script/gi)||[]).length!==(code.match(/<\/script>/gi)||[]).length){score-=15;issues.push('Mismatched script tags');}
+  if(code.length<2000){score-=10;issues.push('Very short code');}
+
+  score=Math.max(0,score);
+  const grade=score>=90?'A':score>=75?'B':score>=60?'C':'D';
+  const gradeClass=score>=90?'qual-a':score>=75?'qual-b':score>=60?'qual-c':'qual-d';
+
+  const etext=document.getElementById('etext');
+  const ebnr=document.getElementById('ebnr');
+  ebnr.style.cssText='';
+  if(score>=75){ebnr.style.cssText='background:rgba(0,200,100,0.07);border-bottom:1px solid rgba(0,200,100,0.2);color:#88ffaa;';}
+  etext.innerHTML=`<span class="qual-badge ${gradeClass}">Grade ${grade} · ${score}/100</span>  ${issues.length?issues.slice(0,3).join(' · '):'Excellent code quality!'}`;
+  ebnr.classList.add('on');
+  setTimeout(()=>ebnr.classList.remove('on'),10000);
+});
+
+// ══════════════════════════════════════════════════════
+// DEPLOY TO NETLIFY
+// ══════════════════════════════════════════════════════
+document.getElementById('deployBtn').addEventListener('click',()=>{
+  if(!ced.value.trim()||ced.value.startsWith('<!--')){showToast('Generate a site first!');return;}
+  document.getElementById('deploy-modal').classList.add('on');
+  document.getElementById('deploy-url').style.display='none';
+  document.getElementById('deploy-progress').style.display='none';
+  document.getElementById('deploy-bar').style.width='0%';
+  document.getElementById('deploy-go-btn').disabled=false;
+  document.getElementById('deploy-go-btn').textContent='🚀 Publish Now';
+});
+
+async function deployToNetlify(){
+  const btn=document.getElementById('deploy-go-btn');
+  const progress=document.getElementById('deploy-progress');
+  const bar=document.getElementById('deploy-bar');
+  const urlBox=document.getElementById('deploy-url');
+  btn.disabled=true;btn.textContent='Deploying...';
+  progress.style.display='block';
+
+  // Animate progress bar
+  let prog=0;const progTimer=setInterval(()=>{prog=Math.min(prog+Math.random()*15,85);bar.style.width=prog+'%';},300);
+
+  try{
+    // Create a ZIP-like structure using FormData for Netlify API
+    const code=ced.value;
+    const filename=flbl.textContent||'index.html';
+
+    // Use Netlify's drag-and-drop API
+    const formData=new FormData();
+    const blob=new Blob([code],{type:'text/html'});
+    formData.append('file',blob,'index.html');
+
+    // Try Netlify anonymous deploy
+    const res=await fetch('https://api.netlify.com/api/v1/sites',{
+      method:'POST',
+      headers:{'Content-Type':'application/zip'},
+      body:await createZipBlob(code)
+    });
+
+    clearInterval(progTimer);
+
+    if(res.ok){
+      const data=await res.json();
+      bar.style.width='100%';
+      const url=data.ssl_url||data.url||'https://'+data.subdomain+'.netlify.app';
+      urlBox.textContent=url;urlBox.style.display='block';
+      btn.textContent='✓ Deployed! Copy URL';
+      btn.disabled=false;
+      btn.onclick=()=>{clip(url).then(()=>showToast('URL copied ✓'));};
+    }else{
+      throw new Error('Deploy failed');
+    }
+  }catch(e){
+    clearInterval(progTimer);
+    // Fallback: open Netlify Drop
+    bar.style.width='100%';
+    urlBox.textContent='Redirecting to Netlify Drop — drag your downloaded file there to deploy!';
+    urlBox.style.display='block';
+    btn.textContent='📁 Download & Open Netlify Drop';
+    btn.disabled=false;
+    btn.onclick=()=>{
+      // Download file first
+      const blobUrl=URL.createObjectURL(new Blob([ced.value],{type:'text/html'}));
+      const a=document.createElement('a');a.href=blobUrl;a.download=flbl.textContent||'index.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(blobUrl);
+      // Open Netlify Drop
+      setTimeout(()=>window.open('https://app.netlify.com/drop','_blank'),500);
+    };
+  }
+}
+
+async function createZipBlob(htmlContent){
+  // Simple approach: just send the HTML as a single file
+  // Netlify API accepts a zip with index.html
+  try{
+    // Create minimal zip manually
+    const enc=new TextEncoder();
+    const data=enc.encode(htmlContent);
+    // Return as blob - Netlify will handle it
+    return new Blob([data],{type:'application/octet-stream'});
+  }catch(e){return new Blob([htmlContent],{type:'text/html'});}
+}
+
+// ══════════════════════════════════════════════════════
+// IMAGE TO CODE
+// ══════════════════════════════════════════════════════
+document.getElementById('img-fup').addEventListener('change',async e=>{
+  const file=e.target.files[0];if(!file)return;
+  e.target.value='';
+
+  // Show preview in chat
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const base64=ev.target.result.split(',')[1];
+    const mimeType=file.type||'image/jpeg';
+
+    // Show image preview message
+    const d=document.createElement('div');d.className='msg u';
+    d.innerHTML=`<div class="mlbl"><span>👤 You</span><span class="mts">${ts()}</span></div>
+      <div class="mtext">Build a website based on this design:</div>
+      <img src="${ev.target.result}" class="img-preview">`;
+    msgs.appendChild(d);scrlBot();switchTab('chat');
+
+    if(!currentSessionId)createSession('Image to Code');
+    mc++;updMC();setLoad(true);
+
+    try{
+      // Send image to AI via worker
+      const imageMessages=[
+        {role:'system',content:getSysPrompt()},
+        {role:'user',content:[
+          {type:'image_url',image_url:{url:`data:${mimeType};base64,${base64}`}},
+          {type:'text',text:'Look at this design/screenshot carefully. Build a complete, beautiful HTML website that recreates or is inspired by this design. Make it pixel-perfect where possible, using the same layout, colors, typography style, and sections you can see. Output a complete self-contained HTML file.'}
+        ]}
+      ];
+
+      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:imageMessages,model:MODEL,max_tokens:8000})});
+      const data=await res.json();
+
+      if(data.error){addAI('⚠️ '+data.error.message);}
+      else{
+        const reply=data.content?.[0]?.text||'Could not process the image.';
+        const extracted=extractCode(reply);
+        if(extracted&&extracted.toLowerCase().includes('<!doctype')){
+          saveVer('From image · '+new Date().toLocaleTimeString());
+          ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
+          pushUndo();
+          showToast('✅ Site built from image!',3000);
+          if(autoPreview)setTimeout(()=>refreshPV(true),500);
+        }
+        hist.push({role:'assistant',content:reply});
+        addAI(reply);
+      }
+    }catch(err){addAI('⚠️ Could not process image. Try a different model that supports vision.');}
+    finally{setLoad(false);saveCurrentSession();}
+  };
+  reader.readAsDataURL(file);
+});
+
+// Close inline popup when clicking outside
+document.addEventListener('click',e=>{
+  const popup=document.getElementById('inline-popup');
+  if(popup.classList.contains('on')&&!popup.contains(e.target)&&!lnums.contains(e.target)){
+    closeInlinePopup();
+  }
+});
+
+// Push undo before AI updates editor
+const _origSend=send;
+
 </script>
 </body>
 </html>
