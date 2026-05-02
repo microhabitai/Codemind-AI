@@ -117,7 +117,7 @@ label.bc{cursor:pointer;}
 .pvsize{font-size:9px;padding:3px 7px;border-radius:4px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);font-family:var(--ui);transition:all 0.15s;}
 .pvsize.on{color:var(--cyan);border-color:var(--bc);background:var(--tab);}
 #pvframe.mobile{max-width:375px;margin:0 auto;box-shadow:0 0 40px rgba(0,0,0,0.6);}
-#pvframe.mobile-framed{max-width:395px;margin:0 auto;border:12px solid #1a1a2e;border-radius:40px;box-shadow:0 0 0 2px #333,0 20px 60px rgba(0,0,0,0.7);}
+#pvframe.mobile-framed{max-width:395px;margin:8px auto;border:12px solid #1a1a2e;border-radius:40px;box-shadow:0 0 0 2px #333,0 20px 60px rgba(0,0,0,0.7);height:calc(100% - 16px);}
 #presets-bar{display:flex;gap:5px;padding:6px 10px;flex-shrink:0;overflow-x:auto;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2);scrollbar-width:none;}
 #presets-bar::-webkit-scrollbar{display:none;}
 .preset-btn{font-size:9px;padding:4px 10px;border-radius:20px;cursor:pointer;background:var(--ibg);border:1px solid var(--border);color:var(--dim);white-space:nowrap;font-family:var(--ui);transition:all 0.15s;flex-shrink:0;}
@@ -410,9 +410,9 @@ label.bc{cursor:pointer;}
         <button class="qp" onclick="useP('Add a sticky navigation bar with backdrop blur')">📌 Sticky nav</button>
         <button class="qp" onclick="useP('Add a footer with links and social icons')">🔗 Footer</button>
       </div>
-      <div id="cia">
-        <textarea id="cinput" placeholder="Describe what to build, or ask me to improve the code..."></textarea>
-        <button id="sbtn">↑</button>
+      <div id="cia" style="position:relative">
+        <textarea id="cinput" placeholder="Describe what to build... (Ctrl+Enter to send)"></textarea>
+        <button id="sbtn" title="Send (Ctrl+Enter)">↑</button>
       </div>
     </div>
   </div>
@@ -511,6 +511,7 @@ Type scale: hero 48-72px, h1 36-48px, body 16-18px
 - COMPLETE self-contained HTML file — ALWAYS end with </body></html>
 - Google Fonts via @import in CSS
 - No external dependencies except fonts
+- For images use ONLY: https://picsum.photos/800/600 (change numbers for size), https://picsum.photos/seed/WORD/800/600 (change WORD for different images), or CSS gradient backgrounds instead of images. NEVER use imgur, unsplash direct links, placeholder.com, or any other image service that requires accounts
 - Wrap in single \`\`\`html code block
 - After code: 2-3 sentence summary + follow-ups labeled [SUGGESTIONS]: s1 | s2 | s3
 
@@ -523,7 +524,8 @@ Anything not web dev: "I specialize in web development only!"
 ## DEBUG MODE
 When user shares code: find bugs, provide fixes in proper code blocks.
 
-ALWAYS complete the HTML file. Never lorem ipsum. Every build should make someone say "wow".`;
+ALWAYS complete the HTML file. Never lorem ipsum. Every build should make someone say "wow".
+For any images needed: use https://picsum.photos/seed/DESCRIPTIVEWORD/WIDTH/HEIGHT — e.g. https://picsum.photos/seed/fashion/800/600 for a fashion image. These always work and never break.`;
 
 const PRESET_PROMPTS={
   auto:'',
@@ -934,44 +936,74 @@ async function deployToNetlify(){
 }
 
 // ══════ IMAGE TO CODE ══════
-document.getElementById('img-fup').addEventListener('change',async e=>{
+// Stored image data waiting to be sent
+let pendingImage=null;
+
+document.getElementById('img-fup').addEventListener('change',e=>{
   const file=e.target.files[0];if(!file)return;e.target.value='';
   const reader=new FileReader();
-  reader.onload=async ev=>{
+  reader.onload=ev=>{
     const base64=ev.target.result.split(',')[1];
     const mimeType=file.type||'image/jpeg';
-    const d=document.createElement('div');d.className='msg u';
-    d.innerHTML='<div class="mlbl"><span>👤 You</span><span class="mts">'+ts()+'</span></div><div class="mtext">Build a website based on this design:</div><img src="'+ev.target.result+'" class="img-preview">';
-    msgs.appendChild(d);scrlBot();switchTab('chat');
-    if(!currentSessionId)createSession('Image to Code');
-    mc++;updMC();setLoad(true);
-    try{
-      const imageMessages=[
-        {role:'system',content:getSysPrompt()},
-        {role:'user',content:[
-          {type:'image_url',image_url:{url:'data:'+mimeType+';base64,'+base64}},
-          {type:'text',text:'Look at this design carefully. Build a complete, beautiful HTML website that recreates or is inspired by this design. Match the layout, colors, typography, and sections. Output a complete self-contained HTML file from <!DOCTYPE html> through </html>.'}
-        ]}
-      ];
-      const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:imageMessages,model:MODEL,max_tokens:8000})});
-      const data=await res.json();
-      if(data.error){addAI('⚠️ '+data.error.message);}
-      else{
-        const reply=data.content?.[0]?.text||'Could not process the image.';
-        const extracted=extractCode(reply);
-        if(extracted&&extracted.toLowerCase().includes('<!doctype')){
-          pushUndo();saveVer('From image · '+new Date().toLocaleTimeString());
-          ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
-          showToast('✅ Site built from image!',3000);
-          if(autoPreview)setTimeout(()=>refreshPV(true),500);
-        }
-        hist.push({role:'assistant',content:reply});addAI(reply);
-      }
-    } catch(err){addAI('⚠️ Could not process image. Try a model that supports vision.');}
-    finally{setLoad(false);saveCurrentSession();}
+    // Store image data, don't send yet
+    pendingImage={base64,mimeType,dataUrl:ev.target.result,name:file.name};
+    // Show preview in input area
+    let preview=document.getElementById('img-pending-preview');
+    if(!preview){
+      preview=document.createElement('div');
+      preview.id='img-pending-preview';
+      preview.style.cssText='padding:5px 10px 0;display:flex;align-items:center;gap:8px;flex-shrink:0;';
+      document.getElementById('cia').before(preview);
+    }
+    preview.innerHTML='<img src="'+ev.target.result+'" style="height:48px;width:48px;object-fit:cover;border-radius:6px;border:1px solid var(--bc)"><span style="font-size:10px;color:var(--cyan)">📎 Image attached — type your instruction then send</span><button onclick="cancelPendingImage()" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;margin-left:auto">×</button>';
+    cinput.placeholder='What should I do with this image?';
+    cinput.focus();
+    switchTab('chat');
   };
   reader.readAsDataURL(file);
 });
+
+function cancelPendingImage(){
+  pendingImage=null;
+  const preview=document.getElementById('img-pending-preview');
+  if(preview)preview.remove();
+  cinput.placeholder='Describe what to build, or ask me to improve the code...';
+}
+
+async function sendWithImage(txt){
+  const img=pendingImage;
+  cancelPendingImage();
+  // Show user message with image preview
+  const d=document.createElement('div');d.className='msg u';
+  d.innerHTML='<div class="mlbl"><span>👤 You</span><span class="mts">'+ts()+'</span></div><img src="'+img.dataUrl+'" class="img-preview"><div class="mtext">'+esc(txt)+'</div>';
+  msgs.appendChild(d);scrlBot();
+  if(!currentSessionId)createSession(txt);
+  mc++;updMC();setLoad(true);
+  try{
+    const imageMessages=[
+      {role:'system',content:getSysPrompt()},
+      {role:'user',content:[
+        {type:'image_url',image_url:{url:'data:'+img.mimeType+';base64,'+img.base64}},
+        {type:'text',text:txt}
+      ]}
+    ];
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:imageMessages,model:MODEL,max_tokens:8000})});
+    const data=await res.json();
+    if(data.error){addAI('⚠️ '+data.error.message);}
+    else{
+      const reply=data.content?.[0]?.text||'Could not process the image.';
+      const extracted=extractCode(reply);
+      if(extracted&&extracted.toLowerCase().includes('<!doctype')){
+        pushUndo();saveVer('From image · '+new Date().toLocaleTimeString());
+        ced.value=extracted;updateLN();updateFoot();lastCode=extracted;sentOnce=true;
+        showToast('✅ Done! Tap Preview to see it',3000);
+        if(autoPreview)setTimeout(()=>refreshPV(true),500);
+      }
+      hist.push({role:'assistant',content:reply});addAI(reply);
+    }
+  }catch(err){addAI('⚠️ Could not process image. Try a vision-capable model in Settings.');}
+  finally{setLoad(false);saveCurrentSession();}
+}
 
 // ══════ VERSION HISTORY ══════
 function saveVer(label){versions.unshift({label,code:ced.value,time:new Date(),lines:ced.value.split('\n').length});if(versions.length>20)versions.pop();renderVers();}
@@ -986,7 +1018,10 @@ document.getElementById('clrBtn').addEventListener('click',()=>{hist=[];msgs.inn
 // ══════ QUICK PROMPTS & SEND ══════
 function useP(t){cinput.value=t;switchTab('chat');cinput.focus();}
 function updMC(){document.getElementById('mcnt').textContent='AI CHAT · '+mc+' msgs';}
-cinput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+cinput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();send();}
+  // Enter alone = new line (default behavior, do nothing)
+});
 sbtn.addEventListener('click',send);
 
 // ══════ EXTRACT CODE ══════
@@ -1011,6 +1046,8 @@ function extractSuggestions(text){
 // ══════ SEND MESSAGE ══════
 async function send(){
   const txt=cinput.value.trim();if(loading||!txt)return;
+  // If there's a pending image, send it with the text
+  if(pendingImage){await sendWithImage(txt);cinput.value='';return;}
   if(!currentSessionId)createSession(txt);
   const isBuild=BUILD.test(txt)&&!focusOn;
   const changed=ced.value!==lastCode;
